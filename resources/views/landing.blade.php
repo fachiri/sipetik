@@ -1,17 +1,17 @@
 <x-guest-layout> 
     <div class="bg-[#173D7A] text-white pb-10">
-        <h1 class="text-center text-3xl font-bold mb-5 leading-normal">Layanan Saran <br> UPT TIK Universitas Negeri Gorontalo</h1>
-        <p class="text-center text-lg font-base">Sampaikan keluhan anda terkait masalah layanan UPT TIK Universitas Negeri Gorontalo</p>
+        <h1 class="text-center text-2xl mx-5 md:text-3xl font-bold mb-5 leading-normal">Layanan Pengaduan <br> UPT TIK Universitas Negeri Gorontalo</h1>
+        <p class="text-center text-sm md:text-lg mx-5 font-base">Sampaikan keluhan anda terkait masalah layanan UPT TIK Universitas Negeri Gorontalo</p>
     </div>
     <section class="flex justify-center bg-[url('/assets/bg1.png')] bg-no-repeat bg-top bg-contain">
-        <div class="w-2/5 border p-7 bg-white rounded-sm shadow-xl">
+        <div class="w-11/12 md:w-2/5 border p-7 bg-white rounded shadow-xl">
             <div class="bg-[#002979] mb-3">
                 <h3 class="text-center text-white py-3 text-lg font-semibold rounded-sm">Sampaikan Keluhan Anda</h3>
             </div>
-            <div class="flex justify-between space-x-2 mb-4">
-                <button id="tab1" class="tab-btn basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Permintaan</button>
-                <button id="tab2" class="tab-btn active basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Pengaduan</button>
-                <button id="tab3" class="tab-btn basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Saran</button>
+            <div class="flex justify-between space-x-2 mb-4 text-sm md:text-base">
+                <button id="tab1" class="tab-btn tab-btn-landing basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Permintaan</button>
+                <button id="tab2" class="tab-btn tab-btn-landing active basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Pengaduan</button>
+                <button id="tab3" class="tab-btn tab-btn-landing basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Saran</button>
             </div>
             <div id="content1" class="tab-content hidden">
                 <input type="text" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Judul Permintaan">
@@ -73,8 +73,8 @@
             </div>
         </div>
     </section>
-    <section class="my-36">
-        <div class="container mx-auto px-20 flex justify-between text-[#092E63]">
+    <section class="my-20 md:my-36">
+        <div class="container mx-auto px-20 hidden md:flex justify-between text-[#092E63]">
             <div class="basis-1/6 flex flex-col items-center">
                 <img src="{{ asset('assets/img1.png') }}" alt="Tulis Laporan" width="50" class="mb-3">
                 <h5 class="text-base font-semibold">Tulis Laporan</h5>
@@ -99,6 +99,63 @@
                 <img src="{{ asset('assets/img5.png') }}" alt="Selesai" width="50" class="mb-3">
                 <h5 class="text-base font-semibold">Selesai</h5>
                 <p class="text-center text-sm">Laporan Anda akan ditindaklanjuti hingga terselesaikan</p>
+            </div>
+        </div>
+        <div class="md:hidden px-5">
+            <div class="flex space-x-3 items-center">
+                <img src="{{ asset('assets/img1.png') }}" alt="Tulis Laporan" width="50">
+                <div>
+                    <h5 class="text-base font-semibold">Tulis Laporan</h5>
+                    <p class="text-sm">Sampaikan aduan, permintaan, dan saran anda secara jelas dan lengkap</p>
+                </div>
+            </div>
+            <div class="mx-6">
+                <div class="h-5 border-l-4 border-[#173D7A]"></div>
+                <div class="w-full border-b-4 border-[#173D7A]"></div>
+                <div class="h-5 border-r-4 border-[#173D7A]"></div>
+            </div>
+            <div class="flex space-x-3 items-center">
+                <div>
+                    <h5 class="text-base font-semibold text-right">Proses Verifikasi</h5>
+                    <p class="text-sm text-right">Admin akan memverifikasi laporan Anda dan akan meneruskan ke unit yang bersangkutan</p>
+                </div>
+                <img src="{{ asset('assets/img2.png') }}" alt="Proses Verifikasi" width="50">
+            </div>
+            <div class="mx-6">
+                <div class="h-5 border-r-4 border-[#173D7A]"></div>
+                <div class="w-full border-b-4 border-[#173D7A]"></div>
+                <div class="h-5 border-l-4 border-[#173D7A]"></div>
+            </div>
+            <div class="flex space-x-3 items-center">
+                <img src="{{ asset('assets/img3.png') }}" alt="Proses Tindak Lanjut" width="50">
+                <div>
+                    <h5 class="text-base font-semibold">Proses Tindak Lanjut</h5>
+                    <p class="text-sm">Unit yang bersangkutan akan menindaklanjuti dan membalas laporan Anda</p>
+                </div>
+            </div>
+            <div class="mx-6">
+                <div class="h-5 border-l-4 border-[#173D7A]"></div>
+                <div class="w-full border-b-4 border-[#173D7A]"></div>
+                <div class="h-5 border-r-4 border-[#173D7A]"></div>
+            </div>
+            <div class="flex space-x-3 items-center">
+                <div>
+                    <h5 class="text-base font-semibold text-right">Beri Tanggapan</h5>
+                    <p class="text-sm text-right">Anda bisa menanggapi kembali balasan dari unit yang bersangkutan</p>
+                </div>
+                <img src="{{ asset('assets/img4.png') }}" alt="Beri Tanggapan" width="50">
+            </div>
+            <div class="mx-6">
+                <div class="h-5 border-r-4 border-[#173D7A]"></div>
+                <div class="w-full border-b-4 border-[#173D7A]"></div>
+                <div class="h-5 border-l-4 border-[#173D7A]"></div>
+            </div>
+            <div class="flex space-x-3 items-center">
+                <img src="{{ asset('assets/img5.png') }}" alt="Selesai" width="50">
+                <div>
+                    <h5 class="text-base font-semibold">Selesai</h5>
+                    <p class="text-sm">Laporan Anda akan ditindaklanjuti hingga terselesaikan</p>
+                </div>
             </div>
         </div>
     </section>

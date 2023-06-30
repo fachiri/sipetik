@@ -2,7 +2,7 @@
   <div class="bg-[#173D7A]">
     <h3 class="text-white text-2xl text-center font-bold">Masuk PETIK</h3>
   </div>
-  <img src="{{ asset('assets/bg2.png') }}" alt="Ilustrasi" class="mb-5 w-screen">
+  <img src="{{ asset('assets/bg2.png') }}" alt="Ilustrasi" class="mb-5 w-screen h-40 md:h-auto object-cover">
   <div class="flex flex-col justify-start items-center mb-20">
     <x-jet-validation-errors class="mb-4" />
     @if (session('status'))
