@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('landing');
-});
+Route::view('/', 'landing')->name('home');
+Route::view('/about', 'about')->name('about');
+Route::view('/report', 'report')->name('report');
 
 Route::group([ "middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified'] ], function() {
     Route::view('/dashboard', "dashboard")->name('dashboard');
