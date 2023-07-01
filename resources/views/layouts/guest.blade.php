@@ -34,19 +34,54 @@
         <div class="flex space-x-8">
           <a href="{{ route('home') }}" class="font-medium"><img src="{{ asset('assets/logo-putih.png') }}" alt="SIPETIK" class="h-10"></a>
           <span id="nav-content" class="hidden md:flex space-x-8 items-center">
-            <a href="{{ route('home') }}" class="font-medium">BERANDA</a>
-            <a href="{{ route('about') }}" class="font-medium">TENTANG PETIK</a>
-            <a href="{{ route('report') }}" class="font-medium">LAPORAN</a>
+            <a href="{{ route('home') }}" class="font-medium {{ request()->routeIs('home') ? 'font-bold' : '' }}">BERANDA</a>
+            <a href="{{ route('about') }}" class="font-medium {{ request()->routeIs('about') ? 'font-bold' : '' }}">TENTANG PETIK</a>
+            <a href="{{ route('report') }}" class="font-medium {{ request()->routeIs('report') ? 'font-bold' : '' }}">LAPORAN</a>
             <span class="flex md:hidden space-x-5 items-center justify-between pt-2 pb-3">
-              <a href="{{ route('login') }}" class="basis-1/2 text-center font-semibold py-1 border-2 rounded-lg">MASUK</a>
-              <a href="{{ route('register') }}" class="basis-1/2 text-center bg-[#FC2947] py-1 border-2 rounded-lg font-semibold">DAFTAR</a>
+              @guest
+                <a href="{{ route('login') }}" class="basis-1/2 text-center font-semibold py-1 border-2 rounded-lg">MASUK</a>
+                <a href="{{ route('register') }}" class="basis-1/2 text-center bg-[#FC2947] py-1 border-2 rounded-lg font-semibold">DAFTAR</a>
+              @endguest
+              @auth
+                @if (auth()->user()->role == 'PENGGUNA')
+                  <form method="POST" action="{{ route('logout') }}" class="basis-full">
+                    @csrf
+                    <a href="{{ route('logout') }}" class="font-semibold py-1 border-2 rounded-lg px-5" onclick="event.preventDefault();this.closest('form').submit();">
+                      <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                  </form>
+                @else
+                  <a href="{{ route('dashboard') }}" class="font-semibold py-1 border-2 rounded-lg px-5">
+                    Dashboard
+                  </a>
+                @endif
+              @endauth
             </span>
           </span>
         </div>
-        <span class="hidden md:flex space-x-8 items-center">
-          <a href="{{ route('login') }}" class="font-semibold">MASUK</a>
-          <a href="{{ route('register') }}" class="bg-[#FC2947] px-5 py-1 border-2 rounded-lg font-semibold">DAFTAR</a>
-        </span>
+        @auth
+          <div class="hidden md:block">
+            @if (auth()->user()->role == 'PENGGUNA')
+              <form method="POST" action="{{ route('logout') }}">
+                @csrf
+                <a href="{{ route('logout') }}" class="font-semibold py-1 border-2 rounded-lg px-5" onclick="event.preventDefault();this.closest('form').submit();">
+                  <i class="fas fa-sign-out-alt"></i>
+                  Logout
+                </a>
+              </form>
+            @else
+              <a href="{{ route('dashboard') }}" class="font-semibold py-1 border-2 rounded-lg px-5">
+                Dashboard
+              </a>
+            @endif
+          </div>
+        @endauth
+        @guest
+          <span class="hidden md:flex space-x-8 items-center">
+            <a href="{{ route('login') }}" class="font-semibold">MASUK</a>
+            <a href="{{ route('register') }}" class="bg-[#FC2947] px-5 py-1 border-2 rounded-lg font-semibold">DAFTAR</a>
+          </span>
+        @endguest
         <button id="nav-btn" class="md:hidden">
           <img src="{{ asset('assets/icon-bar.svg') }}" alt="Icon Bar">
         </button>

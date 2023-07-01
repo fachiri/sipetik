@@ -69,4 +69,13 @@ class User extends Authenticatable
             : static::where('name', 'like', '%'.$query.'%')
                 ->orWhere('email', 'like', '%'.$query.'%');
     }
+
+    public function hasRole($role)
+    {
+        // check param $role dengan field usertype
+        if ($role == $this->role) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\ReportController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -14,11 +15,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::view('/', 'landing')->name('home');
+Route::get('/', [ReportController::class, 'landing'])->name('home');
 Route::view('/about', 'about')->name('about');
-Route::view('/report', 'report')->name('report');   
 
-Route::group([ "middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified'] ], function() {
+Route::group(["middleware" => ['role:PENGGUNA']], function() {
+    Route::view('/report', 'report')->name('report');
+    Route::post('/report', [ReportController::class, 'store'])->name('report.store');
+});
+
+Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'redirect.if.user']], function() {
     Route::view('/dashboard', "dashboard")->name('dashboard');
 
     Route::get('/user', [ UserController::class, "index_view" ])->name('user');

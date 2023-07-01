@@ -8,8 +8,8 @@
                             <img src="{{ asset('assets/img9.png') }}" alt="Profile Image" class="w-10">
                         </span>
                         <div>
-                            <h5 class="font-semibold">Amirudin Paneo</h5>
-                            <span class="text-xs md:text-sm text-center">&#64;username</span>
+                            <h5 class="font-semibold">{{ auth()->user()->name }}</h5>
+                            <span class="text-xs md:text-sm text-center">{{ auth()->user()->email }}</span>
                         </div>
                     </div>
                     <div class="w-full md:w-auto flex justify-between md:space-x-20">
