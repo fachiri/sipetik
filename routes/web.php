@@ -19,7 +19,7 @@ Route::get('/', [ReportController::class, 'landing'])->name('home');
 Route::view('/about', 'about')->name('about');
 
 Route::group(["middleware" => ['role:PENGGUNA']], function() {
-    Route::view('/report', 'report')->name('report');
+    Route::get('/report', [ReportController::class, 'index'])->name('report');
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 

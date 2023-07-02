@@ -9,6 +9,9 @@
     <link rel="shortcut icon" href="{{ asset('assets/icon.png') }}" type="image/x-icon">
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    {{-- Noty --}}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <style>
       body {
         font-family: 'Poppins', sans-serif;
@@ -94,6 +97,26 @@
         <p class="text-white">Copyright &#169; 2023 <a href="#" class="font-bold">JEJAKODE INDONESIA</a></p>
       </div>
     </footer>
+    
+    @if (session('success'))
+      <script>
+        new Noty({
+          type: 'success',
+          text: @json(session('success')),
+          timeout: 2000,
+        }).show();
+      </script>
+    @endif
+
+    @if (session('error'))
+      <script>
+        new Noty({
+          type: 'error',
+          text: @json(session('error')),
+          timeout: 2000,
+        }).show();
+      </script>
+    @endif
 
     <script>
       const buttons = document.querySelectorAll('.tab-btn');

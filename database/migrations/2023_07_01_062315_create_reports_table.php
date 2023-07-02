@@ -15,7 +15,16 @@ return new class extends Migration
     {
         Schema::create('reports', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
+            $table->string('judul');
+            $table->string('jenis');
+            $table->string('kategori');
+            $table->text('isi');
+            $table->date('tanggal');
+            $table->string('lampiran')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

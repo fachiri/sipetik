@@ -14,16 +14,16 @@
                 <button id="tab3" class="tab-btn tab-btn-landing basis-1/3 text-[#FC2947] font-semibold py-2 border-2 border-[#FC2947] rounded">Saran</button>
             </div>
             <div id="content1" class="tab-content hidden">
-                <input type="text" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Judul Permintaan">
+                <input type="text" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Permintaan">
                 <select name="kategori_permintaan" id="kategori_permintaan" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-2">
                     <option hidden>Kategori Permintaan</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->name }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
-                <textarea name="isi_permintaan" id="isi_permintaan" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Isi Permintaan"></textarea>
-                <input type="date" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] mb-2" placeholder="Tanggal Permintaan">
-                <input type="file" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] mb-3
+                <textarea name="isi_permintaan" id="isi_permintaan" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Permintaan"></textarea>
+                <input type="date" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Tanggal Permintaan">
+                <input type="file" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold mb-3
                     file:mr-4
                     file:border-0
                     file:bg-white
@@ -32,40 +32,60 @@
                 <div class="text-center">
                     <button class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">KIRIM PERMINTAAN</button>
                 </div>
+                
             </div>
             <div id="content2" class="tab-content">
                 <form method="POST" action="{{ route('report.store') }}">
                     @csrf
                     <input type="hidden" name="jenis" value="Pengaduan">
-                    <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Judul Pengaduan">
-                    <select name="kategori" id="kategori" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-2">
-                        <option hidden>Kategori Pengaduan</option>
+                    @error('judul')
+                        <small class="text-[#FC2947] float-right">{{ $message }}</small>
+                    @enderror
+                    <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Pengaduan" value="{{ old('judul') }}">
+                    @error('kategori')
+                        <small class="text-[#FC2947] float-right">{{ $message }}</small>
+                    @enderror
+                    <select name="kategori" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-2">
+                        <option value="" hidden>Kategori Pengaduan</option>
                         @foreach ($categories as $category)
-                            <option value="{{ $category->name }}">{{ $category->name }}</option>
+                            <option value="{{ $category->name }}" {{ $category->name == old('kategori') ? 'selected' : '' }} >{{ $category->name }}</option>
                         @endforeach
                     </select>
-                    <textarea name="isi" id="isi" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Isi Aduan"></textarea>
-                    <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] font-semibold mb-2" placeholder="Masukkan Deadline Pengaduan" onfocus="(this.type='date')" onblur="(this.type='text')">
-                    <label for="lampiran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
+                    @error('isi')
+                        <small class="text-[#FC2947] float-right">{{ $message }}</small>
+                    @enderror
+                    <textarea name="isi" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Aduan">{{ old('isi') }}</textarea>
+                    @error('tanggal')
+                        <small class="text-[#FC2947] float-right">{{ $message }}</small>
+                    @enderror
+                    <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Deadline Pengaduan" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
+                    <label for="lampiran_pengaduan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
                         Upload Lampiran
-                        <input type="file" name="lampiran" id="lampiran" class="hidden" />
+                        <input type="file" name="lampiran" id="lampiran_pengaduan" class="hidden" />
                     </label>
                     <div class="text-center">
-                        <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">LAPOR</button>
+                        <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
+                            @auth
+                                LAPOR
+                            @endauth
+                            @guest
+                                LOGIN DULU
+                            @endguest
+                        </button>
                     </div>
                 </form>
             </div>
             <div id="content3" class="tab-content hidden">
-                <input type="text" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Judul Saran">
+                <input type="text" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Saran">
                 <select name="kategori_saran" id="kategori_saran" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-2">
                     <option hidden>Kategori Saran</option>
                     @foreach ($categories as $category)
                         <option value="{{ $category->name }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
-                <textarea name="isi_saran" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-semibold placeholder:text-[#B1A6A6] mb-2" placeholder="Isi Saran"></textarea>
-                <input type="date" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] mb-2" placeholder="Tanggal Saran">
-                <input type="file" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] mb-3
+                <textarea name="isi_saran" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Saran">{{ old('isi') }}</textarea>
+                <input type="date" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Tanggal Saran" value="{{ old('tanggal') }}">
+                <input type="file" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold mb-3
                     file:mr-4
                     file:border-0
                     file:bg-white

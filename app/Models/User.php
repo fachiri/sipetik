@@ -78,4 +78,9 @@ class User extends Authenticatable
         }
         return false;
     }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }
