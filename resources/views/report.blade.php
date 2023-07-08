@@ -1,5 +1,5 @@
 <x-guest-layout> 
-    <div class="w-screen min-h-screen bg-[url('/assets/bg3.png')] bg-top  mb-20 bg-no-repeat">
+    <div class="w-screen min-h-screen bg-[url('/assets/bg3.png')] bg-top mb-20 bg-no-repeat bg-100-auto">
         <div class="container mx-auto flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-10 md:items-start px-5 md:px-0">
             <div class="basis-full md:basis-9/12 bg-white p-5 shadow-xl rounded">
                 <div class="flex flex-col md:flex-row justify-between items-start text-[#173D7A] mb-8 md:mb-10 pb-5 md:pb-0 space-y-5 md:space-y-0 border-b-2 md:border-0">
@@ -87,7 +87,7 @@
                         <div class="text-sm mb-5">
                             <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi impedit provident inventore earum dignissimos ipsam tempora, vitae facilis omnis, fugit tempore expedita ex. Vel corporis ipsum inventore corrupti blanditiis impedit.</p>
                         </div>
-                        <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
+                        <div class="flex justify-between relative shadow-xl p-3 mb-7 border rounded">
                             <div class="basis-1/4 flex flex-col items-center z-10">
                                 <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
                                 <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
@@ -105,8 +105,28 @@
                                 <span class="text-xs md:text-sm text-center">Selesai</span>
                             </div>
                             <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
                             </div>
+                        </div>
+                        <div class="text-sm flex flex-col">
+                            <div class="border-2 p-3 rounded-md max-w-[90%] mb-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique natus eius consequuntur saepe quidem alias consectetur accusamus aperiam, nesciunt ratione.
+                            </div>
+                            <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end">
+                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, tenetur.
+                            </div>
+                            <div class="border-2 p-3 rounded-md max-w-[90%] mb-3">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur consequuntur pariatur vero dignissimos, sed labore similique tempore maxime natus facere inventore quia doloribus eum nobis consectetur qui cupiditate optio laboriosam!
+                            </div>
+                            <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end">
+                                Lorem ipsum dolor sit amet 🙏
+                            </div>
+                        </div>
+                        <div class="flex space-x-3 mb-5">
+                            <textarea class="flex-grow h-10 placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
+                            <button class="w-10 h-10 rounded-md bg-[#173D7A] text-white">
+                                <i class="fa-solid fa-paper-plane"></i>
+                            </button>
                         </div>
                     </div>
                     <div class="border-b-2 mb-8">

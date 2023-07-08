@@ -28,5 +28,11 @@ class UserSeeder extends Seeder
             'role' => 'ADMIN',
             'password' => Hash::make('pass1234')
         ]);
+        User::create([
+            'name' => 'Muh. Fachry J.K. Luid',
+            'email' => 'fachrycooles@gmail.com',
+            'role' => 'PENGGUNA',
+            'password' => Hash::make('pass1234')
+        ]);
     }
 }

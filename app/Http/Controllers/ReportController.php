@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Report;
 use App\Models\Category;
+use App\Models\History;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -22,6 +23,44 @@ class ReportController extends Controller
         $myreports = Report::where('user_id', auth()->user()->id)->get();
         return view('report')
             ->with('myreports', $myreports);
+    }
+
+    public function pengaduan()
+    {
+        $categories = Category::all();
+        return view('pages.pengaduan.pengaduan-data')->with([
+            'categories' => $categories,
+            'reports' => Report::class
+        ]);
+    }
+
+    public function permintaan()
+    {
+        $categories = Category::all();
+        return view('pages.permintaan.permintaan-data')->with([
+            'categories' => $categories,
+            'reports' => Report::class
+        ]);
+    }
+
+    public function saran()
+    {
+        $categories = Category::all();
+        return view('pages.saran.saran-data')->with([
+            'categories' => $categories,
+            'reports' => Report::class
+        ]);
+    }
+
+    public function report_detail($reportId)
+    {
+        $report = Report::where('report_id', $reportId)
+            ->with('user', 'history')
+            ->get()[0];
+
+        return view('pages.pengaduan.pengaduan-detail')->with([
+            'report' => $report
+        ]);
     }
 
     public function create()
@@ -44,7 +83,18 @@ class ReportController extends Controller
                 throw new Exception('Isi form dengan benar!');
             }
 
-            Report::create([
+            if ($request->jenis == 'Pengaduan') {
+                $report_id = 'PD'.now()->timestamp;
+            } elseif ($request->jenis == 'Permintaan') {
+                $report_id = 'PM'.now()->timestamp;
+            } elseif ($request->jenis == 'Saran') {
+                $report_id = 'SR'.now()->timestamp;
+            } else {
+                throw new Exception('Terjadi kesalahan, Report ID tidak bisa dibuat!');
+            }
+
+            $report = Report::create([
+                'report_id' => $report_id,
                 'user_id' => auth()->user()->id,
                 'judul' => $request->judul,
                 'jenis' => $request->jenis,
@@ -53,6 +103,10 @@ class ReportController extends Controller
                 'tanggal' => $request->tanggal,
                 'lampiran' => $request->lampiran,
             ]);
+
+            $riwayat = new History;
+            $riwayat->report_id = $report->id;
+            $riwayat->save();
 
             return redirect(route('report'))
                 ->with('success', 'Laporan berhasil ditambahkan');

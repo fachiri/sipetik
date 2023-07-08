@@ -26,7 +26,14 @@ Route::group(["middleware" => ['role:PENGGUNA']], function() {
 Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'redirect.if.user']], function() {
     Route::view('/dashboard', "dashboard")->name('dashboard');
 
+    Route::get('/pengaduan', [ReportController::class, 'pengaduan'])->name('pengaduan');
+    Route::get('/pengaduan/detail/{reportId}', [ReportController::class, 'report_detail'])->name('pengaduan.detail');
+    Route::get('/permintaan', [ReportController::class, 'permintaan'])->name('permintaan');
+    Route::get('/saran', [ReportController::class, 'saran'])->name('saran');
+
     Route::get('/user', [ UserController::class, "index_view" ])->name('user');
     Route::view('/user/new', "pages.user.user-new")->name('user.new');
     Route::view('/user/edit/{userId}', "pages.user.user-edit")->name('user.edit');
+
+    Route::view('/laporan', "pages.laporan.laporan-data")->name('laporan');
 });

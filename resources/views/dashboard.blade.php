@@ -8,7 +8,7 @@
         </div>
     </x-slot>
 
-    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
-        <x-jet-welcome />
+    <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
+        Dashboard
     </div>
 </x-app-layout>

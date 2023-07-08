@@ -27,6 +27,13 @@
 
         <livewire:styles />
 
+        <style>
+            .tab-btn-pengaduan.active {
+                background-color: #002979;
+                color: #fff;
+            }
+        </style>
+
         <!-- Scripts -->
         <script defer src="{{ asset('vendor/alpine.js') }}"></script>
     </head>

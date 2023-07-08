@@ -12,13 +12,25 @@ class Main extends Component
 
     public $model;
     public $name;
+    public $categories;
 
     public $perPage = 10;
     public $sortField = "id";
     public $sortAsc = false;
     public $search = '';
+    public $selectedCategory = null;
 
     protected $listeners = [ "deleteItem" => "delete_item" ];
+
+    public function mount($categories)
+    {
+        $this->categories = $categories;
+    }
+
+    public function filterByCategory($category)
+    {
+        $this->selectedCategory = $category;
+    }
 
     public function sortBy($field)
     {
