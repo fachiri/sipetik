@@ -3,6 +3,8 @@
 namespace App\Http\Livewire;
 
 use App\Models\User;
+use App\Models\Teknisi;
+use App\Models\Category;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
 
@@ -12,6 +14,7 @@ class CreateUser extends Component
     public $userId;
     public $action;
     public $button;
+    public $categories;
 
     protected function getRules()
     {
@@ -24,7 +27,8 @@ class CreateUser extends Component
 
         return array_merge([
             'user.name' => 'required|min:3',
-            'user.email' => 'required|email|unique:users,email'
+            'user.email' => 'required|email|unique:users,email',
+            'user.role' => 'required',
         ], $rules);
     }
 
@@ -39,7 +43,19 @@ class CreateUser extends Component
             $this->user['password'] = Hash::make($password);
         }
 
-        User::create($this->user);
+        $createdUser = User::create([
+            'name' => $this->user['name'],
+            'email' => $this->user['email'],
+            'role' => $this->user['role'],
+            'password' => $this->user['password'],
+        ]);
+
+        if ($this->user['role'] == 'TEKNISI') {
+            Teknisi::create([
+                'category_id' => $this->user['category'] ?? 1,
+                'user_id' => $createdUser->id,
+            ]);
+        }
 
         $this->emit('saved');
         $this->reset('user');
@@ -67,6 +83,7 @@ class CreateUser extends Component
         }
 
         $this->button = create_button($this->action, "User");
+        $this->categories = Category::all();
     }
 
     public function render()

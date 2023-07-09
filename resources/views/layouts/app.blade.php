@@ -19,6 +19,9 @@
         <link rel="stylesheet" href="{{ asset('stisla/css/components.css') }}">
         <link rel="stylesheet" href="{{ asset('vendor/notyf/notyf.min.css') }}">
         {{-- <link rel="stylesheet" href="{{ asset('css/app.css') }}"> --}}
+        {{-- Noty --}}
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.css" integrity="sha512-0p3K0H3S6Q4bEWZ/WmC94Tgit2ular2/n0ESdfEX8l172YyQj8re1Wu9s/HT9T/T2osUw5Gx/6pAZNk3UKbESw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/noty/3.1.4/noty.min.js" integrity="sha512-lOrm9FgT1LKOJRUXF3tp6QaMorJftUjowOWiDcG5GFZ/q7ukof19V0HKx/GWzXCdt9zYju3/KhBNdCLzK8b90Q==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
         @vite(['resources/js/app.js'])
 
         <link rel="stylesheet" href="https://kit-free.fontawesome.com/releases/latest/css/free-v4-shims.min.css" media="all">
@@ -63,6 +66,26 @@
         </div>
 
         @stack('modals')
+
+        @if (session('success'))
+            <script>
+                new Noty({
+                type: 'success',
+                text: @json(session('success')),
+                timeout: 2000,
+                }).show();
+            </script>
+        @endif
+
+        @if (session('error'))
+            <script>
+                new Noty({
+                type: 'error',
+                text: @json(session('error')),
+                timeout: 2000,
+                }).show();
+            </script>
+        @endif
 
         <!-- General JS Scripts -->
         <script src="{{ asset('stisla/js/modules/jquery.min.js') }}"></script>

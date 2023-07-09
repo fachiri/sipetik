@@ -52,20 +52,52 @@ class ReportController extends Controller
         ]);
     }
 
-    public function report_detail($reportId)
+    public function pengaduan_detail($reportId)
     {
         $report = Report::where('report_id', $reportId)
             ->with('user', 'history')
             ->get()[0];
-
         return view('pages.pengaduan.pengaduan-detail')->with([
             'report' => $report
         ]);
     }
 
-    public function create()
+    public function pengaduan_edit($reportId)
     {
-        //
+        $report = Report::where('report_id', $reportId)
+            ->with('user', 'history')
+            ->get()[0];
+
+        return view('pages.pengaduan.pengaduan-edit')->with([
+            'report' => $report
+        ]);
+    }
+
+    public function report_verified(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'tanggapan' => 'required|string',
+            ]);
+            
+            if ($validator->fails()) {
+                throw new Exception('Tanggapan harus diisi!');
+            }
+
+            History::create([
+                'report_id' => $id,
+                'status' => 'Verifikasi',
+            ]);
+
+            return redirect(route('pengaduan'))
+                ->with('success', 'Pengaduan telah diverifikasi!');
+        } catch (\Throwable $th) {
+            return redirect()
+                ->back()
+                ->with('error', $th->getMessage())
+                ->withErrors($validator)
+                ->withInput();
+        }
     }
 
     public function store(Request $request)

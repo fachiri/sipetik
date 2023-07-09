@@ -60,11 +60,11 @@
                     </td>
                     <td>
                         <small class="font-bold text-blue-500">
-                            {{ $report->history[0]->status }}
+                            {{ $report->history[count($report->history)-1]->status }}
                         </small>
                     </td>
                     <td class="whitespace-nowrap row-action--icon flex space-x-2">
-                        <a role="button" href="/pengaduan/edit/{{ $report->id }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
+                        <a role="button" href="{{ route('pengaduan.edit', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
                         <a role="button" href="{{ route('pengaduan.detail', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/detail.svg') }}" alt="Icon"></a>
                     </td>
                 </tr>

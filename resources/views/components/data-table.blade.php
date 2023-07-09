@@ -1,10 +1,12 @@
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
-        <div class="flex space-x-3 mb-4">
-            @foreach ($categories as $category)
-                <button wire:click="filterByCategory('{{ $category->name }}')" class="tab-btn tab-btn-pengaduan font-bold text-[#002979] px-3 py-2 rounded-lg border-2 border-[#002979] {{ $this->selectedCategory === $category->name ? 'active' : '' }}">{{ $category->name }}</button>
-            @endforeach
-        </div>
+        @if ($categories)
+            <div class="flex space-x-3 mb-4">
+                @foreach ($categories as $category)
+                    <button wire:click="filterByCategory('{{ $category->name }}')" class="tab-btn tab-btn-pengaduan font-bold text-[#002979] px-3 py-2 rounded-lg border-2 border-[#002979] {{ $this->selectedCategory === $category->name ? 'active' : '' }}">{{ $category->name }}</button>
+                @endforeach
+            </div>
+        @endif
         @if ($data->actions)
             <div class="flex pb-4 -ml-3">
                 @foreach ($data->actions as $item)

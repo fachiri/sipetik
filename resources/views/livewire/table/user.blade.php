@@ -1,5 +1,5 @@
 <div>
-    <x-data-table :data="$data" :model="$users">
+    <x-data-table :data="$data" :model="$users" :categories="$categories">
         <x-slot name="head">
             <tr>
                 <th><a wire:click.prevent="sortBy('id')" role="button" href="#">
