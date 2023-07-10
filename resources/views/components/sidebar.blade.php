@@ -48,24 +48,24 @@ $navigation_links = array_to_object($links);
         <ul class="sidebar-menu">
             <li class="menu-header">Dashboard</li>
             <li class="{{ Request::routeIs('dashboard') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+                <a class="nav-link" href="{{ route('dashboard') }}"><i class="fas fa-home"></i><span>Dashboard</span></a>
             </li>
-            <li class="menu-header">Laporan</li>
+            <li class="menu-header">Monitoring</li>
             <li class="{{ Request::routeIs('pengaduan') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('pengaduan') }}"><i class="fas fa-fire"></i><span>Pengaduan</span></a>
+                <a class="nav-link" href="{{ route('pengaduan') }}"><i class="fas fa-bullhorn"></i><span>Pengaduan</span></a>
             </li>
             <li class="{{ Request::routeIs('permintaan') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('permintaan') }}"><i class="fas fa-fire"></i><span>Permintaan</span></a>
+                <a class="nav-link" href="{{ route('permintaan') }}"><i class="fas fa-hand-paper"></i><span>Permintaan</span></a>
             </li>
             <li class="{{ Request::routeIs('saran') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('saran') }}"><i class="fas fa-fire"></i><span>Saran</span></a>
+                <a class="nav-link" href="{{ route('saran') }}"><i class="fas fa-envelope-open-text"></i><span>Saran</span></a>
             </li>
             <li class="menu-header">Lainnya</li>
             <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-fire"></i><span>Pengguna</span></a>
+                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i><span>Pengguna</span></a>
             </li>
             <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-fire"></i><span>Laporan</span></a>
+                <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
             </li>
         </ul>
     </aside>

@@ -8,7 +8,7 @@
       </div>
   </x-slot>
 
-  <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg py-4 px-5">
+  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
     <h4 class="text-lg font-bold pb-3">Kategori - {{ $report->kategori }}</h4>
     <div class="flex items-start space-x-2 mb-3">
         <img src="{{ asset('assets/img8.png') }}" alt="Profile">
@@ -21,5 +21,10 @@
         <h5 class="text-lg font-bold mb-2 pb-2 border-b-2">{{ $report->judul }}</h5>
         {{ $report->isi }}
     </div>
+  </div>
+
+  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+    <h4 class="text-lg font-bold pb-3">Riwayat</h4>
+
   </div>
 </x-app-layout>

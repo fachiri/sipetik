@@ -5,12 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class History extends Model
+class Assignment extends Model
 {
-    protected $fillable = [
+    protected $table = 'assignments';
+
+    protected $fillabel = [
         'report_id',
-        'user_id',
-        'status',
+        'teknisi_id'
     ];
 
     public function report()
@@ -18,8 +19,8 @@ class History extends Model
         return $this->belongsTo(Report::class);
     }
 
-    public function user()
+    public function teknisi()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Teknisi::class);
     }
 }

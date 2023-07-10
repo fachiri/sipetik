@@ -59,8 +59,21 @@
                         <small class="bg-red-100 px-2 py-1 rounded font-semibold text-red-500">Urgen</small>
                     </td>
                     <td>
-                        <small class="font-bold text-blue-500">
-                            {{ $report->history[count($report->history)-1]->status }}
+                        @php
+                            $status = $report->history[count($report->history)-1]->status;
+                            $color = '';
+                            if ($status == 'Tulis Laporan') {
+                                $color = 'slate-500';
+                            } elseif ($status == 'Verifikasi') {
+                                $color = 'orange-500';
+                            } elseif ($status == 'Proses') {
+                                $color = 'blue-500';
+                            } elseif ($status == 'Selesai') {
+                                $color = 'green-500';
+                            }
+                        @endphp
+                        <small class="font-bold text-{{ $color }}">
+                            {{ $status }}
                         </small>
                     </td>
                     <td class="whitespace-nowrap row-action--icon flex space-x-2">

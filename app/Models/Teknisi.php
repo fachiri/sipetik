@@ -24,4 +24,9 @@ class Teknisi extends Model
     {
         return $this->belongsTo(Category::class);
     }
+
+    public function assignment()
+    {
+        return $this->hasOne(Assignment::class);
+    }
 }

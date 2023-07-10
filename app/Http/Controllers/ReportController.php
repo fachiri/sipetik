@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Report;
 use App\Models\Category;
 use App\Models\History;
+use App\Models\Teknisi;
+use App\Models\Assignment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -68,8 +70,10 @@ class ReportController extends Controller
             ->with('user', 'history')
             ->get()[0];
 
+        $teknisi2 = Teknisi::with('category')->get();
         return view('pages.pengaduan.pengaduan-edit')->with([
-            'report' => $report
+            'report' => $report,
+            'teknisi2' => $teknisi2,
         ]);
     }
 
@@ -78,16 +82,26 @@ class ReportController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'tanggapan' => 'required|string',
+                'teknisi' => 'required',
             ]);
+
             
             if ($validator->fails()) {
-                throw new Exception('Tanggapan harus diisi!');
+                throw new Exception('Isi form dengan benar!');
             }
 
             History::create([
+                'user_id' => auth()->user()->id,
                 'report_id' => $id,
                 'status' => 'Verifikasi',
             ]);
+
+            foreach ($request->teknisi as $teknisi) {
+                Assignment::create([
+                    'report_id' => $id,
+                    'teknisi_id' => (int)$teknisi
+                ]);
+            }
 
             return redirect(route('pengaduan'))
                 ->with('success', 'Pengaduan telah diverifikasi!');
@@ -136,9 +150,10 @@ class ReportController extends Controller
                 'lampiran' => $request->lampiran,
             ]);
 
-            $riwayat = new History;
-            $riwayat->report_id = $report->id;
-            $riwayat->save();
+            History::create([
+                'report_id' => $report->id,
+                'user_id' => auth()->user()->id
+            ]);
 
             return redirect(route('report'))
                 ->with('success', 'Laporan berhasil ditambahkan');
