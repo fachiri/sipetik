@@ -90,6 +90,11 @@ class User extends Authenticatable
         return $this->hasOne(Teknisi::class);
     }
 
+    public function kabid()
+    {
+        return $this->hasOne(Kabid::class);
+    }
+
     public function history()
     {
         return $this->hasMany(History::class);

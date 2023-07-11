@@ -13,4 +13,9 @@ class Category extends Model
     {
         return $this->hasMany(Teknisi::class);
     }
+
+    public function kabid()
+    {
+        return $this->hasOne(Kabid::class);
+    }
 }

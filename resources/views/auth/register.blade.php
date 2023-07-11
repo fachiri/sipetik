@@ -19,6 +19,20 @@
         </div>
 
         <div class="mt-4">
+            <x-jet-label for="jenis" value="{{ __('Jenis') }}" />
+            <select name="level" id="jenis" class="w-full rounded border-slate-300 text-gray-700">
+                <option value="" selected>Pilih Jenis</option>
+                <option value="REKTORAT">REKTORAT</option>
+                <option value="BAKP">BAKP</option>
+                <option value="FAKULTAS">FAKULTAS</option>
+                <option value="JURUSAN">JURUSAN</option>
+                <option value="PRODI">PRODI</option>
+                <option value="DOSEN">DOSEN</option>
+                <option value="MAHASISWA">MAHASISWA</option>
+            </select>
+        </div>
+
+        <div class="mt-4">
             <x-jet-label for="password" value="{{ __('Password') }}" />
             <x-jet-input id="password" class="block mt-1 w-full" type="password" name="password" required autocomplete="new-password" />
         </div>

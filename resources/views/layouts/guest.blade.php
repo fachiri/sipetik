@@ -41,7 +41,7 @@
           <span id="nav-content" class="hidden md:flex space-x-8 items-center">
             <a href="{{ route('home') }}" class="font-medium {{ request()->routeIs('home') ? 'font-bold' : '' }}">BERANDA</a>
             <a href="{{ route('about') }}" class="font-medium {{ request()->routeIs('about') ? 'font-bold' : '' }}">TENTANG PETIK</a>
-            <a href="{{ route('report') }}" class="font-medium {{ request()->routeIs('report') ? 'font-bold' : '' }}">LAPORAN</a>
+            <a href="{{ route('report') }}" class="font-medium {{ request()->routeIs('report') ? 'font-bold' : '' }}">MONITORING</a>
             <span class="flex md:hidden space-x-5 items-center justify-between pt-2 pb-3">
               @guest
                 <a href="{{ route('login') }}" class="basis-1/2 text-center font-semibold py-1 border-2 rounded-lg">MASUK</a>
