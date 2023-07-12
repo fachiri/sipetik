@@ -37,17 +37,28 @@
                     @if ($myreports->isEmpty())
                         <p class="text-center font-semibold">Anda belum memiliki laporan</p>
                     @else
-                        @foreach ($myreports as $myreport)
+                        @php
+                            $lastReport = $myreports[count($myreports)-1];
+                            $status = $lastReport->history[count($lastReport->history)-1]->status;
+                            $progress = 0;
+                            if ($status == 'Verifikasi') {
+                                $progress = 33;
+                            } elseif ($status == 'Proses') {
+                                $progress = 66;
+                            } elseif ($status == 'Selesai') {
+                                $progress = 100;
+                            }
+                        @endphp
                         <div class="border-b-2 mb-5">
-                            <div class="flex items-start space-x-2">
+                            <div class="flex items-start space-x-2 mb-2">
                                 <img src="{{ asset('assets/img8.png') }}" alt="Profile">
                                 <div>
-                                    <h5 class="font-semibold text-[#605C5C]">{{ $myreport->judul }}</h5>
-                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; {{ $myreport->jenis }} - {{ $myreport->kategori }}</small>
+                                    <h5 class="font-semibold text-[#605C5C]">{{ $lastReport->judul }}</h5>
+                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
                                 </div>
                             </div>
                             <div class="text-sm mb-5">
-                                <p>{{ $myreport->isi }}</p>
+                                <p>{{ $lastReport->isi }}</p>
                             </div>
                             <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
                                 <div class="basis-1/4 flex flex-col items-center z-10">
@@ -67,11 +78,10 @@
                                     <span class="text-xs md:text-sm text-center">Selesai</span>
                                 </div>
                                 <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                    <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div>
-                        @endforeach
                         <p class="font-semibold text-center">Periksa whatsapp anda, karena sistem akan memberikan tanggapan terkait laporan anda di whatsapp</p>
                     @endif
                 </div>

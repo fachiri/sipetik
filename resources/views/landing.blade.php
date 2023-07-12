@@ -72,16 +72,20 @@
                         <input type="file" name="lampiran" id="lampiran_pengaduan" class="hidden" />
                     </label>
                     <div class="text-center">
-                        <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
-                            @auth
+                        @auth
+                            <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
                                 LAPOR
-                            @endauth
-                            @guest
-                                LOGIN DULU
-                            @endguest
-                        </button>
-                    </div>
-                </form>
+                            </button>
+                        @endauth
+                        @guest
+                            <div class="mt-5">
+                                <a href="{{ route('login', ['from' => 'home']) }}" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
+                                    LOGIN DULU
+                                </a>
+                            </div>
+                        @endguest
+                        </div>
+                    </form>
             </div>
             <div id="content3" class="tab-content hidden">
                 <form method="POST" action="{{ route('report.store') }}">

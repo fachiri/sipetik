@@ -17,6 +17,12 @@
             </div>
 
             <div class="form-group col-span-6 sm:col-span-5">
+                <x-jet-label for="user_id" value="{{ __('NIP/NIM') }}" />
+                <x-jet-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" wire:model.defer="user.user_id" />
+                <x-jet-input-error for="user.user_id" class="mt-2" />
+            </div>
+
+            <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="user.email" />
                 <x-jet-input-error for="user.email" class="mt-2" />
@@ -24,12 +30,27 @@
 
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="role" value="{{ __('Role') }}" />
-                <select name="role" id="role" wire:model.defer="user.role" class="mt-1 block w-full form-control shadow-none" onchange="toggleCategory(this)">
+                <select name="role" id="role" wire:model.defer="user.role" class="w-full rounded border-slate-300 text-gray-700" onchange="toggleCategory(this)">
                     <option value="">Pilih Role</option>
                     <option value="PENGGUNA">PENGGUNA</option>
                     <option value="TEKNISI">TEKNISI</option>
                 </select>
                 <x-jet-input-error for="user.role" class="mt-2" />
+            </div>
+
+            <div class="form-group col-span-6 sm:col-span-5">
+                <x-jet-label for="jenis" value="{{ __('Jenis') }}" />
+                <select name="level" id="jenis" wire:model.defer="user.level" class="w-full rounded border-slate-300 text-gray-700">
+                    <option value="">Pilih Jenis</option>
+                    <option value="REKTORAT">REKTORAT</option>
+                    <option value="BAKP">BAKP</option>
+                    <option value="FAKULTAS">FAKULTAS</option>
+                    <option value="JURUSAN">JURUSAN</option>
+                    <option value="PRODI">PRODI</option>
+                    <option value="DOSEN">DOSEN</option>
+                    <option value="MAHASISWA">MAHASISWA</option>
+                </select>
+                <x-jet-input-error for="user.level" class="mt-2" />
             </div>
 
             <div class="form-group col-span-6 sm:col-span-5 hidden" id="category-group">

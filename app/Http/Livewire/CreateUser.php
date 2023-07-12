@@ -29,6 +29,8 @@ class CreateUser extends Component
             'user.name' => 'required|min:3',
             'user.email' => 'required|email|unique:users,email',
             'user.role' => 'required',
+            'user.user_id' => 'required',
+            'user.level' => 'required',
         ], $rules);
     }
 
@@ -44,9 +46,11 @@ class CreateUser extends Component
         }
 
         $createdUser = User::create([
+            'user_id' => $this->user['user_id'],
             'name' => $this->user['name'],
             'email' => $this->user['email'],
             'role' => $this->user['role'],
+            'level' => $this->user['level'],
             'password' => $this->user['password'],
         ]);
 

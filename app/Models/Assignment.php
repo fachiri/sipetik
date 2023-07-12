@@ -9,9 +9,9 @@ class Assignment extends Model
 {
     protected $table = 'assignments';
 
-    protected $fillabel = [
+    protected $fillable = [
         'report_id',
-        'teknisi_id'
+        'teknisi_id',
     ];
 
     public function report()

@@ -98,7 +98,7 @@ class ReportController extends Controller
 
             foreach ($request->teknisi as $teknisi) {
                 Assignment::create([
-                    'report_id' => $id,
+                    'report_id' => (int)$id,
                     'teknisi_id' => (int)$teknisi
                 ]);
             }

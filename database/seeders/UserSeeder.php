@@ -19,36 +19,48 @@ class UserSeeder extends Seeder
     {
         User::create([
             'name' => 'Admin',
+            'user_id' => '196207161990031004',
+            'level' => 'DOSEN',
             'email' => 'admin@gmail.com',
             'role' => 'ADMIN',
             'password' => Hash::make('pass1234')
         ]);
         User::create([
             'name' => 'Direktur UPT TIK',
+            'user_id' => '195312261982031003',
+            'level' => 'DOSEN',
             'email' => 'dirut.upt.tik@gmail.com',
             'role' => 'ADMIN',
             'password' => Hash::make('pass1234')
         ]);
         User::create([
             'name' => 'Muh. Fachry J.K. Luid',
+            'user_id' => '531420003',
+            'level' => 'MAHASISWA',
             'email' => 'fachrycooles@gmail.com',
             'role' => 'PENGGUNA',
             'password' => Hash::make('pass1234')
         ]);
         $kabid1 = User::create([
             'name' => 'Kabid Infrastruktur Jaringan',
+            'user_id' => '195904241986021002',
+            'level' => 'DOSEN',
             'email' => 'kabid.infraja@gmail.com',
             'role' => 'KABID',
             'password' => Hash::make('pass1234')
         ]);
         $kabid2 = User::create([
             'name' => 'Kabid Sistem Informasi',
+            'user_id' => '198101122005011002',
+            'level' => 'DOSEN',
             'email' => 'kabid.sisfo@gmail.com',
             'role' => 'KABID',
             'password' => Hash::make('pass1234')
         ]);
         $kabid3 = User::create([
             'name' => 'Kabid Diklat, Wirausaha dan Multimedia',
+            'user_id' => '197812072005012001',
+            'level' => 'DOSEN',
             'email' => 'kabid.dwm@gmail.com',
             'role' => 'KABID',
             'password' => Hash::make('pass1234')
