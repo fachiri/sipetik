@@ -101,4 +101,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(History::class);
     }
+
+    public function chat()
+    {
+        return $this->hasMany(Chat::class);
+    }
 }

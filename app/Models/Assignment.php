@@ -12,6 +12,7 @@ class Assignment extends Model
     protected $fillable = [
         'report_id',
         'teknisi_id',
+        'status'
     ];
 
     public function report()

@@ -55,8 +55,20 @@ class CreateUser extends Component
         ]);
 
         if ($this->user['role'] == 'TEKNISI') {
+            $category = null;
+            if (isset($this->user['category']) && $this->user['category']) {
+                $category = $this->user['category'];
+            } else {
+                if (auth()->user()->role == 'KABID') {
+                    if (auth()->user()->kabid && auth()->user()->kabid->category) {
+                        $category = auth()->user()->kabid->category->id;
+                    }
+                } else {
+                    $category = 1;
+                }
+            }
             Teknisi::create([
-                'category_id' => $this->user['category'] ?? 1,
+                'category_id' => $category,
                 'user_id' => $createdUser->id,
             ]);
         }

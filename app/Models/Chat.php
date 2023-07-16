@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Teknisi extends Model
+class Chat extends Model
 {
-    use HasFactory;
-
     protected $fillable = [
         'user_id',
-        'category_id',
+        'report_id',
+        'isi'
     ];
 
     public function user()
@@ -19,14 +18,8 @@ class Teknisi extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
     public function report()
     {
-        return $this->belongsToMany(Report::class, 'assignments')
-            ->withPivot('status');;
+        return $this->belongsTo(Report::class);
     }
 }

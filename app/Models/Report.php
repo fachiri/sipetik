@@ -26,8 +26,14 @@ class Report extends Model
         return $this->hasMany(History::class);
     }
 
-    public function assignment()
+    public function teknisi()
     {
-        return $this->hasOne(Assignment::class);
+        return $this->belongsToMany(Teknisi::class, 'assignments')
+            ->withPivot('status');;
+    }
+
+    public function chat()
+    {
+        return $this->hasMany(Chat::class);
     }
 }

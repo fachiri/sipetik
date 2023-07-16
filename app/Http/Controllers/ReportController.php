@@ -7,6 +7,7 @@ use App\Models\Category;
 use App\Models\History;
 use App\Models\Teknisi;
 use App\Models\Assignment;
+use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Exception;
@@ -22,7 +23,10 @@ class ReportController extends Controller
 
     public function index()
     {
-        $myreports = Report::where('user_id', auth()->user()->id)->get();
+        $myreports = Report::
+            where('user_id', auth()->user()->id)
+            ->with('chat', 'history')
+            ->get();
         return view('report')
             ->with('myreports', $myreports);
     }
@@ -82,29 +86,146 @@ class ReportController extends Controller
         try {
             $validator = Validator::make($request->all(), [
                 'tanggapan' => 'required|string',
+                'status' => 'required',
                 'teknisi' => 'required',
             ]);
 
-            
             if ($validator->fails()) {
                 throw new Exception('Isi form dengan benar!');
+            }
+
+            $message = 'Pengaduan ini telah ditolak!';
+            if ($request->status == 'Verifikasi') {
+                $message = 'Pengaduan ini telah diverifikasi!';
+                foreach ($request->teknisi as $teknisi) {
+                    Assignment::create([
+                        'report_id' => $id,
+                        'teknisi_id' => $teknisi,
+                        'status' => 'NOT_WORKING'
+                    ]);
+                }
             }
 
             History::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
-                'status' => 'Verifikasi',
+                'status' => $request->status,
             ]);
 
-            foreach ($request->teknisi as $teknisi) {
-                Assignment::create([
-                    'report_id' => (int)$id,
-                    'teknisi_id' => (int)$teknisi
-                ]);
-            }
+            Chat::create([
+                'user_id' => auth()->user()->id,
+                'report_id' => $id,
+                'isi' => $request->tanggapan
+            ]);
 
             return redirect(route('pengaduan'))
-                ->with('success', 'Pengaduan telah diverifikasi!');
+                ->with('success', $message);
+        } catch (\Throwable $th) {
+            return redirect()
+                ->back()
+                ->with('error', $th->getMessage())
+                ->withErrors($validator)
+                ->withInput();
+        }
+    }
+
+    public function report_process(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'tanggapan' => 'required|string',
+                'status' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception('Isi form dengan benar!');
+            }
+
+            $assignments = Assignment::where('report_id', $id)->get();
+            
+            if ($request->status == 'Proses') {
+                $message = 'Pengaduan ini telah diproses!';
+                // ubah status penugasan menjadi WORKING pada tabel assignments
+                $assignments->each(function ($assignment) {
+                    $assignment->update([
+                        'status' => 'WORKING'
+                    ]);
+                });
+            } elseif ($request->status == 'Proses Gagal') {
+                $message = 'Pengaduan ini telah ditolak!';
+                // ubah status penugasan menjadi UNDONE pada tabel assignments
+                $assignments->each(function ($assignment) {
+                    $assignment->update([
+                        'status' => 'UNDONE'
+                    ]);
+                });
+            } else {
+                throw new Exception('Terjadi kesalahan!');
+            }
+
+            History::create([
+                'user_id' => auth()->user()->id,
+                'report_id' => $id,
+                'status' => $request->status,
+            ]);
+
+            
+            Chat::create([
+                'user_id' => auth()->user()->id,
+                'report_id' => $id,
+                'isi' => $request->tanggapan
+            ]);
+
+            return redirect(route('pengaduan'))
+                ->with('success', $message);
+        } catch (\Throwable $th) {
+            return redirect()
+                ->back()
+                ->with('error', $th->getMessage())
+                ->withErrors($validator)
+                ->withInput();
+        }
+    }
+
+    public function report_finish(Request $request, $id)
+    {
+        try {
+            $validator = Validator::make($request->all(), [
+                'tanggapan' => 'required|string',
+                'status' => 'required',
+            ]);
+
+            if ($validator->fails()) {
+                throw new Exception('Isi form dengan benar!');
+            }
+
+            $assignments = Assignment::where('report_id', $id)->get();
+            $message = 'Pengaduan ini telah selesai!';
+
+            // upload bukti pengerjaan
+
+
+            // ubah status penugasan menjadi DONE pada tabel assignments
+            $assignments->each(function ($assignment) {
+                $assignment->update([
+                    'status' => 'DONE'
+                ]);
+            });
+            
+            History::create([
+                'user_id' => auth()->user()->id,
+                'report_id' => $id,
+                'status' => $request->status,
+            ]);
+
+            Chat::create([
+                'user_id' => auth()->user()->id,
+                'report_id' => $id,
+                'isi' => $request->tanggapan
+            ]);
+
+            return redirect(route('pengaduan'))
+                ->with('success', $message);
         } catch (\Throwable $th) {
             return redirect()
                 ->back()
@@ -122,7 +243,15 @@ class ReportController extends Controller
                 'jenis' => 'required|string',
                 'kategori' => 'required|string',
                 'isi' => 'required|string',
-                'tanggal' => 'required|date',
+                'tanggal' => [
+                    'required',
+                    'date',
+                    function ($attribute, $value, $fail) {
+                        if ($value <= now()) {
+                            $fail('Minimal deadline adalah 1 Hari');
+                        }
+                    },
+                ],
             ]);
             
             if ($validator->fails()) {

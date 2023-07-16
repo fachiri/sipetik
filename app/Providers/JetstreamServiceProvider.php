@@ -5,6 +5,8 @@ namespace App\Providers;
 use App\Actions\Jetstream\DeleteUser;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Jetstream\Jetstream;
+use Laravel\Fortify\Fortify;
+use App\Models\AttrCriteria;
 
 class JetstreamServiceProvider extends ServiceProvider
 {
@@ -26,6 +28,12 @@ class JetstreamServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->configurePermissions();
+
+        Fortify::registerView(function () {
+            return view('auth.register')->with([
+                'criterias' => AttrCriteria::where('kode', 'C1')->get()
+            ]);
+        });
 
         Jetstream::deleteUsersUsing(DeleteUser::class);
     }

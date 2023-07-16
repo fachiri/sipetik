@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\ChatController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ReportController::class, 'landing'])->name('home');
 Route::view('/about', 'about')->name('about');
+Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 
 Route::group(["middleware" => ['role:PENGGUNA']], function() {
     Route::get('/report', [ReportController::class, 'index'])->name('report');
@@ -27,6 +29,8 @@ Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'),
     Route::view('/dashboard', "dashboard")->name('dashboard');
 
     Route::post('/report/verified/{reportId}', [ReportController::class, 'report_verified'])->name('report.verified');
+    Route::post('/report/process/{reportId}', [ReportController::class, 'report_process'])->name('report.process');
+    Route::post('/report/finish/{reportId}', [ReportController::class, 'report_finish'])->name('report.finish');
 
     Route::get('/pengaduan', [ReportController::class, 'pengaduan'])->name('pengaduan');
     Route::get('/pengaduan/detail/{reportId}', [ReportController::class, 'pengaduan_detail'])->name('pengaduan.detail');

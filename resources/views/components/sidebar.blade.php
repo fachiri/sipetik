@@ -62,7 +62,9 @@ $navigation_links = array_to_object($links);
             </li>
             <li class="menu-header">Lainnya</li>
             <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i><span>Pengguna</span></a>
+                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i>
+                <span>{{ auth()->user()->role == 'KABID' ? 'Teknisi' : 'Pengguna' }}</span>
+                </a>
             </li>
             <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>

@@ -22,19 +22,15 @@
             <x-jet-label for="jenis" value="{{ __('Jenis') }}" />
             <select name="level" id="jenis" class="select2 w-full rounded border-slate-300 text-gray-700" onchange="toggleLevel(this)">
                 <option value="" selected>Pilih Jenis</option>
-                <option value="REKTORAT">REKTORAT</option>
-                <option value="BAKP">BAKP</option>
-                <option value="FAKULTAS">FAKULTAS</option>
-                <option value="JURUSAN">JURUSAN</option>
-                <option value="PRODI">PRODI</option>
-                <option value="DOSEN">DOSEN</option>
-                <option value="MAHASISWA">MAHASISWA</option>
+                @foreach ($criterias as $criteria)
+                    <option value="{{ $criteria->kriteria }}">{{ $criteria->kriteria }}</option>
+                @endforeach
             </select>
         </div>
 
-        <div class="mt-4 hidden" id="user_id_div">
-            <x-jet-label for="user_id" id="user_id_label" value="{{ __('NIM') }}" />
-            <x-jet-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" :value="old('user_id')" required />
+        <div class="mt-4">
+            <x-jet-label for="user_id" value="{{ __('NIM/NIP') }}" />
+            <x-jet-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" :value="old('user_id')" />
         </div>
 
         <div class="mt-4">
@@ -77,19 +73,3 @@
     </div>
   </div>
 </x-guest-layout>
-
-<script>
-    const toggleLevel = (select) => {
-        const userId = document.getElementById('user_id_label');
-        const userIdDiv = document.getElementById('user_id_div');
-        if (select.value === 'MAHASISWA') {
-            userId.innerHTML = 'NIM'
-            userIdDiv.classList.remove('hidden')
-        } else if (select.value == '') {
-            userIdDiv.classList.add('hidden')
-        } else{
-            userId.innerHTML = 'NIP'
-            userIdDiv.classList.remove('hidden')
-        }
-    }
-</script>

@@ -99,7 +99,7 @@
                         @endforeach
                     </select>
                     <textarea name="isi" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Saran">{{ old('isi') }}</textarea>
-                    <input type="hidden" name="tanggal" value="{{ now() }}">
+                    <input type="hidden" name="tanggal" value="{{ now()->addDay()->format('Y-m-d') }}">
                     <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
                         Upload Lampiran
                         <input type="file" name="lampiran" id="lampiran_saran" class="hidden" />

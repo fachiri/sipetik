@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('report_id');
             $table->unsignedBigInteger('teknisi_id');
+            $table->string('status')->default('NOT_WORKING');
             $table->timestamps();
 
             $table->foreign('report_id')->references('id')->on('reports')->onDelete('cascade');

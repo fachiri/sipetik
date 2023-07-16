@@ -31,9 +31,14 @@
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="role" value="{{ __('Role') }}" />
                 <select name="role" id="role" wire:model.defer="user.role" class="w-full rounded border-slate-300 text-gray-700" onchange="toggleCategory(this)">
-                    <option value="">Pilih Role</option>
-                    <option value="PENGGUNA">PENGGUNA</option>
-                    <option value="TEKNISI">TEKNISI</option>
+                    @if (auth()->user()->role == 'KABID')
+                        <option value="">Pilih Role</option>
+                        <option value="TEKNISI">TEKNISI</option>
+                    @else
+                        <option value="">Pilih Role</option>
+                        <option value="PENGGUNA">PENGGUNA</option>
+                        <option value="TEKNISI">TEKNISI</option>
+                    @endif
                 </select>
                 <x-jet-input-error for="user.role" class="mt-2" />
             </div>
@@ -56,9 +61,13 @@
             <div class="form-group col-span-6 sm:col-span-5 hidden" id="category-group">
                 <x-jet-label for="category" value="{{ __('Bidang') }}" />
                 <select name="category" id="category" wire:model.defer="user.category" class="mt-1 block w-full form-control shadow-none">
-                    @foreach ($categories as $category)
-                        <option value="{{ $category->id }}">{{ $category->name }}</option>
-                    @endforeach
+                    @if (auth()->user()->role == 'KABID')
+                        <option value="{{ auth()->user()->kabid->category->id }}">{{ auth()->user()->kabid->category->name }}</option>
+                    @else
+                        @foreach ($categories as $category)
+                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        @endforeach
+                    @endif
                 </select>
                 <x-jet-input-error for="user.category" class="mt-2" />
             </div>

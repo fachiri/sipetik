@@ -4,9 +4,7 @@
             <div class="basis-full md:basis-9/12 bg-white p-5 shadow-xl rounded">
                 <div class="flex flex-col md:flex-row justify-between items-start text-[#173D7A] mb-8 md:mb-10 pb-5 md:pb-0 space-y-5 md:space-y-0 border-b-2 md:border-0">
                     <div class="flex items-center space-x-3">
-                        <span class="bg-[#D4ECFF] rounded-full p-2">
-                            <img src="{{ asset('assets/img9.png') }}" alt="Profile Image" class="w-10">
-                        </span>
+                        <img src="{{ auth()->user()->profile_photo_url }}" alt="Profile Image" class="w-15 rounded-full border-2 border-blue-100">
                         <div>
                             <h5 class="font-semibold">{{ auth()->user()->name }}</h5>
                             <span class="text-xs md:text-sm text-center">{{ auth()->user()->email }}</span>
@@ -41,9 +39,13 @@
                             $lastReport = $myreports[count($myreports)-1];
                             $status = $lastReport->history[count($lastReport->history)-1]->status;
                             $progress = 0;
-                            if ($status == 'Verifikasi') {
+                            $statusVerified = 'Verifikasi';
+                            $statusProcessed = 'Proses';
+                            if ($status == 'Verifikasi' || $status == 'Verifikasi Gagal') {
+                                $statusVerified = $status == 'Verifikasi Gagal' ? '&#10060; Verifikasi' : $status;
                                 $progress = 33;
-                            } elseif ($status == 'Proses') {
+                            } elseif ($status == 'Proses' || $status == 'Proses Gagal') {
+                                $statusProcessed = $status == 'Proses Gagal' ? '&#10060; Proses' : $status;
                                 $progress = 66;
                             } elseif ($status == 'Selesai') {
                                 $progress = 100;
@@ -51,10 +53,10 @@
                         @endphp
                         <div class="border-b-2 mb-5">
                             <div class="flex items-start space-x-2 mb-2">
-                                <img src="{{ asset('assets/img8.png') }}" alt="Profile">
+                                <img src="{{ $lastReport->user->profile_photo_url }}" alt="Profile" width="45" height="45" class="border-2 border-blue-100 rounded-md">
                                 <div>
                                     <h5 class="font-semibold text-[#605C5C]">{{ $lastReport->judul }}</h5>
-                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
+                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $lastReport->created_at }}</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
                                 </div>
                             </div>
                             <div class="text-sm mb-5">
@@ -67,11 +69,11 @@
                                 </div>
                                 <div class="basis-1/4 flex flex-col items-center z-10">
                                     <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
-                                    <span class="text-xs md:text-sm text-center">Verifikasi</span>
+                                    <span class="text-xs md:text-sm text-center">{!! $statusVerified !!}</span>
                                 </div>
                                 <div class="basis-1/4 flex flex-col items-center z-10">
                                     <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
-                                    <span class="text-xs md:text-sm text-center">Proses</span>
+                                    <span class="text-xs md:text-sm text-center">{!! $statusProcessed !!}</span>
                                 </div>
                                 <div class="basis-1/4 flex flex-col items-center z-10">
                                     <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
@@ -80,6 +82,34 @@
                                 <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
                                     <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
+                            </div>
+                            <div id-report="{{$lastReport->id}}" class="chats-container text-sm flex flex-col mb-2">
+                                @foreach ($lastReport->chat as $chat)
+                                    @if ($chat->user_id == auth()->user()->id)
+                                        <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
+                                            {{ $chat->isi }}
+                                        </div>
+                                    @else
+                                        <div>
+                                            <div class="flex items-start space-x-2 mb-1">
+                                                <img src="{{ $chat->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
+                                                <div>
+                                                    <h6 class="font-semibold text-[#605C5C]">{{ $chat->user->name }}</h6>
+                                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $chat->created_at }}</span> &#x2022; {{ $chat->user->role }} </small>
+                                                </div>
+                                            </div>
+                                            <div class="border-2 border-l-4 p-3 rounded-md max-w-[90%] mb-3">
+                                                {{ $chat->isi }}
+                                            </div>
+                                        </div>
+                                    @endif
+                                @endforeach
+                            </div>
+                            <div class="flex space-x-3 mb-5">
+                                <textarea id-report="{{$lastReport->id}}" class="reply flex-grow placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
+                                <button id-report="{{$lastReport->id}}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
+                                    <i class="fa-solid fa-paper-plane"></i>
+                                </button>
                             </div>
                         </div>
                         <p class="font-semibold text-center">Periksa whatsapp anda, karena sistem akan memberikan tanggapan terkait laporan anda di whatsapp</p>
@@ -300,3 +330,5 @@
         </div>
     </div>
 </x-guest-layout> 
+<script>const user_id = @json(auth()->user()->id);</script>
+<script src="{{ asset('js/custom/handleChat.js') }}"></script>
