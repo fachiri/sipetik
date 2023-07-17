@@ -200,39 +200,47 @@
                     @endif
                 </div>
                 <div id="content3" class="tab-content border-2 border-[#173D7A] md:p-5 rounded hidden">
-                    @foreach ($allreports as $report)
-                        <div class="shadow-xl rounded p-4 border mb-5">
-                            <div class="flex items-start space-x-2 mb-5">
-                                <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="43" height="43" class="border-2 border-blue-100 rounded-md">
-                                <div>
-                                    <h5 class="font-semibold text-[#605C5C]">{{ $report->user->name }}</h5>
-                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $report->created_at }}</span> &#x2022; {{ $report->jenis }} - {{ $report->kategori }}</small>
+                    @if ($allreports->isEmpty())
+                        <p class="text-center font-semibold">Laporan tidak ditemukan</p>
+                    @else
+                        @foreach ($allreports as $report)
+                            <div class="shadow-xl rounded p-4 border mb-5">
+                                <div class="flex items-start space-x-2 mb-5">
+                                    <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="43" height="43" class="border-2 border-blue-100 rounded-md">
+                                    <div>
+                                        <h5 class="font-semibold text-[#605C5C]">{{ $report->user->name }}</h5>
+                                        <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $report->created_at }}</span> &#x2022; {{ $report->jenis }} - {{ $report->kategori }}</small>
+                                    </div>
+                                </div>
+                                <div class="text-sm mb-1">
+                                    <h5 class="font-medium mb-2 text-[#173D7A]">{{ $report->judul }}</h5>
+                                    <p>{{ $report->isi }}</p>
                                 </div>
                             </div>
-                            <div class="text-sm mb-1">
-                                <h5 class="font-medium mb-2 text-[#173D7A]">{{ $report->judul }}</h5>
-                                <p>{{ $report->isi }}</p>
-                            </div>
-                        </div>
-                    @endforeach
+                        @endforeach
+                    @endif
                 </div>
             </div>
             <div class="md:basis-3/12 bg-white p-5 shadow-xl rounded">
                 <h4 class="font-semibold text-lg mb-3">Laporan Terbaru</h4>
-                @for ($i = 0; $i < 3; $i++)
-                    <div class="shadow-lg rounded p-4 border mb-4">
-                        <div class="flex items-start space-x-2 mb-2">
-                            <img src="{{ $allreports[$i]->user->profile_photo_url }}" alt="Profile" width="30" height="30" class="border-2 border-blue-100 rounded-md">
-                            <div>
-                                <h5 class="text-[#605C5C]">{{ $allreports[$i]->user->name }}</h5>
+                @if ($allreports->isEmpty())
+                    <p class="text-center font-semibold border-2 rounded-md py-3 border-[#173D7A]">Laporan tidak ditemukan</p>
+                @else
+                    @for ($i = 0; $i < 3; $i++)
+                        <div class="shadow-lg rounded p-4 border mb-4">
+                            <div class="flex items-start space-x-2 mb-2">
+                                <img src="{{ $allreports[$i]->user->profile_photo_url }}" alt="Profile" width="30" height="30" class="border-2 border-blue-100 rounded-md">
+                                <div>
+                                    <h5 class="text-[#605C5C]">{{ $allreports[$i]->user->name }}</h5>
+                                </div>
+                            </div>
+                            <div class="text-sm mb-1">
+                                <h5 class="font-medium mb-2 text-[#173D7A]">{{ $allreports[$i]->judul }}</h5>
+                                <p>{{ $allreports[$i]->isi }}</p>
                             </div>
                         </div>
-                        <div class="text-sm mb-1">
-                            <h5 class="font-medium mb-2 text-[#173D7A]">{{ $allreports[$i]->judul }}</h5>
-                            <p>{{ $allreports[$i]->isi }}</p>
-                        </div>
-                    </div>
-                @endfor
+                    @endfor
+                @endif
             </div>
         </div>
     </div>
