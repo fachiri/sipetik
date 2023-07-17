@@ -137,7 +137,7 @@
                             @endphp
                             <div class="border-b-2 mb-8">
                                 <div class="flex items-start space-x-2 mb-5">
-                                    <img src="{{ $chat->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
+                                    <img src="{{ $myreport->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
                                     <div>
                                         <h5 class="font-semibold text-[#605C5C]">{{ $myreport->judul }}</h5>
                                         <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $myreport->created_at }}</span> &#x2022; {{ $myreport->jenis }} - {{ $myreport->kategori }}</small>
@@ -226,7 +226,16 @@
                 @if ($allreports->isEmpty())
                     <p class="text-center font-semibold border-2 rounded-md py-3 border-[#173D7A]">Laporan tidak ditemukan</p>
                 @else
-                    @for ($i = 0; $i < 3; $i++)
+                    @php
+                        if ($allreports->count() == 1) {
+                            $length = 1;
+                        } elseif ($allreports->count() == 2) {
+                            $length = 2;
+                        } else {
+                            $length = $allreports->count();
+                        }
+                    @endphp
+                    @for ($i = 0; $i < $length; $i++)
                         <div class="shadow-lg rounded p-4 border mb-4">
                             <div class="flex items-start space-x-2 mb-2">
                                 <img src="{{ $allreports[$i]->user->profile_photo_url }}" alt="Profile" width="30" height="30" class="border-2 border-blue-100 rounded-md">
