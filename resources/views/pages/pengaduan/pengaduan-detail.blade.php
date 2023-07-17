@@ -60,22 +60,24 @@
   </div>
 
   @if ($status == 'Verifikasi' || $status == 'Proses' || $status == '&#10060; Proses' || $status == 'Selesai')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-        <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
-        <div class="row">
-            @foreach ($report->teknisi as $teknisi)
-                <div class="col-4">
-                    <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
-                        <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
-                        <div>
-                            <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
-                            <div>{{ $teknisi->pivot->status }}</div>
-                        </div>
-                    </div>
-                </div>
-            @endforeach
-        </div>
-    </div>
+    @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
+      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+          <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
+          <div class="row">
+              @foreach ($report->teknisi as $teknisi)
+                  <div class="col-4">
+                      <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
+                          <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
+                          <div>
+                              <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
+                              <div>{{ $teknisi->pivot->status }}</div>
+                          </div>
+                      </div>
+                  </div>
+              @endforeach
+          </div>
+      </div>
+    @endif
   @endif
 
   <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">

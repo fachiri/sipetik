@@ -58,22 +58,24 @@
     </div>
 </div>
 @if ($status == 'Verifikasi' || $status == 'Proses' || $status == '&#10060; Proses' || $status == 'Selesai')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-        <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
-        <div class="row">
-            @foreach ($report->teknisi as $teknisi)
-                <div class="col-4">
-                    <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
-                        <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
-                        <div>
-                            <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
-                            <div>{{ $teknisi->pivot->status }}</div>
+    @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+            <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
+            <div class="row">
+                @foreach ($report->teknisi as $teknisi)
+                    <div class="col-4">
+                        <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
+                            <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
+                            <div>
+                                <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
+                                <div>{{ $teknisi->pivot->status }}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
         </div>
-    </div>
+    @endif
 @endif
 @if ($status == 'Tulis Laporan')
     @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
@@ -89,23 +91,27 @@
     @endif
 @endif
 @if ($status == 'Verifikasi')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-        <div class="flex justify-between space-x-3">
-            <a href="{{ route('pengaduan') }}" class="btn btn-secondary">Kembali</a>
-            <div>
-                <button class="btn btn-danger mr-2" data-toggle="modal" data-target="#tolakProsesModal">Tolak</button>
-                <button class="btn btn-primary" data-toggle="modal" data-target="#prosesModal">Proses</button>
+    @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'TEKNISI')
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+            <div class="flex justify-between space-x-3">
+                <a href="{{ route('pengaduan') }}" class="btn btn-secondary">Kembali</a>
+                <div>
+                    <button class="btn btn-danger mr-2" data-toggle="modal" data-target="#tolakProsesModal">Tolak</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#prosesModal">Proses</button>
+                </div>
             </div>
         </div>
-    </div>
+    @endif
 @endif
 @if ($status == 'Proses')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-        <div class="flex justify-between space-x-3">
-            <a href="{{ route('pengaduan') }}" class="btn btn-secondary">Kembali</a>
-            <button class="btn btn-success" data-toggle="modal" data-target="#selesaiModal">Selesai</button>
+    @if (auth()->user()->role == 'ADMIN' || auth()->user()->role == 'TEKNISI')
+        <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+            <div class="flex justify-between space-x-3">
+                <a href="{{ route('pengaduan') }}" class="btn btn-secondary">Kembali</a>
+                <button class="btn btn-success" data-toggle="modal" data-target="#selesaiModal">Selesai</button>
+            </div>
         </div>
-    </div>
+    @endif
 @endif
 </x-app-layout>
 

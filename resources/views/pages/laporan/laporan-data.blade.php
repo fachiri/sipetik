@@ -2,13 +2,12 @@
   <x-slot name="header_content">
       <h1>Laporan</h1>
       <div class="section-header-breadcrumb">
-          <div class="breadcrumb-item active"><a href="#">Laporan</a></div>
-          <div class="breadcrumb-item"><a href="#">Layout</a></div>
-          <div class="breadcrumb-item">Default Layout</div>
+          <div class="breadcrumb-item">Lainnya</div>
+          <div class="breadcrumb-item active">Laporan</div>
       </div>
   </x-slot>
 
-  <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
-      Laporan
-  </div>
+  <div>
+        <livewire:table.main name="laporan" :model="$reports" :categories="$categories" />
+    </div>
 </x-app-layout>

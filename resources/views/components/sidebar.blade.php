@@ -60,15 +60,17 @@ $navigation_links = array_to_object($links);
             <li class="{{ Request::routeIs('saran') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('saran') }}"><i class="fas fa-envelope-open-text"></i><span>Saran</span></a>
             </li>
-            <li class="menu-header">Lainnya</li>
-            <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i>
-                <span>{{ auth()->user()->role == 'KABID' ? 'Teknisi' : 'Pengguna' }}</span>
-                </a>
-            </li>
-            <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
-                <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
-            </li>
+            @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
+                <li class="menu-header">Lainnya</li>
+                <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i>
+                    <span>{{ auth()->user()->role == 'KABID' ? 'Teknisi' : 'Pengguna' }}</span>
+                    </a>
+                </li>
+                <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
+                    <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
+                </li>
+            @endif
         </ul>
     </aside>
 </div>

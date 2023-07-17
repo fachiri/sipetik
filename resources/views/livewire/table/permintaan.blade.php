@@ -15,12 +15,6 @@
                     </a>
                 </th>
                 <th>
-                    <a wire:click.prevent="sortBy('jenis')" role="button" href="#">
-                        Kategori
-                        @include('components.sort-icon', ['field' => 'jenis'])
-                    </a>
-                </th>
-                <th>
                     <a wire:click.prevent="sortBy('created_at')" role="button" href="#">
                         Judul
                         @include('components.sort-icon', ['field' => 'created_at'])
@@ -28,7 +22,7 @@
                 </th>
                 <th>
                     <a wire:click.prevent="sortBy('created_at')" role="button" href="#">
-                        Tanggal
+                        Deadline
                         @include('components.sort-icon', ['field' => 'created_at'])
                     </a>
                 </th>
@@ -52,20 +46,80 @@
                 <tr x-data="window.__controller.dataTableController({{ $report->id }})">
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $report->user->name }}</td>
-                    <td>{{ $report->kategori }}</td>
                     <td>{{ $report->judul }}</td>
                     <td>{{ $report->tanggal }}</td>
-                    <td>
-                        <small class="bg-red-100 px-2 py-1 rounded font-semibold text-red-500">Urgen</small>
+                    <td class="whitespace-nowrap">
+                        @php
+                            switch ($report->prioritas) {
+                                case 'Sangat Urgen':
+                                    $bgColor = 'bg-red-700';
+                                    $textColor = 'text-red-100';
+                                    break;
+
+                                case 'Urgen':
+                                    $bgColor = 'bg-red-500';
+                                    $textColor = 'text-red-100';
+                                    break;
+                                    
+                                case 'Cukup Urgen':
+                                    $bgColor = 'bg-red-300';
+                                    $textColor = 'text-red-100';
+                                    break;
+                                    
+                                case 'Kurang Urgen':
+                                    $bgColor = 'bg-red-200';
+                                    $textColor = 'text-red-400';
+                                    break;
+                                    
+                                case 'Tidak Urgen':
+                                    $bgColor = 'bg-red-50';
+                                    $textColor = 'text-red-400';
+                                    break;
+                                
+                                default:
+                                    # code...
+                                    break;
+                            }
+                        @endphp
+                        <small class="{{ $bgColor }} {{ $textColor }} px-2 py-1 rounded font-semibold">
+                            {{ $report->prioritas }}
+                        </small>
                     </td>
-                    <td>
-                        <small class="font-bold text-blue-500">
-                            {{ $report->history[0]->status }}
+                    <td class="whitespace-nowrap">
+                        @php
+                            $status = $report->history[count($report->history)-1]->status;
+                            $textColor = '';
+
+                            switch ($status) {
+                                case 'Tulis Laporan':
+                                    $textColor = 'text-slate-500';
+                                    break;
+                                case 'Verifikasi':
+                                    $textColor = 'text-orange-500';
+                                    break;
+                                case 'Proses':
+                                    $textColor = 'text-blue-500';
+                                    break;
+                                case 'Selesai':
+                                    $textColor = 'text-green-500';
+                                    break;
+                                case 'Proses Gagal':
+                                case 'Verifikasi Gagal':
+                                    $status = '&#10060; ' . explode(' ', $status)[0];
+                                    $textColor = 'text-red-500';
+                                    break;
+                                default:
+                                    $textColor = 'text-gray-500';
+                                    break;
+                            }
+                        @endphp
+                        <small class="font-bold {{ $textColor }}">
+                            {!! $status !!}
                         </small>
                     </td>
                     <td class="whitespace-nowrap row-action--icon flex space-x-2">
-                        <a role="button" href="/permintaan/edit/{{ $report->id }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
-                        <a role="button" href="" class="w-6"><img src="{{ asset('assets/detail.svg') }}" alt="Icon"></a>
+                        <a role="button" href="{{ route('permintaan.edit', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
+                        <a role="button" href="{{ route('permintaan.detail', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/detail.svg') }}" alt="Icon"></a>
                     </td>
                 </tr>
             @endforeach

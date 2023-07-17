@@ -116,216 +116,123 @@
                     @endif
                 </div>
                 <div id="content2" class="tab-content border-2 border-[#173D7A] p-5 rounded hidden">
-                    <div class="border-b-2 mb-8">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Wifi di area kampus satu dikasih free akses</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan</small>
+                    @if ($myreports->isEmpty())
+                        <p class="text-center font-semibold">Anda belum memiliki laporan</p>
+                    @else
+                        @foreach ($myreports as $myreport)
+                            @php
+                                $status = $myreport->history[count($myreport->history)-1]->status;
+                                $progress = 0;
+                                $statusVerified = 'Verifikasi';
+                                $statusProcessed = 'Proses';
+                                if ($status == 'Verifikasi' || $status == 'Verifikasi Gagal') {
+                                    $statusVerified = $status == 'Verifikasi Gagal' ? '&#10060; Verifikasi' : $status;
+                                    $progress = 33;
+                                } elseif ($status == 'Proses' || $status == 'Proses Gagal') {
+                                    $statusProcessed = $status == 'Proses Gagal' ? '&#10060; Proses' : $status;
+                                    $progress = 66;
+                                } elseif ($status == 'Selesai') {
+                                    $progress = 100;
+                                }
+                            @endphp
+                            <div class="border-b-2 mb-8">
+                                <div class="flex items-start space-x-2 mb-5">
+                                    <img src="{{ $chat->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
+                                    <div>
+                                        <h5 class="font-semibold text-[#605C5C]">{{ $myreport->judul }}</h5>
+                                        <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $myreport->created_at }}</span> &#x2022; {{ $myreport->jenis }} - {{ $myreport->kategori }}</small>
+                                    </div>
+                                </div>
+                                <div class="text-sm mb-5">
+                                    <p>{{ $myreport->isi }}</p>
+                                </div>
+                                <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
+                                    <div class="basis-1/4 flex flex-col items-center z-10">
+                                        <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
+                                        <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
+                                    </div>
+                                    <div class="basis-1/4 flex flex-col items-center z-10">
+                                        <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
+                                        <span class="text-xs md:text-sm text-center">{!! $statusVerified !!}</span>
+                                    </div>
+                                    <div class="basis-1/4 flex flex-col items-center z-10">
+                                        <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
+                                        <span class="text-xs md:text-sm text-center">{!! $statusProcessed !!}</span>
+                                    </div>
+                                    <div class="basis-1/4 flex flex-col items-center z-10">
+                                        <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
+                                        <span class="text-xs md:text-sm text-center">Selesai</span>
+                                    </div>
+                                    <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
+                                        <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
+                                    </div>
+                                </div>
+                                <div id-report="{{$myreport->id}}" class="chats-container text-sm flex flex-col mb-2">
+                                    @foreach ($myreport->chat as $chat)
+                                        @if ($chat->user_id == auth()->user()->id)
+                                            <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
+                                                {{ $chat->isi }}
+                                            </div>
+                                        @else
+                                            <div>
+                                                <div class="flex items-start space-x-2 mb-1">
+                                                    <img src="{{ $chat->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
+                                                    <div>
+                                                        <h6 class="font-semibold text-[#605C5C]">{{ $chat->user->name }}</h6>
+                                                        <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $chat->created_at }}</span> &#x2022; {{ $chat->user->role }} </small>
+                                                    </div>
+                                                </div>
+                                                <div class="border-2 border-l-4 p-3 rounded-md max-w-[90%] mb-3">
+                                                    {{ $chat->isi }}
+                                                </div>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                </div>
+                                <div class="flex space-x-3 mb-5">
+                                    <textarea id-report="{{$myreport->id}}" class="reply flex-grow placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
+                                    <button id-report="{{$myreport->id}}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
+                                        <i class="fa-solid fa-paper-plane"></i>
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                        <div class="text-sm mb-5">
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi impedit provident inventore earum dignissimos ipsam tempora, vitae facilis omnis, fugit tempore expedita ex. Vel corporis ipsum inventore corrupti blanditiis impedit.</p>
-                        </div>
-                        <div class="flex justify-between relative shadow-xl p-3 mb-7 border rounded">
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Verifikasi</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Proses</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Selesai</span>
-                            </div>
-                            <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                        <div class="text-sm flex flex-col">
-                            <div class="border-2 p-3 rounded-md max-w-[90%] mb-3">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique natus eius consequuntur saepe quidem alias consectetur accusamus aperiam, nesciunt ratione.
-                            </div>
-                            <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end">
-                                Lorem, ipsum dolor sit amet consectetur adipisicing elit. Mollitia, tenetur.
-                            </div>
-                            <div class="border-2 p-3 rounded-md max-w-[90%] mb-3">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur consequuntur pariatur vero dignissimos, sed labore similique tempore maxime natus facere inventore quia doloribus eum nobis consectetur qui cupiditate optio laboriosam!
-                            </div>
-                            <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end">
-                                Lorem ipsum dolor sit amet 🙏
-                            </div>
-                        </div>
-                        <div class="flex space-x-3 mb-5">
-                            <textarea class="flex-grow h-10 placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-9 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
-                            <button class="w-10 h-10 rounded-md bg-[#173D7A] text-white">
-                                <i class="fa-solid fa-paper-plane"></i>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="border-b-2 mb-8">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Wifi di area kampus satu dikasih free akses</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-5">
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi impedit provident inventore earum dignissimos ipsam tempora, vitae facilis omnis, fugit tempore expedita ex. Vel corporis ipsum inventore corrupti blanditiis impedit.</p>
-                        </div>
-                        <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">&#10060; Verifikasi</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Proses</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Selesai</span>
-                            </div>
-                            <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-b-2 mb-8">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Wifi di area kampus satu dikasih free akses</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-5">
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi impedit provident inventore earum dignissimos ipsam tempora, vitae facilis omnis, fugit tempore expedita ex. Vel corporis ipsum inventore corrupti blanditiis impedit.</p>
-                        </div>
-                        <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">&#10060; Verifikasi</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Proses</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Selesai</span>
-                            </div>
-                            <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="border-b-2 mb-8">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Wifi di area kampus satu dikasih free akses</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-5">
-                            <p>Lorem ipsum dolor sit amet consectetur, adipisicing elit. Commodi impedit provident inventore earum dignissimos ipsam tempora, vitae facilis omnis, fugit tempore expedita ex. Vel corporis ipsum inventore corrupti blanditiis impedit.</p>
-                        </div>
-                        <div class="flex justify-between relative shadow-xl p-3 mb-8 border rounded">
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img1.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Tulis <span class="hidden md:inline">Laporan</span></span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img2.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">&#10060; Verifikasi</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img3.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Proses</span>
-                            </div>
-                            <div class="basis-1/4 flex flex-col items-center z-10">
-                                <img src="{{ asset('assets/img5.png') }}" alt="Image" class="w-8 mb-2">
-                                <span class="text-xs md:text-sm text-center">Selesai</span>
-                            </div>
-                            <div class="flex w-9/12 h-2 bg-[#D9D9D9] rounded-full overflow-hidden absolute top-6 left-1/2 transform -translate-x-1/2 z-0">
-                                <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: 33%" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                        </div>
-                    </div>
+                        @endforeach
+                    @endif
                 </div>
                 <div id="content3" class="tab-content border-2 border-[#173D7A] md:p-5 rounded hidden">
-                    <div class="shadow-xl rounded p-4 border mb-5">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Joko Purnomo</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan &#x2022; Belum diproses</small>
+                    @foreach ($allreports as $report)
+                        <div class="shadow-xl rounded p-4 border mb-5">
+                            <div class="flex items-start space-x-2 mb-5">
+                                <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="43" height="43" class="border-2 border-blue-100 rounded-md">
+                                <div>
+                                    <h5 class="font-semibold text-[#605C5C]">{{ $report->user->name }}</h5>
+                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $report->created_at }}</span> &#x2022; {{ $report->jenis }} - {{ $report->kategori }}</small>
+                                </div>
+                            </div>
+                            <div class="text-sm mb-1">
+                                <h5 class="font-medium mb-2 text-[#173D7A]">{{ $report->judul }}</h5>
+                                <p>{{ $report->isi }}</p>
                             </div>
                         </div>
-                        <div class="text-sm mb-1">
-                            <h5 class="font-medium mb-2 text-[#173D7A]">Pemasangan Jaringan Internet</h5>
-                            <p>Assalamuailkum Wr. Wb.  Beberapa ruang kelas atau laboratorium tidak memiliki jaringan internet yang memadai, sehingga menyulitkan kami untuk  menggunakan teknologi dalam.</p>
-                        </div>
-                    </div>
-                    <div class="shadow-xl rounded p-4 border mb-5">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Joko Purnomo</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan &#x2022; Belum diproses</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-1">
-                            <h5 class="font-medium mb-2 text-[#173D7A]">Pemasangan Jaringan Internet</h5>
-                            <p>Assalamuailkum Wr. Wb.  Beberapa ruang kelas atau laboratorium tidak memiliki jaringan internet yang memadai, sehingga menyulitkan kami untuk  menggunakan teknologi dalam.</p>
-                        </div>
-                    </div>
-                    <div class="shadow-xl rounded p-4 border mb-5">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Joko Purnomo</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan &#x2022; Belum diproses</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-1">
-                            <h5 class="font-medium mb-2 text-[#173D7A]">Pemasangan Jaringan Internet</h5>
-                            <p>Assalamuailkum Wr. Wb.  Beberapa ruang kelas atau laboratorium tidak memiliki jaringan internet yang memadai, sehingga menyulitkan kami untuk  menggunakan teknologi dalam.</p>
-                        </div>
-                    </div>
-                    <div class="shadow-xl rounded p-4 border mb-5">
-                        <div class="flex items-start space-x-2 mb-5">
-                            <img src="{{ asset('assets/img8.png') }}" alt="Profile">
-                            <div>
-                                <h5 class="font-semibold text-[#605C5C]">Joko Purnomo</h5>
-                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">2 Menit yang lalu</span> &#x2022; Pengaduan - Infrastruktur Jaringan &#x2022; Belum diproses</small>
-                            </div>
-                        </div>
-                        <div class="text-sm mb-1">
-                            <h5 class="font-medium mb-2 text-[#173D7A]">Pemasangan Jaringan Internet</h5>
-                            <p>Assalamuailkum Wr. Wb.  Beberapa ruang kelas atau laboratorium tidak memiliki jaringan internet yang memadai, sehingga menyulitkan kami untuk  menggunakan teknologi dalam.</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
             <div class="md:basis-3/12 bg-white p-5 shadow-xl rounded">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt distinctio rem corporis optio laboriosam voluptates beatae, illum voluptatibus cumque consequuntur repellendus eaque quisquam vel ad veniam soluta. Odio, culpa sint.</p>
+                <h4 class="font-semibold text-lg mb-3">Laporan Terbaru</h4>
+                @for ($i = 0; $i < 3; $i++)
+                    <div class="shadow-lg rounded p-4 border mb-4">
+                        <div class="flex items-start space-x-2 mb-2">
+                            <img src="{{ $allreports[$i]->user->profile_photo_url }}" alt="Profile" width="30" height="30" class="border-2 border-blue-100 rounded-md">
+                            <div>
+                                <h5 class="text-[#605C5C]">{{ $allreports[$i]->user->name }}</h5>
+                            </div>
+                        </div>
+                        <div class="text-sm mb-1">
+                            <h5 class="font-medium mb-2 text-[#173D7A]">{{ $allreports[$i]->judul }}</h5>
+                            <p>{{ $allreports[$i]->isi }}</p>
+                        </div>
+                    </div>
+                @endfor
             </div>
         </div>
     </div>

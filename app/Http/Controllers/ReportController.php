@@ -27,7 +27,9 @@ class ReportController extends Controller
             where('user_id', auth()->user()->id)
             ->with('chat', 'history')
             ->get();
+        $allreports = Report::all();
         return view('report')
+            ->with('allreports', $allreports)
             ->with('myreports', $myreports);
     }
 
@@ -94,6 +96,24 @@ class ReportController extends Controller
                 throw new Exception('Isi form dengan benar!');
             }
 
+            switch (Report::where('id', $id)->value('jenis')) {
+                case 'Pengaduan':
+                    $route = 'pengaduan';
+                    break;
+                
+                case 'Permintaan':
+                    $route = 'permintaan';
+                    break;
+
+                case 'Saran':
+                    $route = 'saran';
+                    break;
+
+                default:
+                    $route = 'dashboard';
+                    break;
+            }
+
             $message = 'Pengaduan ini telah ditolak!';
             if ($request->status == 'Verifikasi') {
                 $message = 'Pengaduan ini telah diverifikasi!';
@@ -118,7 +138,7 @@ class ReportController extends Controller
                 'isi' => $request->tanggapan
             ]);
 
-            return redirect(route('pengaduan'))
+            return redirect(route($route))
                 ->with('success', $message);
         } catch (\Throwable $th) {
             return redirect()
@@ -139,6 +159,24 @@ class ReportController extends Controller
 
             if ($validator->fails()) {
                 throw new Exception('Isi form dengan benar!');
+            }
+
+            switch (Report::where('id', $id)->value('jenis')) {
+                case 'Pengaduan':
+                    $route = 'pengaduan';
+                    break;
+                
+                case 'Permintaan':
+                    $route = 'permintaan';
+                    break;
+
+                case 'Saran':
+                    $route = 'saran';
+                    break;
+
+                default:
+                    $route = 'dashboard';
+                    break;
             }
 
             $assignments = Assignment::where('report_id', $id)->get();
@@ -176,7 +214,7 @@ class ReportController extends Controller
                 'isi' => $request->tanggapan
             ]);
 
-            return redirect(route('pengaduan'))
+            return redirect(route($route))
                 ->with('success', $message);
         } catch (\Throwable $th) {
             return redirect()
@@ -197,6 +235,24 @@ class ReportController extends Controller
 
             if ($validator->fails()) {
                 throw new Exception('Isi form dengan benar!');
+            }
+
+            switch (Report::where('id', $id)->value('jenis')) {
+                case 'Pengaduan':
+                    $route = 'pengaduan';
+                    break;
+                
+                case 'Permintaan':
+                    $route = 'permintaan';
+                    break;
+
+                case 'Saran':
+                    $route = 'saran';
+                    break;
+
+                default:
+                    $route = 'dashboard';
+                    break;
             }
 
             $assignments = Assignment::where('report_id', $id)->get();
@@ -224,7 +280,7 @@ class ReportController extends Controller
                 'isi' => $request->tanggapan
             ]);
 
-            return redirect(route('pengaduan'))
+            return redirect(route($route))
                 ->with('success', $message);
         } catch (\Throwable $th) {
             return redirect()

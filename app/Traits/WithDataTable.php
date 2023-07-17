@@ -154,14 +154,16 @@ trait WithDataTable {
                 break;
 
             case 'permintaan':
-                $reports = $this->model::search($this->search)
+                $reports = $this->get_prioritas_dengan_spk(
+                    $this->model::search($this->search)
                     ->where('jenis', 'Permintaan')
                     ->when($this->selectedCategory, function ($query) {
                         return $query->where('kategori', $this->selectedCategory);
                         })
                     ->with('user', 'history')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                    ->paginate($this->perPage);
+                    ->paginate($this->perPage)
+                );
 
                 return [
                     "view" => 'livewire.table.permintaan',
@@ -184,6 +186,39 @@ trait WithDataTable {
 
                 return [
                     "view" => 'livewire.table.saran',
+                    "reports" => $reports,
+                    "data" => array_to_object([
+                        'actions' => []
+                    ])
+                ];
+                break;
+
+            case 'laporan':
+                $reports = $this->model::search($this->search)
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage);
+
+                return [
+                    "view" => 'livewire.table.laporan',
+                    "reports" => $reports,
+                    "data" => array_to_object([
+                        'actions' => []
+                    ])
+                ];
+                break;
+
+            case 'dashboard':
+                $reports = $this->get_prioritas_dengan_spk(
+                    $this->model::search($this->search)
+                    ->when($this->selectedCategory, function ($query) {
+                        return $query->where('kategori', $this->selectedCategory);
+                        })
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage)
+                );
+
+                return [
+                    "view" => 'livewire.table.dashboard',
                     "reports" => $reports,
                     "data" => array_to_object([
                         'actions' => []
