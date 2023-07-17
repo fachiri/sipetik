@@ -13,15 +13,15 @@
                     <div class="w-full md:w-auto flex justify-between md:space-x-20">
                         <div class="basis-1/3 flex flex-col items-center">
                             <span class="text-xs md:text-sm text-center">Terverifikasi</span>
-                            <span class="text-3xl font-semibold">10</span>
+                            <span class="text-3xl font-semibold">{{ $total['verifikasi'] }}</span>
                         </div>
                         <div class="basis-1/3 flex flex-col items-center">
                             <span class="text-xs md:text-sm text-center">Proses</span>
-                            <span class="text-3xl font-semibold">2</span>
+                            <span class="text-3xl font-semibold">{{ $total['proses'] }}</span>
                         </div>
                         <div class="basis-1/3 flex flex-col items-center">
                             <span class="text-xs md:text-sm text-center">Selesai</span>
-                            <span class="text-3xl font-semibold">0</span>
+                            <span class="text-3xl font-semibold">{{ $total['selesai'] }}</span>
                         </div>
                     </div>
                     <img src="{{ asset('assets/img7.png') }}" alt="Image" class="hidden md:block">
@@ -112,7 +112,7 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="font-semibold text-center">Periksa whatsapp anda, karena sistem akan memberikan tanggapan terkait laporan anda di whatsapp</p>
+                        <p class="font-semibold text-center">Periksa Email anda, karena sistem akan memberikan tanggapan terkait laporan anda di Email</p>
                     @endif
                 </div>
                 <div id="content2" class="tab-content border-2 border-[#173D7A] p-5 rounded hidden">

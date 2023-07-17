@@ -28,9 +28,21 @@ class ReportController extends Controller
             ->with('chat', 'history')
             ->get();
         $allreports = Report::all();
+        $total = [
+            'verifikasi' => History::whereHas('report', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })->where('status', 'Verifikasi')->count(),
+            'proses' => History::whereHas('report', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })->where('status', 'Proses')->count(),
+            'selesai' => History::whereHas('report', function ($query) {
+                $query->where('user_id', auth()->user()->id);
+            })->where('status', 'Selesai')->count(),
+        ];
         return view('report')
             ->with('allreports', $allreports)
-            ->with('myreports', $myreports);
+            ->with('myreports', $myreports)
+            ->with('total', $total);
     }
 
     public function pengaduan()
