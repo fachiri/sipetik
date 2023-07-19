@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Report;
+use App\Models\User;
 use App\Models\Category;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Exception;
 
 class LaporanController extends Controller
@@ -15,5 +18,37 @@ class LaporanController extends Controller
             'categories' => $categories,
             'reports' => Report::class
         ]);
+    }
+
+    public function export_laporan()
+    {
+        $reports = Report::all();
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->setPaper('A4', 'portrait');
+        $html = view('pdf.laporan')
+            ->with('reports', $reports)
+            ->render();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $filename = 'Reports_'.date('dmY_His').'.pdf';
+        return $dompdf->stream($filename);
+    }
+
+    public function export_user()
+    {
+        $users = User::all();
+        $options = new Options();
+        $options->set('isRemoteEnabled', true);
+        $dompdf = new Dompdf($options);
+        $dompdf->setPaper('A4', 'portrait');
+        $html = view('pdf.user')
+            ->with('users', $users)
+            ->render();
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+        $filename = 'Users_'.date('dmY_His').'.pdf';
+        return $dompdf->stream($filename);
     }
 }

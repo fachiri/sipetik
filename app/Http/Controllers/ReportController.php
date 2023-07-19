@@ -27,7 +27,7 @@ class ReportController extends Controller
             where('user_id', auth()->user()->id)
             ->with('chat', 'history')
             ->get();
-        $allreports = Report::all();
+        $allreports = Report::orderBy('created_at', 'desc')->get();
         $total = [
             'verifikasi' => History::whereHas('report', function ($query) {
                 $query->where('user_id', auth()->user()->id);

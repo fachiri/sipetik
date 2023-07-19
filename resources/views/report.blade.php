@@ -227,10 +227,8 @@
                     <p class="text-center font-semibold border-2 rounded-md py-3 border-[#173D7A]">Laporan tidak ditemukan</p>
                 @else
                     @php
-                        if ($allreports->count() == 1) {
-                            $length = 1;
-                        } elseif ($allreports->count() == 2) {
-                            $length = 2;
+                        if ($allreports->count() >= 3) {
+                            $length = 3;
                         } else {
                             $length = $allreports->count();
                         }

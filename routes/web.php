@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [ReportController::class, 'landing'])->name('home');
+Route::get('/public_dashboard', [DashboardController::class, 'public_dashboard'])->name('dashboard.public_dashboard');
 Route::view('/about', 'about')->name('about');
 Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 
@@ -49,4 +50,6 @@ Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'),
     Route::view('/user/edit/{userId}', "pages.user.user-edit")->name('user.edit');
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
+    Route::get('/export-laporan', [LaporanController::class, 'export_laporan'])->name('export.laporan');
+    Route::get('/export-user', [LaporanController::class, 'export_user'])->name('export.user');
 });

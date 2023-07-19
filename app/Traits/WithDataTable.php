@@ -121,7 +121,7 @@ trait WithDataTable {
                                 'is_used' => true
                             ],
                             [
-                                'route' => '#',
+                                'route' => route('export.user'),
                                 'text' => 'Export',
                                 'btn_color' => 'success',
                                 'icon' => 'fas fa-file-export',
@@ -202,7 +202,15 @@ trait WithDataTable {
                     "view" => 'livewire.table.laporan',
                     "reports" => $reports,
                     "data" => array_to_object([
-                        'actions' => []
+                        'actions' => [
+                            [
+                                'route' => route('export.laporan'),
+                                'text' => 'Export',
+                                'btn_color' => 'success',
+                                'icon' => 'fas fa-file-export',
+                                'is_used' => true
+                            ]
+                        ]
                     ])
                 ];
                 break;

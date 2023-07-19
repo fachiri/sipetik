@@ -64,11 +64,13 @@ class Main extends Component
 
     public function render()
     {
-        if (auth()->user()->role == 'KABID') {
-            $this->selectedCategory = auth()->user()->kabid->category->name;
-        }
-        if (auth()->user()->role == 'TEKNISI') {
-            $this->selectedCategory = auth()->user()->teknisi->category->name;
+        if (auth()->user()) {
+            if (auth()->user()->role == 'KABID') {
+                $this->selectedCategory = auth()->user()->kabid->category->name;
+            }
+            if (auth()->user()->role == 'TEKNISI') {
+                $this->selectedCategory = auth()->user()->teknisi->category->name;
+            }
         }
         $data = $this->get_pagination_data();
         return view($data['view'], $data);
