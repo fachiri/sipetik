@@ -53,7 +53,15 @@
         </span>
     </div>
     <div>
-        <p class="font-semibold">Pengaduan untuk Bidang {{ $report->kategori }}</p>
+        <p class="font-semibold mb-2">Pengaduan untuk Bidang {{ $report->kategori }}</p>
+        @if ($report->lampiran)
+          <div class="mb-3">
+            <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+              <i class="fas fa-file-image"></i>
+              {{ $report->lampiran }}
+            </a>
+          </div>
+        @endif
         {{ $report->isi }}
     </div>
 </div>

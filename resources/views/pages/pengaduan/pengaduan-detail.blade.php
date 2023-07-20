@@ -55,7 +55,17 @@
     </div>
     <div class="border-2 border-b-8 rounded-bl-xl rounded-tr-xl px-4 py-3">
         <h5 class="text-lg font-bold mb-2">{{ $report->judul }}</h5>
-        {{ $report->isi }}
+        @if ($report->lampiran)
+          <div class="mb-3">
+            <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+              <i class="fas fa-file-image"></i>
+              {{ $report->lampiran }}
+            </a>
+          </div>
+        @endif
+        <div>
+          {{ $report->isi }}
+        </div>
     </div>
   </div>
 
