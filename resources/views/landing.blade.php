@@ -20,10 +20,10 @@
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Permintaan">
                     <textarea name="isi" id="isi_permintaan" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Permintaan"></textarea>
                     <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Deadline Permintaan" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
-                    <label for="lampiran_permintaan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
+                    <label for="lampiran_permintaan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_permintaan_label">
                         Upload Lampiran
-                        <input type="file" name="lampiran" id="lampiran_permintaan" class="hidden" />
                     </label>
+                    <input type="file" name="lampiran" id="lampiran_permintaan" class="hidden" />
                     <div class="text-center">
                         <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
                             @auth
@@ -52,10 +52,10 @@
                         <small class="text-[#FC2947] float-right">{{ $message }}</small>
                     @enderror
                     <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Deadline Pengaduan" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
-                    <label for="lampiran_pengaduan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
+                    <label for="lampiran_pengaduan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_pengaduan_label">
                         Upload Lampiran
-                        <input type="file" name="lampiran" id="lampiran_pengaduan" class="hidden" />
                     </label>
+                    <input type="file" name="lampiran" id="lampiran_pengaduan" class="hidden" />
                     <div class="text-center">
                         @auth
                             <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
@@ -79,10 +79,10 @@
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Saran">
                     <textarea name="isi" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Saran">{{ old('isi') }}</textarea>
                     <input type="hidden" name="tanggal" value="{{ now()->addDay()->format('Y-m-d') }}">
-                    <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer">
+                    <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_saran_label">
                         Upload Lampiran
-                        <input type="file" name="lampiran" id="lampiran_saran" class="hidden" />
                     </label>
+                    <input type="file" name="lampiran" id="lampiran_saran" class="hidden" />
                     <div class="text-center">
                         <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
                             @auth
@@ -183,4 +183,32 @@
             </div>
         </div>
     </section>
-</x-guest-layout> 
+    <script>
+        // Add event listeners to the file inputs to update the label text with the selected file names
+
+        document.getElementById('lampiran_saran').addEventListener('change', function() {
+            updateLabel('lampiran_saran', 'lampiran_saran_label');
+        });
+
+        document.getElementById('lampiran_permintaan').addEventListener('change', function() {
+            updateLabel('lampiran_permintaan', 'lampiran_permintaan_label');
+        });
+
+        document.getElementById('lampiran_pengaduan').addEventListener('change', function() {
+            updateLabel('lampiran_pengaduan', 'lampiran_pengaduan_label');
+        });
+
+        function updateLabel(inputId, labelId) {
+            const input = document.getElementById(inputId);
+            const label = document.getElementById(labelId);
+
+            if (input.files && input.files.length > 0) {
+                label.textContent = input.files[0].name;
+            } else {
+                label.textContent = 'Upload Lampiran';
+            }
+        }
+    </script>
+</x-guest-layout>
+
+
