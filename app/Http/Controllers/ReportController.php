@@ -10,6 +10,7 @@ use App\Models\Assignment;
 use App\Models\Chat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Exception;
 
 class ReportController extends Controller
@@ -84,12 +85,14 @@ class ReportController extends Controller
 
     public function pengaduan_edit($reportId)
     {
+        $categories = Category::all();
         $report = Report::where('report_id', $reportId)
             ->with('user', 'history')
             ->get()[0];
 
         $teknisi2 = Teknisi::with('category')->get();
         return view('pages.pengaduan.pengaduan-edit')->with([
+            'categories' => $categories,
             'report' => $report,
             'teknisi2' => $teknisi2,
         ]);
@@ -99,13 +102,14 @@ class ReportController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
+                'category' => auth()->user()->role == 'ADMIN' ? 'required' : '',
                 'tanggapan' => 'required|string',
                 'status' => 'required',
-                'teknisi' => 'required',
+                'teknisi' => auth()->user()->role == 'KABID' ? 'required' : '',
             ]);
 
             if ($validator->fails()) {
-                throw new Exception('Isi form dengan benar!');
+                throw new ValidationException($validator);
             }
 
             switch (Report::where('id', $id)->value('jenis')) {
@@ -126,9 +130,9 @@ class ReportController extends Controller
                     break;
             }
 
-            $message = 'Pengaduan ini telah ditolak!';
+            $message = 'Laporan ini telah ditolak!';
             if ($request->status == 'Verifikasi') {
-                $message = 'Pengaduan ini telah diverifikasi!';
+                $message = 'Laporan ini telah diverifikasi!';
                 foreach ($request->teknisi as $teknisi) {
                     Assignment::create([
                         'report_id' => $id,
@@ -137,7 +141,10 @@ class ReportController extends Controller
                     ]);
                 }
             }
-
+            if ($request->status == 'Tulis Laporan') {
+                $message = 'Laporan ini telah didisposisi!';
+                Report::where('id', $id)->update([ 'kategori' => $request->category ]);
+            }
             History::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
@@ -309,7 +316,6 @@ class ReportController extends Controller
             $validator = Validator::make($request->all(), [
                 'judul' => 'required|string',
                 'jenis' => 'required|string',
-                'kategori' => 'required|string',
                 'isi' => 'required|string',
                 'tanggal' => [
                     'required',
@@ -320,10 +326,11 @@ class ReportController extends Controller
                         }
                     },
                 ],
+                'lampiran' => $request->jenis == 'Permintaan' ? 'required' : '',
             ]);
             
             if ($validator->fails()) {
-                throw new Exception('Isi form dengan benar!');
+                throw new ValidationException($validator);
             }
 
             if ($request->jenis == 'Pengaduan') {
@@ -336,6 +343,13 @@ class ReportController extends Controller
                 throw new Exception('Terjadi kesalahan, Report ID tidak bisa dibuat!');
             }
 
+            // upload lampiran
+            if ($request->hasFile('lampiran')) {
+                $file = $request->file('lampiran');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('lampiran', $filename, 'public'); // Adjust the storage path as needed
+            }
+
             $report = Report::create([
                 'report_id' => $report_id,
                 'user_id' => auth()->user()->id,
@@ -344,7 +358,7 @@ class ReportController extends Controller
                 'kategori' => $request->kategori,
                 'isi' => $request->isi,
                 'tanggal' => $request->tanggal,
-                'lampiran' => $request->lampiran,
+                'lampiran' => $filename ?? null,
             ]);
 
             History::create([

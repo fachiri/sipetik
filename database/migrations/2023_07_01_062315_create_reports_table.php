@@ -19,7 +19,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('judul');
             $table->string('jenis');
-            $table->string('kategori');
+            $table->string('kategori')->nullable();;
             $table->text('isi');
             $table->date('tanggal');
             $table->string('lampiran')->nullable();

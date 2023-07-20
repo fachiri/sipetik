@@ -128,30 +128,55 @@
         </div>
         <form method="POST" action="{{ route('report.verified', $report->id) }}">
             @csrf
-            <input type="hidden" name="status" value="Verifikasi">
             <div class="modal-body">
-                <div class="flex flex-column mb-3">
-                    <div class="flex justify-between">
-                        <label class="font-semibold">Pilih Teknisi</label>
-                        @error('teknisi')
-                            <span class="text-[#FC2947] float-right">{{ $message }}</span>
-                        @enderror
+                @if (auth()->user()->role == 'ADMIN')
+                    <input type="hidden" name="status" value="Tulis Laporan">
+                    <div class="flex flex-column mb-3">
+                        <div class="flex justify-between">
+                            <label class="font-semibold">Pilih Bidang</label>
+                            @error('category')
+                                <span class="text-[#FC2947] float-right">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <select name="category" class="form-select select2">
+                            @foreach ($categories as $category)
+                            <option value="{{ $category->name }}">
+                                {{ $category->name }}
+                            </option>
+                            @endforeach
+                        </select>
                     </div>
-                    <select name="teknisi[]" class="form-select select2" multiple="">
-                        @foreach ($teknisi2 as $teknisi)
-                            @if ($report->kategori == $teknisi->category->name)
-                                <option value="{{ $teknisi->id }}">
-                                    {{ $teknisi->user->name }}
-                                </option>
-                            @endif
-                        @endforeach
-                    </select>
-                </div>
+                @endif
+                @if (auth()->user()->role == 'KABID')
+                    <input type="hidden" name="status" value="Verifikasi">
+                    <div class="flex flex-column mb-3">
+                        <div class="flex justify-between">
+                            <label class="font-semibold">Pilih Teknisi</label>
+                            @error('teknisi')
+                                <span class="text-[#FC2947] float-right">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <select name="teknisi[]" class="form-select select2" multiple="">
+                            @foreach ($teknisi2 as $teknisi)
+                                @if ($report->kategori == $teknisi->category->name)
+                                    <option value="{{ $teknisi->id }}">
+                                        {{ $teknisi->user->name }}
+                                    </option>
+                                @endif
+                            @endforeach
+                        </select>
+                    </div>
+                @endif
                 @error('tanggapan')
                     <span class="text-[#FC2947] float-right">{{ $message }}</span>
                 @enderror
                 <label class="font-semibold">Tulis Tanggapan</label>
-                <textarea name="tanggapan" class="form-control w-full h-30 rounded py-3 px-6 mb-4" placeholder="Tulis Tanggapan">{{ old('tanggapan') ? old('tanggapan') : 'Terima kasih, laporan anda telah kami verifikasi. Selanjutnya akan ditangani oleh teknisi kami 🙏. ' }}</textarea>
+                @if (auth()->user()->role == 'ADMIN')
+                    <textarea name="tanggapan" class="form-control w-full h-30 rounded py-3 px-6 mb-4" placeholder="Tulis Tanggapan">{{ old('tanggapan') ?? 'Laporan anda telah kami terima. Selanjutnya akan ditangani oleh Kepala Bidang. ' }}</textarea>
+                @endif
+                @if (auth()->user()->role == 'KABID')
+                    <textarea name="tanggapan" class="form-control w-full h-30 rounded py-3 px-6 mb-4" placeholder="Tulis Tanggapan">{{ old('tanggapan') ?? 'Laporan anda telah kami verifikasi. Selanjutnya akan ditangani oleh teknisi kami 🙏. ' }}</textarea>
+                @endif
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary" data-dismiss="modal">Tutup</button>
