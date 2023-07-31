@@ -101,15 +101,17 @@ class ReportController extends Controller
     public function report_verified(Request $request, $id)
     {
         try {
-            $validator = Validator::make($request->all(), [
-                'category' => auth()->user()->role == 'ADMIN' ? 'required' : '',
-                'tanggapan' => 'required|string',
-                'status' => 'required',
-                'teknisi' => auth()->user()->role == 'KABID' ? 'required' : '',
-            ]);
-
-            if ($validator->fails()) {
-                throw new ValidationException($validator);
+            if($request->status != 'Verifikasi Gagal') {
+                $validator = Validator::make($request->all(), [
+                    'category' => auth()->user()->role == 'ADMIN' ? 'required' : '',
+                    'tanggapan' => 'required|string',
+                    'status' => 'required',
+                    'teknisi' => auth()->user()->role == 'KABID' ? 'required' : '',
+                ]);
+    
+                if ($validator->fails()) {
+                    throw new ValidationException($validator);
+                }
             }
 
             switch (Report::where('id', $id)->value('jenis')) {
@@ -364,6 +366,12 @@ class ReportController extends Controller
             History::create([
                 'report_id' => $report->id,
                 'user_id' => auth()->user()->id
+            ]);
+
+            Chat::create([
+                'user_id' => 1,
+                'report_id' => $report->id,
+                'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!'
             ]);
 
             return redirect(route('report'))
