@@ -45,11 +45,11 @@ class CreateUser extends Component
         }
 
         $createdUser = User::create([
-            'user_id' => $this->user['user_id'],
+            'user_id' => $this->user['user_id'] ?? null,
             'name' => $this->user['name'],
             'email' => $this->user['email'],
             'role' => $this->user['role'],
-            'level' => $this->user['level'],
+            'level' => $this->user['level'] ?? null,
             'password' => $this->user['password'],
         ]);
 
