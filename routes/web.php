@@ -22,6 +22,7 @@ Route::get('/', [ReportController::class, 'landing'])->name('home');
 Route::get('/public_dashboard', [DashboardController::class, 'public_dashboard'])->name('dashboard.public_dashboard');
 Route::view('/about', 'about')->name('about');
 Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
+Route::get('/get-chats/{reportId}', [ChatController::class, 'get_chats']);
 
 Route::group(["middleware" => ['role:PENGGUNA']], function() {
     Route::get('/report', [ReportController::class, 'index'])->name('report');

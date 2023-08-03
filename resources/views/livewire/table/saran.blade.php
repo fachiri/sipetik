@@ -68,7 +68,9 @@
                         </small>
                     </td>
                     <td class="whitespace-nowrap row-action--icon flex space-x-2">
-                        <a role="button" href="{{ route('saran.edit', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
+                        @if (auth()->user()->role != 'KABID')
+                            <a role="button" href="{{ route('saran.edit', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
+                        @endif
                         <a role="button" href="{{ route('saran.detail', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/detail.svg') }}" alt="Icon"></a>
                     </td>
                 </tr>

@@ -59,6 +59,26 @@
                                     <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $lastReport->created_at }}</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
                                 </div>
                             </div>
+                            <div class="flex space-x-3">
+                                @if ($lastReport->lampiran)
+                                    <div class="mb-3">
+                                        <a href="{{ asset('storage/lampiran/'.$lastReport->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                                            <i class="fas fa-file-image"></i>
+                                            Lampiran - 
+                                            {{ $lastReport->lampiran }}
+                                        </a>
+                                    </div>
+                                @endif
+                                @if ($lastReport->bukti)
+                                    <div class="mb-3">
+                                        <a href="{{ asset('storage/bukti/'.$lastReport->bukti) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                                            <i class="fas fa-file-image"></i>
+                                            Bukti - 
+                                            {{ $lastReport->bukti }}
+                                        </a>
+                                    </div>
+                                @endif
+                            </div>
                             <div class="text-sm mb-5">
                                 <p>{{ $lastReport->isi }}</p>
                             </div>
@@ -83,28 +103,7 @@
                                     <div class="flex flex-col justify-center overflow-hidden bg-[#173D7A]" role="progressbar" style="width: {{ $progress }}%" aria-valuenow="{{ $progress }}" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
-                            <div id-report="{{$lastReport->id}}" class="chats-container text-sm flex flex-col mb-2">
-                                @foreach ($lastReport->chat as $chat)
-                                    @if ($chat->user_id == auth()->user()->id)
-                                        <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
-                                            {{ $chat->isi }}
-                                        </div>
-                                    @else
-                                        <div>
-                                            <div class="flex items-start space-x-2 mb-1">
-                                                <img src="{{ $chat->user->profile_photo_url }}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
-                                                <div>
-                                                    <h6 class="font-semibold text-[#605C5C]">{{ $chat->user->name }}</h6>
-                                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $chat->created_at }}</span> &#x2022; {{ $chat->user->role }} </small>
-                                                </div>
-                                            </div>
-                                            <div class="border-2 border-l-4 p-3 rounded-md max-w-[90%] mb-3">
-                                                {{ $chat->isi }}
-                                            </div>
-                                        </div>
-                                    @endif
-                                @endforeach
-                            </div>
+                            <div id-report="{{$lastReport->id}}" class="chats-container text-sm flex flex-col mb-2"></div>
                             <div class="flex space-x-3 mb-5">
                                 <textarea id-report="{{$lastReport->id}}" class="reply flex-grow placeholder:italic placeholder:text-slate-400 block bg-white border border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
                                 <button id-report="{{$lastReport->id}}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
@@ -142,6 +141,26 @@
                                         <h5 class="font-semibold text-[#605C5C]">{{ $myreport->judul }}</h5>
                                         <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $myreport->created_at }}</span> &#x2022; {{ $myreport->jenis }} - {{ $myreport->kategori }}</small>
                                     </div>
+                                </div>
+                                <div class="flex space-x-3">
+                                    @if ($myreport->lampiran)
+                                        <div class="mb-3">
+                                            <a href="{{ asset('storage/lampiran/'.$myreport->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                                                <i class="fas fa-file-image"></i>
+                                                Lampiran - 
+                                                {{ $myreport->lampiran }}
+                                            </a>
+                                        </div>
+                                    @endif
+                                    @if ($myreport->bukti)
+                                        <div class="mb-3">
+                                            <a href="{{ asset('storage/bukti/'.$myreport->bukti) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                                                <i class="fas fa-file-image"></i>
+                                                Bukti - 
+                                                {{ $myreport->bukti }}
+                                            </a>
+                                        </div>
+                                    @endif
                                 </div>
                                 <div class="text-sm mb-5">
                                     <p>{{ $myreport->isi }}</p>
@@ -243,7 +262,9 @@
                             </div>
                             <div class="text-sm mb-1">
                                 <h5 class="font-medium mb-2 text-[#173D7A]">{{ $allreports[$i]->judul }}</h5>
-                                <p>{{ $allreports[$i]->isi }}</p>
+                                <p style="display: -webkit-box; display: -moz-box; -webkit-line-clamp: 3; -moz-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
+                                    {{ $allreports[$i]->isi . '...' }}
+                                </p>
                             </div>
                         </div>
                     @endfor
@@ -254,3 +275,46 @@
 </x-guest-layout> 
 <script>const user_id = @json(auth()->user()->id);</script>
 <script src="{{ asset('js/custom/handleChat.js') }}"></script>
+<script>
+    const chatsContainer = document.querySelector('.chats-container');
+    const lastReportId = chatsContainer.getAttribute('id-report');
+    
+    const eventSource = new EventSource(`/get-chats/${lastReportId}`);
+
+    eventSource.addEventListener('chat', event => {
+        const chatData = JSON.parse(event.data);
+        const existingChatDiv = document.querySelector(`.chat-entry[data-chat-id="${chatData.id}"]`); // Ganti dengan atribut yang sesuai
+
+        // Jika chat belum ada, tambahkan ke chatsContainer
+        if (!existingChatDiv) {
+            const chatDiv = document.createElement('div');
+            chatDiv.classList.add('chat-entry', 'flex', 'flex-col');
+            chatDiv.setAttribute('data-chat-id', chatData.id);
+
+            if (user_id != chatData.user.id) {
+                chatDiv.innerHTML = `
+                    <div>
+                        <div class="flex items-start space-x-2 mb-1">
+                            <img src="${chatData.user.profile_photo_url}" alt="Profile" width="35" height="35" class="border-2 border-blue-100 rounded-md">
+                            <div>
+                                <h6 class="font-semibold text-[#605C5C]">${chatData.user.name}</h6>
+                                <small class="text-[#605C5C]"><span class="text-[#173D7A]">${chatData.created_at}</span> &#x2022; ${chatData.user.role} </small>
+                            </div>
+                        </div>
+                        <div class="border-2 border-l-4 p-3 rounded-md max-w-[90%] mb-3">
+                            ${chatData.isi}
+                        </div>
+                    </div>
+                `;
+            } else {
+                chatDiv.innerHTML = `
+                    <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
+                        ${chatData.isi}
+                    </div>
+                `;
+            }
+            
+            chatsContainer.appendChild(chatDiv);
+        }
+    });
+</script>

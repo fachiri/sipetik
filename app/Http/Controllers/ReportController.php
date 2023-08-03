@@ -250,6 +250,7 @@ class ReportController extends Controller
     {
         try {
             $validator = Validator::make($request->all(), [
+                'bukti' => 'required',
                 'tanggapan' => 'required|string',
                 'status' => 'required',
             ]);
@@ -280,7 +281,12 @@ class ReportController extends Controller
             $message = 'Pengaduan ini telah selesai!';
 
             // upload bukti pengerjaan
-
+            $filename = null;
+            if ($request->hasFile('bukti')) {
+                $file = $request->file('bukti');
+                $filename = time() . '_' . $file->getClientOriginalName();
+                $file->storeAs('bukti', $filename, 'public'); // Adjust the storage path as needed
+            }
 
             // ubah status penugasan menjadi DONE pada tabel assignments
             $assignments->each(function ($assignment) {
@@ -292,13 +298,17 @@ class ReportController extends Controller
             History::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
-                'status' => $request->status,
+                'status' => 'Selesai',
             ]);
 
             Chat::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
                 'isi' => $request->tanggapan
+            ]);
+
+            Report::where('id', $id)->update([
+                'bukti' => $filename
             ]);
 
             return redirect(route($route))

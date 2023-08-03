@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Report extends Model
 {
-    protected $fillable = ['report_id' ,'user_id', 'judul', 'jenis', 'kategori', 'isi', 'tanggal', 'lampiran'];
+    protected $fillable = ['report_id' ,'user_id', 'judul', 'jenis', 'kategori', 'isi', 'tanggal', 'lampiran', 'bukti'];
 
     public static function search($query)
     {

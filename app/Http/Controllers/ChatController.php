@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Chat;
+use App\Models\Report;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
+use Carbon\Carbon;
 
 class ChatController extends Controller
 {
@@ -34,5 +37,39 @@ class ChatController extends Controller
         } catch (\Throwable $th) {
             return response()->json($th->getMessage(), 500);
         }
+    }
+
+    public function get_chats($reportId)
+    {
+        $report = Report::findOrFail($reportId); // Ganti dengan model dan kolom yang sesuai
+        $chats = $report->chat;
+
+        $response = new StreamedResponse(function () use ($chats) {
+            foreach ($chats as $chat) {
+                $data = [
+                    'id' => $chat->id,
+                    'user' => [
+                        'profile_photo_url' => $chat->user->profile_photo_url,
+                        'name' => $chat->user->name,
+                        'role' => $chat->user->role,
+                        'id' => $chat->user->id,
+                    ],
+                    'created_at' => Carbon::parse($chat->created_at)->diffForHumans(),
+                    'isi' => $chat->isi,
+                ];
+    
+                echo "event: chat\n";
+                echo "data: " . json_encode($data) . "\n\n";
+                ob_flush();
+                flush();
+                usleep(100000); // Jeda untuk mengatur frekuensi pengiriman
+            }
+        });
+    
+        $response->headers->set('Content-Type', 'text/event-stream');
+        $response->headers->set('Cache-Control', 'no-cache');
+        $response->headers->set('Connection', 'keep-alive');
+    
+        return $response;
     }
 }

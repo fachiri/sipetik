@@ -57,9 +57,11 @@ $navigation_links = array_to_object($links);
             <li class="{{ Request::routeIs('permintaan') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('permintaan') }}"><i class="fas fa-hand-paper"></i><span>Permintaan</span></a>
             </li>
+            @if (auth()->user()->role != 'TEKNISI')
             <li class="{{ Request::routeIs('saran') ? 'active' : '' }}">
                 <a class="nav-link" href="{{ route('saran') }}"><i class="fas fa-envelope-open-text"></i><span>Saran</span></a>
             </li>
+            @endif
             @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
                 <li class="menu-header">Lainnya</li>
                 <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">

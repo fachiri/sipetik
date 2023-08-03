@@ -290,10 +290,18 @@
             <span aria-hidden="true">&times;</span>
           </button>  
         </div>
-        <form method="POST" action="{{ route('report.finish', $report->id) }}">
+        <form method="POST" action="{{ route('report.finish', $report->id) }}" enctype="multipart/form-data">
             @csrf
             <input type="hidden" name="status" value="Selesai">
             <div class="modal-body">
+                @error('bukti')
+                    <span class="text-[#FC2947] float-right">{{ $message }}</span>
+                @enderror
+                <label class="font-semibold">Upload Bukti</label>
+                <label for="lampiran_finalisasi" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_finalisasi_label">
+                    Upload Lampiran
+                </label>
+                <input type="file" name="bukti" id="lampiran_finalisasi" class="hidden" />
                 @error('tanggapan')
                     <span class="text-[#FC2947] float-right">{{ $message }}</span>
                 @enderror
@@ -309,3 +317,19 @@
     </div>
 </div>
 @endif
+
+<script>
+    document.getElementById('lampiran_finalisasi').addEventListener('change', function() {
+        updateLabel('lampiran_finalisasi', 'lampiran_finalisasi_label');
+    });
+    function updateLabel(inputId, labelId) {
+        const input = document.getElementById(inputId);
+        const label = document.getElementById(labelId);
+
+        if (input.files && input.files.length > 0) {
+            label.textContent = input.files[0].name;
+        } else {
+            label.textContent = 'Upload Lampiran';
+        }
+    }
+</script>
