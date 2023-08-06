@@ -35,10 +35,17 @@ replyBtn.forEach(button => {
             success: function(response) {
                 textarea.value = '';
                 const chatsContainer = document.querySelector(`.chats-container[id-report="${idReport}"]`);
-                const newElement = document.createElement('div');
-                newElement.className = 'bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300';
-                newElement.textContent = textareaValue;
-                chatsContainer.appendChild(newElement);
+                const dataChatId = chatsContainer.lastElementChild.getAttribute('data-chat-id');
+
+                const chatDiv = document.createElement('div');
+                chatDiv.classList.add('chat-entry', 'flex', 'flex-col');
+                chatDiv.setAttribute('data-chat-id', +dataChatId+1);
+                chatDiv.innerHTML = `
+                    <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
+                        ${textareaValue}
+                    </div>
+                `;
+                chatsContainer.appendChild(chatDiv);
 
                 new Noty({
                     type: 'success',

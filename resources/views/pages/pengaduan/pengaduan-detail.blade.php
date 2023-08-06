@@ -92,31 +92,7 @@
 
   <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
     <h4 class="text-lg font-bold pb-3">Tanggapan</h4>
-    <div id-report="{{$report->id}}" class="chats-container text-sm flex flex-col mb-2">
-      @foreach ($report->chat as $chat)
-          @if ($chat->user_id == auth()->user()->id)
-              <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
-                  {{ $chat->isi }}
-              </div>
-          @else
-              <div>
-                  <div class="flex items-start space-x-2 mb-1 max-w-[90%]">
-                      <img src="{{ asset('assets/img8.png') }}" alt="Profile" width="30" height="30" class="rounded-full">
-                      <div class="border-2 border-l-4 border-slate-300 px-3 py-2 rounded-md mb-3 flex-grow-1">
-                        <div class="mb-1">
-                          <span class="font-semibold text-[#605C5C] mr-2">{{ $chat->user->name }}</span>
-                          <small class="text-slate-500 rounded-lg font-semibold text-[.5rem]">{{ $chat->user->role }} </small>
-                        </div>
-                        <div>
-                          {{ $chat->isi }}
-                        </div>
-                        <small class="text-slate-400 float-right">{{ $chat->created_at }}</small>
-                      </div>
-                  </div>
-              </div>
-          @endif
-      @endforeach
-    </div>
+    <div id-report="{{$report->id}}" class="chats-container text-sm flex flex-col mb-2"></div>
     <div class="flex space-x-3 mb-5">
         <textarea id-report="{{ $report->id }}" class="reply form-control flex-grow h-10 placeholder:italic placeholder:text-slate-400 block bg-white border-2 border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
         <button id-report="{{ $report->id }}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
@@ -127,3 +103,49 @@
 </x-app-layout>
 <script>const user_id = @json(auth()->user()->id);</script>
 <script src="{{ asset('js/custom/handleChat.js') }}"></script>
+<script>
+  const chatsContainer = document.querySelector('.chats-container');
+  const lastReportId = chatsContainer.getAttribute('id-report');
+  
+  const eventSource = new EventSource(`/get-chats/${lastReportId}`);
+
+  eventSource.addEventListener('chat', event => {
+      const chatData = JSON.parse(event.data);
+      const existingChatDiv = document.querySelector(`.chat-entry[data-chat-id="${chatData.id}"]`); // Ganti dengan atribut yang sesuai
+
+      // Jika chat belum ada, tambahkan ke chatsContainer
+      if (!existingChatDiv) {
+          const chatDiv = document.createElement('div');
+          chatDiv.classList.add('chat-entry', 'flex', 'flex-col');
+          chatDiv.setAttribute('data-chat-id', chatData.id);
+
+          if (user_id != chatData.user.id) {
+              chatDiv.innerHTML = `
+                <div>
+                    <div class="flex items-start space-x-2 mb-1 max-w-[90%]">
+                        <img src="${chatData.user.profile_photo_url}" alt="Profile" width="30" height="30" class="rounded-full">
+                        <div class="border-2 border-l-4 border-slate-300 px-3 py-2 rounded-md mb-3 flex-grow-1">
+                          <div class="mb-1">
+                            <span class="font-semibold text-[#605C5C] mr-2">${chatData.user.name}</span>
+                            <small class="text-slate-500 rounded-lg font-semibold text-[.5rem]">${chatData.user.role} </small>
+                          </div>
+                          <div>
+                            ${chatData.isi}
+                          </div>
+                          <small class="text-slate-400 float-right">${chatData.created_at}</small>
+                        </div>
+                    </div>
+                </div>
+              `;
+          } else {
+              chatDiv.innerHTML = `
+                  <div class="bg-[#173D7A] bg-opacity-10 p-3 rounded-md max-w-[90%] mb-3 self-end border-r-4 border-r-slate-300">
+                      ${chatData.isi}
+                  </div>
+              `;
+          }
+          
+          chatsContainer.appendChild(chatDiv);
+      }
+  });
+</script>
