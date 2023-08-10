@@ -111,7 +111,7 @@
                                 </button>
                             </div>
                         </div>
-                        <p class="font-semibold text-center">Periksa Email anda, karena sistem akan memberikan tanggapan terkait laporan anda di Email</p>
+                        <p class="font-semibold text-center">Kami akan mengirimkan tanggapan terkait laporan anda</p>
                     @endif
                 </div>
                 <div id="content2" class="tab-content border-2 border-[#173D7A] p-5 rounded hidden">
