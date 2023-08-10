@@ -262,8 +262,8 @@
                             </div>
                             <div class="text-sm mb-1">
                                 <h5 class="font-medium mb-2 text-[#173D7A]">{{ $allreports[$i]->judul }}</h5>
-                                <p style="display: -webkit-box; display: -moz-box; -webkit-line-clamp: 3; -moz-box-orient: vertical; overflow: hidden; text-overflow: ellipsis;">
-                                    {{ $allreports[$i]->isi . '...' }}
+                                <p>
+                                    {{ mb_strlen($allreports[$i]->isi) > 100 ? mb_substr($allreports[$i]->isi, 0, 100) . '...' : $allreports[$i]->isi }}
                                 </p>
                             </div>
                         </div>
