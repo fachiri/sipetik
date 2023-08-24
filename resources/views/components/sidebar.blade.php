@@ -1,36 +1,36 @@
 @php
 // $links = [
-//     [
-//         "href" => "dashboard",
-//         "text" => "Dashboard",
-//         "is_multi" => false,
-//     ],
-//     [
-//         "href" => [
-//             [
-//                 "section_text" => "User",
-//                 "section_list" => [
-//                     ["href" => "user", "text" => "Data User"],
-//                     ["href" => "user.new", "text" => "Buat User"]
-//                 ]
-//             ]
-//         ],
-//         "text" => "User",
-//         "is_multi" => true,
-//     ],
+// [
+// "href" => "dashboard",
+// "text" => "Dashboard",
+// "is_multi" => false,
+// ],
+// [
+// "href" => [
+// [
+// "section_text" => "User",
+// "section_list" => [
+// ["href" => "user", "text" => "Data User"],
+// ["href" => "user.new", "text" => "Buat User"]
+// ]
+// ]
+// ],
+// "text" => "User",
+// "is_multi" => true,
+// ],
 // ];
 // $navigation_links = array_to_object($links);
 $links = [
-    [
-        "href" => "dashboard",
-        "text" => "Dashboard",
-        "is_header" => false,
-    ],
-    [
-        "href" => "pengaduan",
-        "text" => "Pengaduan",
-        "is_header" => false,
-    ],
+[
+"href" => "dashboard",
+"text" => "Dashboard",
+"is_header" => false,
+],
+[
+"href" => "pengaduan",
+"text" => "Pengaduan",
+"is_header" => false,
+],
 ];
 $navigation_links = array_to_object($links);
 @endphp
@@ -38,7 +38,7 @@ $navigation_links = array_to_object($links);
 <div class="main-sidebar">
     <aside id="sidebar-wrapper">
         <div class="sidebar-brand">
-            <a href="{{ route('dashboard') }}">Dashboard</a>
+            <a href="{{ route('dashboard') }}">SIPETIK</a>
         </div>
         <div class="sidebar-brand sidebar-brand-sm">
             <a href="{{ route('dashboard') }}">
@@ -63,15 +63,15 @@ $navigation_links = array_to_object($links);
             </li>
             @endif
             @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
-                <li class="menu-header">Lainnya</li>
-                <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i>
+            <li class="menu-header">Lainnya</li>
+            <li class="{{ Request::routeIs('pengguna') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('user') }}"><i class="fas fa-user-plus"></i>
                     <span>{{ auth()->user()->role == 'KABID' ? 'Teknisi' : 'Pengguna' }}</span>
-                    </a>
-                </li>
-                <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
-                    <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
-                </li>
+                </a>
+            </li>
+            <li class="{{ Request::routeIs('laporan') ? 'active' : '' }}">
+                <a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
+            </li>
             @endif
         </ul>
     </aside>

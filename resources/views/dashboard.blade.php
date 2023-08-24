@@ -29,7 +29,7 @@
                         <div class="font-semibold text-xl">{{ $total_permintaan }}</div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
@@ -41,7 +41,7 @@
                         <div class="font-semibold text-xl">{{ $total_saran }}</div>
                     </div>
                 </div>
-                
+
             </div>
             <div class="col-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
