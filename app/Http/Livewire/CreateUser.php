@@ -22,14 +22,14 @@ class CreateUser extends Component
             'user.email' => 'required|email|unique:users,email,' . $this->userId
         ] : [
             'user.password' => 'required|min:8|confirmed',
-            'user.password_confirmation' => 'required' // livewire need this
+            'user.password_confirmation' => 'required',
+            'user.role' => 'required',
+            'user.level' => ($this->user && $this->user['role'] == 'TEKNISI') ? '' : 'required',
+            'user.user_id' => ($this->user && $this->user['role'] == 'TEKNISI') ? '' : 'required',
         ];
         return array_merge([
             'user.name' => 'required|min:3',
             'user.email' => 'required|email|unique:users,email',
-            'user.role' => 'required',
-            'user.user_id' => ($this->user && $this->user['role'] == 'TEKNISI') ? '' : 'required',
-            'user.level' => ($this->user && $this->user['role'] == 'TEKNISI') ? '' : 'required',
         ], $rules);
     }
 

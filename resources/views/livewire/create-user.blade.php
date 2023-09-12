@@ -15,18 +15,21 @@
                 <x-jet-input id="name" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="user.name" />
                 <x-jet-input-error for="user.name" class="mt-2" />
             </div>
+            @if ($action == "createUser")
 
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="user_id" value="{{ __('NIP/NIM') }}" />
                 <x-jet-input id="user_id" class="block mt-1 w-full" type="text" name="user_id" wire:model.defer="user.user_id" />
                 <x-jet-input-error for="user.user_id" class="mt-2" />
             </div>
-
+            @endif
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="email" value="{{ __('Email') }}" />
                 <x-jet-input id="email" type="text" class="mt-1 block w-full form-control shadow-none" wire:model.defer="user.email" />
                 <x-jet-input-error for="user.email" class="mt-2" />
             </div>
+
+            @if ($action == "createUser")
 
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="role" value="{{ __('Role') }}" />
@@ -72,7 +75,6 @@
                 <x-jet-input-error for="user.category" class="mt-2" />
             </div>
 
-            @if ($action == "createUser")
             <div class="form-group col-span-6 sm:col-span-5">
                 <x-jet-label for="password" value="{{ __('Password') }}" />
                 <small>Minimal 8 karakter</small>

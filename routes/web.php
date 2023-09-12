@@ -48,7 +48,8 @@ Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'),
 
     Route::get('/user', [ UserController::class, "index_view" ])->name('user');
     Route::view('/user/new', "pages.user.user-new")->name('user.new');
-    Route::view('/user/edit/{userId}', "pages.user.user-edit")->name('user.edit');
+    Route::get('/user/edit/{userId}', [UserController::class, "user_edit" ])->name('user.edit');
+    Route::post('/user/update/{userId}', [UserController::class, "user_update" ])->name('user.update');
 
     Route::get('/laporan', [LaporanController::class, 'index'])->name('laporan');
     Route::get('/export-laporan', [LaporanController::class, 'export_laporan'])->name('export.laporan');

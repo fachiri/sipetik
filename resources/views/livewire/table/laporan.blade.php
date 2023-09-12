@@ -27,6 +27,12 @@
                     </a>
                 </th>
                 <th>
+                    <a wire:click.prevent="sortBy('isi')" role="button" href="#">
+                        Status
+                        @include('components.sort-icon', ['field' => 'isi'])
+                    </a>
+                </th>
+                <th>
                     <a wire:click.prevent="sortBy('judul')" role="button" href="#">
                         Judul
                         @include('components.sort-icon', ['field' => 'judul'])
@@ -46,7 +52,39 @@
                     <td>{{ $loop->iteration }}</td>
                     <td>{{ $report->report_id }}</td>
                     <td>{{ $report->jenis }}</td>
-                    <td>{{ $report->kategori }}</td>
+                    <td>{{ $report->kategori ?? '-' }}</td>
+                    <td class="whitespace-nowrap">
+                        @php
+                            $status = $report->history[count($report->history)-1]->status;
+                            $textColor = '';
+
+                            switch ($status) {
+                                case 'Tulis Laporan':
+                                    $textColor = 'text-slate-500';
+                                    break;
+                                case 'Verifikasi':
+                                    $textColor = 'text-orange-500';
+                                    break;
+                                case 'Proses':
+                                    $textColor = 'text-blue-500';
+                                    break;
+                                case 'Selesai':
+                                    $textColor = 'text-green-500';
+                                    break;
+                                case 'Proses Gagal':
+                                case 'Verifikasi Gagal':
+                                    $status = '&#10060; ' . explode(' ', $status)[0];
+                                    $textColor = 'text-red-500';
+                                    break;
+                                default:
+                                    $textColor = 'text-gray-500';
+                                    break;
+                            }
+                        @endphp
+                        <small class="font-bold {{ $textColor }}">
+                            {!! $report->kategori ? $status : 'Disposisi' !!}
+                        </small>
+                    </td>
                     <td>{{ $report->judul }}</td>
                     <td>{{ $report->isi }}</td>
                 </tr>

@@ -8,7 +8,7 @@
 
     <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg p-4">
         <div class="row mb-5">
-            <div class="col-3">
+            <div class="col-lg-3 col-sm-6 col-12 mb-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
                     <div class="bg-blue-500 text-white w-12 h-12 rounded-lg flex justify-center items-center">
                         <i class="fas fa-bullhorn text-xl"></i>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
+            <div class="col-lg-3 col-sm-6 col-12 mb-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
                     <div class="bg-red-500 text-white w-12 h-12 rounded-lg flex justify-center items-center">
                         <i class="fas fa-hand-paper text-xl"></i>
@@ -31,7 +31,7 @@
                 </div>
 
             </div>
-            <div class="col-3">
+            <div class="col-lg-3 col-sm-6 col-12 mb-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
                     <div class="bg-yellow-500 text-white w-12 h-12 rounded-lg flex justify-center items-center">
                         <i class="fas fa-envelope-open-text text-xl"></i>
@@ -43,7 +43,7 @@
                 </div>
 
             </div>
-            <div class="col-3">
+            <div class="col-lg-3 col-sm-6 col-12 mb-3">
                 <div class="border-2 rounded-md shadow-md p-3 flex space-x-3">
                     <div class="bg-green-500 text-white w-12 h-12 rounded-lg flex justify-center items-center">
                         <i class="fas fa-user text-xl"></i>

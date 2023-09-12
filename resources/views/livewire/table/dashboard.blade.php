@@ -59,36 +59,36 @@
                     <td>{{ $report->user->name }}</td>
                     <td>{{ $report->judul }}</td>
                     <td>{{ $report->jenis }}</td>
-                    <td>{{ $report->kategori }}</td>
+                    <td>{{ $report->kategori ?? '-' }}</td>
                     <td>{{ $report->tanggal }}</td>
                     <td class="whitespace-nowrap">
                         @php
                             switch ($report->prioritas) {
                                 case 'Sangat Urgen':
-                                    $bgColor = 'bg-red-700';
-                                    $textColor = 'text-red-100';
+                                    $bgColor = 'bg-red-500';
+                                    $textColor = 'text-slate-100';
                                     break;
 
                                 case 'Urgen':
-                                    $bgColor = 'bg-red-500';
-                                    $textColor = 'text-red-100';
+                                    $bgColor = 'bg-orange-500';
+                                    $textColor = 'text-slate-100';
                                     break;
-                                    
+
                                 case 'Cukup Urgen':
-                                    $bgColor = 'bg-red-300';
-                                    $textColor = 'text-red-100';
+                                    $bgColor = 'bg-yellow-500';
+                                    $textColor = 'text-gray-500';
                                     break;
-                                    
+
                                 case 'Kurang Urgen':
-                                    $bgColor = 'bg-red-200';
-                                    $textColor = 'text-red-400';
+                                    $bgColor = 'bg-blue-500';
+                                    $textColor = 'text-slate-100';
                                     break;
-                                    
+
                                 case 'Tidak Urgen':
-                                    $bgColor = 'bg-red-50';
-                                    $textColor = 'text-red-400';
+                                    $bgColor = 'bg-green-500';
+                                    $textColor = 'text-slate-50';
                                     break;
-                                
+
                                 default:
                                     # code...
                                     break;
@@ -101,32 +101,44 @@
                     <td class="whitespace-nowrap">
                         @php
                             $status = $report->history[count($report->history)-1]->status;
+                            if (!$report->kategori) {
+                                $status = 'Disposisi';
+                            }
                             $textColor = '';
 
                             switch ($status) {
+                                case 'Disposisi':
+                                    $bgColor = 'bg-[#173D7A]';
+                                    $textColor = 'text-slate-100';
+                                    break;
                                 case 'Tulis Laporan':
-                                    $textColor = 'text-slate-500';
+                                    $bgColor = 'bg-indigo-500';
+                                    $textColor = 'text-slate-100';
                                     break;
                                 case 'Verifikasi':
-                                    $textColor = 'text-orange-500';
+                                    $bgColor = 'bg-stone-400';
+                                    $textColor = 'text-slate-100';
                                     break;
                                 case 'Proses':
-                                    $textColor = 'text-blue-500';
+                                    $bgColor = 'bg-orange-500';
+                                    $textColor = 'text-slate-100';
                                     break;
                                 case 'Selesai':
-                                    $textColor = 'text-green-500';
+                                    $bgColor = 'bg-green-600';
+                                    $textColor = 'text-slate-100';
                                     break;
                                 case 'Proses Gagal':
                                 case 'Verifikasi Gagal':
                                     $status = '&#10060; ' . explode(' ', $status)[0];
-                                    $textColor = 'text-red-500';
+                                    $bgColor = 'bg-red-500';
+                                    $textColor = 'text-slate-100';
                                     break;
                                 default:
                                     $textColor = 'text-gray-500';
                                     break;
                             }
                         @endphp
-                        <small class="font-bold {{ $textColor }}">
+                        <small class="{{ $textColor }} {{ $bgColor }} px-2 py-1 rounded font-semibold">
                             {!! $status !!}
                         </small>
                     </td>

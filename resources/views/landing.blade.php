@@ -1,4 +1,4 @@
-<x-guest-layout> 
+<x-guest-layout>
     <div class="bg-[#173D7A] text-white pb-10">
         <h1 class="text-center text-2xl mx-5 md:text-3xl font-bold mb-5 leading-normal">Layanan Pengaduan <br> UPT TIK Universitas Negeri Gorontalo</h1>
         <p class="text-center text-sm md:text-lg mx-5 font-base">Sampaikan keluhan anda terkait masalah layanan UPT TIK Universitas Negeri Gorontalo</p>
@@ -19,7 +19,7 @@
                     <input type="hidden" name="jenis" value="Permintaan">
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Permintaan">
                     <textarea name="isi" id="isi_permintaan" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Permintaan"></textarea>
-                    <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Deadline Permintaan" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
+                    <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Tanggal Acara" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
                     <label for="lampiran_permintaan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_permintaan_label">
                         Upload Lampiran
                     </label>
@@ -79,10 +79,10 @@
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Saran">
                     <textarea name="isi" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Saran">{{ old('isi') }}</textarea>
                     <input type="hidden" name="tanggal" value="{{ now()->addDay()->format('Y-m-d') }}">
-                    <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_saran_label">
+                    {{-- <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_saran_label">
                         Upload Lampiran
                     </label>
-                    <input type="file" name="lampiran" id="lampiran_saran" class="hidden" />
+                    <input type="file" name="lampiran" id="lampiran_saran" class="hidden" /> --}}
                     <div class="text-center">
                         <button type="submit" class="bg-[#FC2947] px-8 py-2 rounded-xl font-semibold text-white">
                             @auth

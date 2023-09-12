@@ -36,7 +36,7 @@ trait WithDataTable {
         $matriks = collect([]);
         $today = Carbon::now();
         for ($i=0; $i < $reports->count(); $i++) {
-            $deadline = Carbon::parse($reports[$i]->tanggal); 
+            $deadline = Carbon::parse($reports[$i]->tanggal);
             $matriks['A'.$i+1] = [
                 'ID' => $reports[$i]->id,
                 'C1' => $this->get_atribut_kriteria('C1', $reports[$i]->user->level),
@@ -87,19 +87,19 @@ trait WithDataTable {
             $item->urutan = $key + 1;
             $item->prioritas = $prefensi['A'.($key+1)]['kategori'];
             $item->prefensi = $prefensi['A'.($key+1)]['nilai'];
-        
+
             return $item;
         });
 
         $reports->setCollection($reports->getCollection()->sortByDesc(function ($item) use ($prefensi) {
             return $prefensi['A'.$item->urutan]['nilai'];
         }));
-        
+
         $reports->setCollection($reports->getCollection());
 
         return $reports;
     }
-    
+
     public function get_pagination_data()
     {
         switch ($this->name) {
@@ -195,6 +195,7 @@ trait WithDataTable {
 
             case 'laporan':
                 $reports = $this->model::search($this->search)
+                    ->with('history')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage);
 

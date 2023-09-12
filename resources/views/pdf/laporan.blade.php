@@ -10,6 +10,7 @@
       }
       body {
           line-height: 1.5;
+          width: 100%;
       }
       .header {
           text-align: center;
@@ -50,6 +51,10 @@
       }
       .content {
         font-size: 10pt;
+        width: 100%;
+      }
+      .td-grow {
+        width: 100%
       }
     </style>
 </head>
@@ -73,6 +78,7 @@
               <th>ID Laporan</th>
               <th>Jenis</th>
               <th>Kategori</th>
+              <th>Status</th>
               <th>Judul</th>
               <th>Isi</th>
           </tr>
@@ -83,9 +89,10 @@
                   <td>{{ $loop->iteration }}</td>
                   <td>{{ $report->report_id }}</td>
                   <td>{{ $report->jenis }}</td>
-                  <td>{{ $report->kategori }}</td>
+                  <td>{{ $report->kategori ?? '-' }}</td>
+                  <td>{{ $report->kategori ? $report->history[count($report->history)-1]->status : 'Disposisi' }}</td>
                   <td>{{ $report->judul }}</td>
-                  <td>{{ $report->isi }}</td>
+                  <td class="td-grow">{{ $report->isi }}</td>
               </tr>
           @endforeach
       </tbody>

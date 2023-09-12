@@ -50,7 +50,7 @@
                                     <a role="button" href="/user/edit/{{ $user->id }}" class="mr-3"><i class="fa fa-16px fa-pen"></i></a>
                                     <a role="button" x-on:click.prevent="deleteItem" href="#"><i class="fa fa-16px fa-trash text-red-500"></i></a>
                                 </td>
-                            </tr>    
+                            </tr>
                         @endif
                     @endif
                 @else

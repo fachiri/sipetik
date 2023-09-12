@@ -1,124 +1,140 @@
 <x-app-layout>
-  <x-slot name="header_content">
-      <h1>Detail {{ $report->jenis }} {{ $report->report_id }}</h1>
-      <div class="section-header-breadcrumb">
-          <div class="breadcrumb-item active">Monitoring</div>
-          <div class="breadcrumb-item"><a href="{{ route('pengaduan') }}">Pengaduan</a></div>
-          <div class="breadcrumb-item">Detail {{ $report->report_id }}</div>
-      </div>
-  </x-slot>
+    <x-slot name="header_content">
+        <h1>Detail {{ $report->jenis }} {{ $report->report_id }}</h1>
+        <div class="section-header-breadcrumb">
+            <div class="breadcrumb-item active">Monitoring</div>
+            <div class="breadcrumb-item"><a href="{{ route('pengaduan') }}">Pengaduan</a></div>
+            <div class="breadcrumb-item">Detail {{ $report->report_id }}</div>
+        </div>
+    </x-slot>
 
-  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-    <h4 class="text-lg font-bold pb-3">Kategori - {{ $report->kategori }}</h4>
-    <div class="flex justify-between items-start">
-      <div class="flex items-start space-x-2 mb-3">
-          <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
-          <div class="flex flex-col justify-between">
-              <h5 class="font-semibold text-[#605C5C] text-base">{{ $report->user->name }}</h5>
-              <span class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $report->created_at }}</span></span>
-          </div>
-      </div>
-      @php
-        $status = $report->history[count($report->history)-1]->status;
-          switch ($status) {
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+        <h4 class="text-lg font-bold pb-3">Kategori - {{ $report->kategori }}</h4>
+        <div class="flex justify-between items-start">
+            <div class="flex items-start space-x-2 mb-3">
+                <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="48" height="48"
+                    class="border-2 border-blue-100 rounded-md">
+                <div class="flex flex-col justify-between">
+                    <h5 class="font-semibold text-[#605C5C] text-base">{{ $report->user->name }}</h5>
+                    <span class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $report->created_at }}</span></span>
+                </div>
+            </div>
+            @php
+            $status = $report->history[count($report->history)-1]->status;
+            if (!$report->kategori) {
+            $status = 'Disposisi';
+            }
+            $textColor = '';
+
+            switch ($status) {
+            case 'Disposisi':
+            $bgColor = 'bg-[#173D7A]';
+            $textColor = 'text-slate-100';
+            break;
             case 'Tulis Laporan':
-                $textColor = 'text-slate-500';
-                $borderColor = 'border-slate-500';
-                break;
+            $bgColor = 'bg-indigo-500';
+            $textColor = 'text-slate-100';
+            break;
             case 'Verifikasi':
-                $textColor = 'text-orange-500';
-                $borderColor = 'border-orange-500';
-                break;
+            $bgColor = 'bg-stone-400';
+            $textColor = 'text-slate-100';
+            break;
             case 'Proses':
-                $textColor = 'text-blue-500';
-                $borderColor = 'border-blue-500';
-                break;
+            $bgColor = 'bg-orange-500';
+            $textColor = 'text-slate-100';
+            break;
             case 'Selesai':
-                $textColor = 'text-green-500';
-                $borderColor = 'border-green-500';
-                break;
+            $bgColor = 'bg-green-600';
+            $textColor = 'text-slate-100';
+            break;
             case 'Proses Gagal':
             case 'Verifikasi Gagal':
-                $status = '&#10060; ' . explode(' ', $status)[0];
-                $textColor = 'text-red-500';
-                $borderColor = 'border-red-500';
-                break;
+            $status = '&#10060; ' . explode(' ', $status)[0];
+            $bgColor = 'bg-red-500';
+            $textColor = 'text-slate-100';
+            break;
             default:
-                $textColor = 'text-gray-500';
-                $borderColor = 'border-gray-500';
-                break;
-          }
-      @endphp
-      <span class="border-2 {{$borderColor}} rounded-xl {{$textColor}} font-bold px-3 py-1">
-        {!! $status !!}
-      </span>
+            $textColor = 'text-gray-500';
+            break;
+            }
+            @endphp
+            <span class="{{$bgColor}} rounded-xl {{$textColor}} font-bold px-3 py-1">
+                {!! $status !!}
+            </span>
+        </div>
+        <div class="border-2 border-b-8 rounded-bl-xl rounded-tr-xl px-4 py-3">
+            <h5 class="text-lg font-bold mb-2">{{ $report->judul }}</h5>
+            <div class="flex space-x-3">
+                @if ($report->lampiran)
+                <div class="mb-3">
+                    <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}"
+                        class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                        <i class="fas fa-file-image"></i>
+                        Lampiran -
+                        {{ $report->lampiran }}
+                    </a>
+                </div>
+                @endif
+                @if ($report->bukti)
+                <div class="mb-3">
+                    <a href="{{ asset('storage/bukti/'.$report->bukti) }}"
+                        class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
+                        <i class="fas fa-file-image"></i>
+                        Bukti -
+                        {{ $report->bukti }}
+                    </a>
+                </div>
+                @endif
+            </div>
+            <div>
+                {{ $report->isi }}
+            </div>
+        </div>
     </div>
-    <div class="border-2 border-b-8 rounded-bl-xl rounded-tr-xl px-4 py-3">
-        <h5 class="text-lg font-bold mb-2">{{ $report->judul }}</h5>
-        <div class="flex space-x-3">
-          @if ($report->lampiran)
-              <div class="mb-3">
-                  <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
-                      <i class="fas fa-file-image"></i>
-                      Lampiran - 
-                      {{ $report->lampiran }}
-                  </a>
-              </div>
-          @endif
-          @if ($report->bukti)
-              <div class="mb-3">
-                  <a href="{{ asset('storage/bukti/'.$report->bukti) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
-                      <i class="fas fa-file-image"></i>
-                      Bukti - 
-                      {{ $report->bukti }}
-                  </a>
-              </div>
-          @endif
-      </div>
-      <div>
-        {{ $report->isi }}
-      </div>
-    </div>
-  </div>
 
-  @if ($status == 'Verifikasi' || $status == 'Proses' || $status == '&#10060; Proses' || $status == 'Selesai')
+    @if ($status == 'Verifikasi' || $status == 'Proses' || $status == '&#10060; Proses' || $status == 'Selesai')
     @if (auth()->user()->role == 'KABID' || auth()->user()->role == 'ADMIN')
-      <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-          <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
-          <div class="row">
-              @foreach ($report->teknisi as $teknisi)
-                  <div class="col-4">
-                      <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
-                          <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48" class="border-2 border-blue-100 rounded-md">
-                          <div>
-                              <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
-                              <div>{{ $teknisi->pivot->status }}</div>
-                          </div>
-                      </div>
-                  </div>
-              @endforeach
-          </div>
-      </div>
-    @endif
-  @endif
-
-  <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-    <h4 class="text-lg font-bold pb-3">Tanggapan</h4>
-    <div id-report="{{$report->id}}" class="chats-container text-sm flex flex-col mb-2"></div>
-    <div class="flex space-x-3 mb-5">
-        <textarea id-report="{{ $report->id }}" class="reply form-control flex-grow h-10 placeholder:italic placeholder:text-slate-400 block bg-white border-2 border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none" placeholder="Kirim Tanggapan"></textarea>
-        <button id-report="{{ $report->id }}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
-            <i class="fas fa-paper-plane"></i>
-        </button>
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+        <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
+        <div class="row">
+            @foreach ($report->teknisi as $teknisi)
+            <div class="col-4">
+                <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
+                    <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48"
+                        class="border-2 border-blue-100 rounded-md">
+                    <div>
+                        <div class="font-bold text-base">{{ $teknisi->user->name }}</div>
+                        <div>{{ $teknisi->pivot->status }}</div>
+                    </div>
+                </div>
+            </div>
+            @endforeach
+        </div>
     </div>
-  </div>
+    @endif
+    @endif
+
+    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
+        <h4 class="text-lg font-bold pb-3">Tanggapan</h4>
+        <div id-report="{{$report->id}}" class="chats-container text-sm flex flex-col mb-2"></div>
+        <div class="flex space-x-3 mb-5">
+            <textarea id-report="{{ $report->id }}"
+                class="reply form-control flex-grow h-10 placeholder:italic placeholder:text-slate-400 block bg-white border-2 border-slate-300 rounded-md py-2 pl-3 pr-3 shadow-sm focus:outline-none focus:border-[#173D7A] focus:ring-[#173D7A] focus:ring-1 sm:text-sm resize-none"
+                placeholder="Kirim Tanggapan"></textarea>
+            <button id-report="{{ $report->id }}" class="replyBtn w-10 h-10 rounded-md bg-[#173D7A] text-white">
+                <i class="fas fa-paper-plane"></i>
+            </button>
+        </div>
+    </div>
 </x-app-layout>
-<script>const user_id = @json(auth()->user()->id);</script>
+<script>
+    const user_id = @json(auth()->user()->id);
+</script>
 <script src="{{ asset('js/custom/handleChat.js') }}"></script>
 <script>
-  const chatsContainer = document.querySelector('.chats-container');
+    const chatsContainer = document.querySelector('.chats-container');
   const lastReportId = chatsContainer.getAttribute('id-report');
-  
+
   const eventSource = new EventSource(`/get-chats/${lastReportId}`);
 
   eventSource.addEventListener('chat', event => {
@@ -156,7 +172,7 @@
                   </div>
               `;
           }
-          
+
           chatsContainer.appendChild(chatDiv);
       }
   });

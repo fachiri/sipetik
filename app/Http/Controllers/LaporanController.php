@@ -22,11 +22,11 @@ class LaporanController extends Controller
 
     public function export_laporan()
     {
-        $reports = Report::all();
+        $reports = Report::with('history')->get();
         $options = new Options();
         $options->set('isRemoteEnabled', true);
         $dompdf = new Dompdf($options);
-        $dompdf->setPaper('A4', 'portrait');
+        $dompdf->setPaper('Legal', 'portrait');
         $html = view('pdf.laporan')
             ->with('reports', $reports)
             ->render();
