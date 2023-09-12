@@ -130,7 +130,6 @@ trait WithDataTable {
                         ]
                     ])
                 ];
-                break;
 
             case 'pengaduan':
                 $reports = $this->get_prioritas_dengan_spk(
@@ -139,7 +138,7 @@ trait WithDataTable {
                     ->when($this->selectedCategory, function ($query) {
                         return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->with('user', 'history')
+                    ->with('user', 'history', 'chat')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage)
                 );
@@ -151,7 +150,6 @@ trait WithDataTable {
                         'actions' => []
                     ])
                 ];
-                break;
 
             case 'permintaan':
                 $reports = $this->get_prioritas_dengan_spk(
@@ -160,7 +158,7 @@ trait WithDataTable {
                     ->when($this->selectedCategory, function ($query) {
                         return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->with('user', 'history')
+                    ->with('user', 'history', 'chat')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage)
                 );
@@ -172,7 +170,6 @@ trait WithDataTable {
                         'actions' => []
                     ])
                 ];
-                break;
 
             case 'saran':
                 $reports = $this->model::search($this->search)
@@ -180,7 +177,7 @@ trait WithDataTable {
                     ->when($this->selectedCategory, function ($query) {
                         return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->with('user', 'history')
+                    ->with('user', 'history', 'chat')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage);
 
@@ -191,7 +188,6 @@ trait WithDataTable {
                         'actions' => []
                     ])
                 ];
-                break;
 
             case 'laporan':
                 $reports = $this->model::search($this->search)
@@ -214,7 +210,6 @@ trait WithDataTable {
                         ]
                     ])
                 ];
-                break;
 
             case 'dashboard':
                 $reports = $this->get_prioritas_dengan_spk(

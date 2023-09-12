@@ -108,7 +108,7 @@ class ReportController extends Controller
                     'status' => 'required',
                     'teknisi' => auth()->user()->role == 'KABID' ? 'required' : '',
                 ]);
-    
+
                 if ($validator->fails()) {
                     throw new ValidationException($validator);
                 }
@@ -118,7 +118,7 @@ class ReportController extends Controller
                 case 'Pengaduan':
                     $route = 'pengaduan';
                     break;
-                
+
                 case 'Permintaan':
                     $route = 'permintaan';
                     break;
@@ -156,7 +156,8 @@ class ReportController extends Controller
             Chat::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
-                'isi' => $request->tanggapan
+                'isi' => $request->tanggapan,
+                'read_status' => 1
             ]);
 
             return redirect(route($route))
@@ -186,7 +187,7 @@ class ReportController extends Controller
                 case 'Pengaduan':
                     $route = 'pengaduan';
                     break;
-                
+
                 case 'Permintaan':
                     $route = 'permintaan';
                     break;
@@ -201,7 +202,7 @@ class ReportController extends Controller
             }
 
             $assignments = Assignment::where('report_id', $id)->get();
-            
+
             if ($request->status == 'Proses') {
                 $message = 'Pengaduan ini telah diproses!';
                 // ubah status penugasan menjadi WORKING pada tabel assignments
@@ -228,11 +229,12 @@ class ReportController extends Controller
                 'status' => $request->status,
             ]);
 
-            
+
             Chat::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
-                'isi' => $request->tanggapan
+                'isi' => $request->tanggapan,
+                'read_status' => 1
             ]);
 
             return redirect(route($route))
@@ -263,7 +265,7 @@ class ReportController extends Controller
                 case 'Pengaduan':
                     $route = 'pengaduan';
                     break;
-                
+
                 case 'Permintaan':
                     $route = 'permintaan';
                     break;
@@ -294,7 +296,7 @@ class ReportController extends Controller
                     'status' => 'DONE'
                 ]);
             });
-            
+
             History::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
@@ -304,7 +306,8 @@ class ReportController extends Controller
             Chat::create([
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
-                'isi' => $request->tanggapan
+                'isi' => $request->tanggapan,
+                'read_status' => 1
             ]);
 
             Report::where('id', $id)->update([
@@ -340,7 +343,7 @@ class ReportController extends Controller
                 ],
                 'lampiran' => $request->jenis == 'Permintaan' ? 'required' : '',
             ]);
-            
+
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -381,7 +384,8 @@ class ReportController extends Controller
             Chat::create([
                 'user_id' => 1,
                 'report_id' => $report->id,
-                'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!'
+                'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!',
+                'read_status' => 1
             ]);
 
             return redirect(route('report'))

@@ -20,7 +20,7 @@ class ChatController extends Controller
                 'user_id' => 'required',
                 'isi' => 'required',
             ]);
-    
+
             if ($validator->fails()) {
                 throw new ValidationException($validator);
             }
@@ -30,7 +30,7 @@ class ChatController extends Controller
                 'report_id' => $request->report_id,
                 'isi' => $request->isi
             ]);
-    
+
             return response()->json('Tanggapan berhasil dibuat!', 201);
         } catch (ValidationException $e) {
             return response()->json($e->errors(), 422);
@@ -57,7 +57,7 @@ class ChatController extends Controller
                     'created_at' => Carbon::parse($chat->created_at)->diffForHumans(),
                     'isi' => $chat->isi,
                 ];
-    
+
                 echo "event: chat\n";
                 echo "data: " . json_encode($data) . "\n\n";
                 ob_flush();
@@ -65,11 +65,28 @@ class ChatController extends Controller
                 usleep(100000); // Jeda untuk mengatur frekuensi pengiriman
             }
         });
-    
+
         $response->headers->set('Content-Type', 'text/event-stream');
         $response->headers->set('Cache-Control', 'no-cache');
         $response->headers->set('Connection', 'keep-alive');
-    
+
         return $response;
+    }
+
+    public function read_chats($reportId)
+    {
+        try {
+            Chat::where('report_id', $reportId)->update([
+                'read_status' => 1
+            ]);
+            return redirect()
+                ->back()
+                ->with('success', 'Pesan telah dibaca');
+        } catch (\Exception $e) {
+            return redirect()
+                ->back()
+                ->with('error', $e->getMessage())
+                ->withInput();
+        }
     }
 }

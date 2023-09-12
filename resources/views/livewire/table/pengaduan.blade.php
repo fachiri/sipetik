@@ -87,6 +87,12 @@
                     </td>
                     <td class="whitespace-nowrap">
                         @php
+                            $count = 0;
+                            foreach ($report->chat as $chat) {
+                                if ($chat->read_status === 0) {
+                                    $count++;
+                                }
+                            }
                             $status = $report->history[count($report->history)-1]->status;
                             if (!$report->kategori) {
                                 $status = 'Disposisi';
@@ -131,7 +137,12 @@
                     </td>
                     <td class="whitespace-nowrap row-action--icon flex space-x-2">
                         <a role="button" href="{{ route('pengaduan.edit', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/edit.svg') }}" alt="Icon"></a>
-                        <a role="button" href="{{ route('pengaduan.detail', $report->report_id) }}" class="w-6"><img src="{{ asset('assets/detail.svg') }}" alt="Icon"></a>
+                        <a role="button" href="{{ route('pengaduan.detail', $report->report_id) }}" class="w-6 relative">
+                            <img src="{{ asset('assets/detail.svg') }}" alt="Icon">
+                            @if ($count > 0)
+                                <div class="absolute inline-flex items-center justify-center w-5 h-5 text-[.6rem] font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -right-2 dark:border-gray-900">{{ $count }}</div>
+                            @endif
+                        </a>
                     </td>
                 </tr>
             @endforeach
