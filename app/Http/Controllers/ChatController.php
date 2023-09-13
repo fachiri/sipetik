@@ -89,4 +89,16 @@ class ChatController extends Controller
                 ->withInput();
         }
     }
+
+    public function get_total_chat($userId)
+    {
+        try {
+            $reports = Report::where('user_id', $userId)->with('chat')->get();
+            return response()
+                ->json($reports, 200);
+        } catch (\Exception $e) {
+            return response()
+                ->json($e->getMessage(), 500);
+        }
+    }
 }

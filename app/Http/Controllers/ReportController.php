@@ -157,7 +157,6 @@ class ReportController extends Controller
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
                 'isi' => $request->tanggapan,
-                'read_status' => 1
             ]);
 
             return redirect(route($route))
@@ -234,7 +233,6 @@ class ReportController extends Controller
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
                 'isi' => $request->tanggapan,
-                'read_status' => 1
             ]);
 
             return redirect(route($route))
@@ -307,7 +305,6 @@ class ReportController extends Controller
                 'user_id' => auth()->user()->id,
                 'report_id' => $id,
                 'isi' => $request->tanggapan,
-                'read_status' => 1
             ]);
 
             Report::where('id', $id)->update([
@@ -385,7 +382,6 @@ class ReportController extends Controller
                 'user_id' => 1,
                 'report_id' => $report->id,
                 'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!',
-                'read_status' => 1
             ]);
 
             return redirect(route('report'))

@@ -17,10 +17,17 @@
                 <form method="POST" action="{{ route('report.store') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="jenis" value="Permintaan">
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Permintaan">
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <textarea name="isi" id="isi_permintaan" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Permintaan"></textarea>
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Tanggal Acara" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
-                    <label for="lampiran_permintaan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_permintaan_label">
+                    @error('lampiran_permintaan')
+                        <small class="text-[#FC2947] float-right">{{ $message }}</small>
+                    @enderror
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
+                    <label for="lampiran_permintaan" class="w-full flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_permintaan_label">
                         Upload Lampiran
                     </label>
                     <input type="file" name="lampiran" id="lampiran_permintaan" class="hidden" />
@@ -43,14 +50,17 @@
                     @error('judul')
                         <small class="text-[#FC2947] float-right">{{ $message }}</small>
                     @enderror
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Pengaduan" value="{{ old('judul') }}">
                     @error('isi')
                         <small class="text-[#FC2947] float-right">{{ $message }}</small>
                     @enderror
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <textarea name="isi" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Aduan">{{ old('isi') }}</textarea>
                     @error('tanggal')
                         <small class="text-[#FC2947] float-right">{{ $message }}</small>
                     @enderror
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <input type="text" name="tanggal" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 placeholder:text-[#B1A6A6] placeholder:font-semibold font-medium mb-2" placeholder="Masukkan Deadline Pengaduan" onfocus="(this.type='date')" onblur="(this.type='text')" value="{{ old('tanggal') }}">
                     <label for="lampiran_pengaduan" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_pengaduan_label">
                         Upload Lampiran
@@ -76,7 +86,9 @@
                 <form method="POST" action="{{ route('report.store') }}" enctype="multipart/form-data">
                     @csrf
                     <input type="hidden" name="jenis" value="Saran">
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <input type="text" name="judul" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Judul Saran">
+                    <small class="text-[#FC2947] float-left text-xs">(Wajib diisi)</small>
                     <textarea name="isi" id="isi_saran" cols="30" rows="10" class="w-full rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 font-medium placeholder:text-[#B1A6A6] placeholder:font-semibold mb-2" placeholder="Isi Saran">{{ old('isi') }}</textarea>
                     <input type="hidden" name="tanggal" value="{{ now()->addDay()->format('Y-m-d') }}">
                     {{-- <label for="lampiran_saran" class="flex rounded border-2 border-[#D9D9D9] text-xs py-3 px-6 mb-3 text-[#B1A6A6] font-semibold cursor-pointer" id="lampiran_saran_label">

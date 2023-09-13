@@ -45,7 +45,10 @@
         <span id="nav-content" class="hidden md:flex space-x-8 items-center">
           <a href="{{ route('home') }}" class="font-medium {{ request()->routeIs('home') ? 'font-bold' : '' }}">BERANDA</a>
           <a href="{{ route('about') }}" class="font-medium {{ request()->routeIs('about') ? 'font-bold' : '' }}">TENTANG PETIK</a>
-          <a href="{{ route('report') }}" class="font-medium {{ request()->routeIs('report') ? 'font-bold' : '' }}">MONITORING</a>
+          <a href="{{ route('report') }}" class="font-medium {{ request()->routeIs('report') ? 'font-bold' : '' }}">
+            MONITORING
+            <span id="total-chat"></span>
+          </a>
           <span class="flex md:hidden space-x-5 items-center justify-between pt-2 pb-3">
             @guest
             <a href="{{ route('login') }}" class="basis-1/2 text-center font-semibold py-1 border-2 rounded-lg">MASUK</a>
@@ -169,6 +172,36 @@
       navContent.classList.toggle("border-b-2");
     })
   </script>
+
+  @if (auth()->user() !== null)
+    <script>
+        fetch(`${@json(route('chat.total', ['userId' => auth()->user()->id]))}`, {
+            method: 'GET',
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
+        .then((data) => {
+            let count = 0
+            data.forEach(report => {
+                report.chat.forEach(chat => {
+                    if(chat.read_status === 0) count++
+                });
+            });
+            if (count > 0) {
+                $('#total-chat').html(`<span class="bg-white text-red-500 px-1 text-sm rounded ml-1">${count}</span>`)
+            }
+        })
+        .catch((error) => {
+            console.error('There was a problem with the fetch operation:', error);
+        });
+    </script>
+  @endif
+
+
 </body>
 
 </html>

@@ -24,6 +24,7 @@ Route::view('/about', 'about')->name('about');
 Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 Route::get('/chat/read/{reportId}', [ChatController::class, 'read_chats'])->name('chat.read');
 Route::get('/get-chats/{reportId}', [ChatController::class, 'get_chats']);
+Route::get('/get-total-chat/{userId}', [ChatController::class, 'get_total_chat'])->name('chat.total');
 
 Route::group(["middleware" => ['role:PENGGUNA']], function() {
     Route::get('/report', [ReportController::class, 'index'])->name('report');

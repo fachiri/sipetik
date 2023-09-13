@@ -1,4 +1,4 @@
-<x-guest-layout> 
+<x-guest-layout>
     <div class="w-screen min-h-screen bg-[url('/assets/bg3.png')] bg-top mb-20 bg-no-repeat bg-100-auto">
         <div class="container mx-auto flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-10 md:items-start px-5 md:px-0">
             <div class="basis-full md:basis-9/12 bg-white p-5 shadow-xl rounded">
@@ -52,19 +52,24 @@
                             }
                         @endphp
                         <div class="border-b-2 mb-5">
-                            <div class="flex items-start space-x-2 mb-2">
-                                <img src="{{ $lastReport->user->profile_photo_url }}" alt="Profile" width="45" height="45" class="border-2 border-blue-100 rounded-md">
-                                <div>
-                                    <h5 class="font-semibold text-[#605C5C]">{{ $lastReport->judul }}</h5>
-                                    <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $lastReport->created_at }}</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-start space-x-2 mb-2">
+                                    <img src="{{ $lastReport->user->profile_photo_url }}" alt="Profile" width="45" height="45" class="border-2 border-blue-100 rounded-md">
+                                    <div>
+                                        <h5 class="font-semibold text-[#605C5C]">{{ $lastReport->judul }}</h5>
+                                        <small class="text-[#605C5C]"><span class="text-[#173D7A]">{{ $lastReport->created_at }}</span> &#x2022; {{ $lastReport->jenis }} - {{ $lastReport->kategori }}</small>
+                                    </div>
                                 </div>
+                                <a role="button" href="{{ route('chat.read', $lastReport->id) }}" class="bg-[#173D7A] text-white px-2 py-1 rounded relative">
+                                    <i class="fas fa-envelope"></i>
+                                </a>
                             </div>
                             <div class="flex space-x-3">
                                 @if ($lastReport->lampiran)
                                     <div class="mb-3">
                                         <a href="{{ asset('storage/lampiran/'.$lastReport->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                                             <i class="fas fa-file-image"></i>
-                                            Lampiran - 
+                                            Lampiran -
                                             {{ $lastReport->lampiran }}
                                         </a>
                                     </div>
@@ -73,7 +78,7 @@
                                     <div class="mb-3">
                                         <a href="{{ asset('storage/bukti/'.$lastReport->bukti) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                                             <i class="fas fa-file-image"></i>
-                                            Bukti - 
+                                            Bukti -
                                             {{ $lastReport->bukti }}
                                         </a>
                                     </div>
@@ -147,7 +152,7 @@
                                         <div class="mb-3">
                                             <a href="{{ asset('storage/lampiran/'.$myreport->lampiran) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                                                 <i class="fas fa-file-image"></i>
-                                                Lampiran - 
+                                                Lampiran -
                                                 {{ $myreport->lampiran }}
                                             </a>
                                         </div>
@@ -156,7 +161,7 @@
                                         <div class="mb-3">
                                             <a href="{{ asset('storage/bukti/'.$myreport->bukti) }}" class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                                                 <i class="fas fa-file-image"></i>
-                                                Bukti - 
+                                                Bukti -
                                                 {{ $myreport->bukti }}
                                             </a>
                                         </div>
@@ -272,13 +277,13 @@
             </div>
         </div>
     </div>
-</x-guest-layout> 
+</x-guest-layout>
 <script>const user_id = @json(auth()->user()->id);</script>
 <script src="{{ asset('js/custom/handleChat.js') }}"></script>
 <script>
     const chatsContainer = document.querySelector('.chats-container');
     const lastReportId = chatsContainer.getAttribute('id-report');
-    
+
     const eventSource = new EventSource(`/get-chats/${lastReportId}`);
 
     eventSource.addEventListener('chat', event => {
@@ -313,7 +318,7 @@
                     </div>
                 `;
             }
-            
+
             chatsContainer.appendChild(chatDiv);
         }
     });
