@@ -27,9 +27,9 @@
                     }
                 }
                 $status = $report->history[count($report->history)-1]->status;
-                if (!$report->kategori) {
-                    $status = 'Disposisi';
-                }
+                if ($report->kategori && $status === 'Tulis Laporan') {
+                                $status = 'Disposisi';
+                            }
                 $textColor = '';
 
                 switch ($status) {
