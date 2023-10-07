@@ -73,7 +73,7 @@
 					<a class="nav-link" href="{{ route('laporan') }}"><i class="fas fa-file-alt"></i><span>Laporan</span></a>
 				</li>
                 <li class="{{ Request::routeIs('feedback') ? 'active' : '' }}">
-					<a class="nav-link" href="{{ route('feedback.index') }}"><i class="fas fa-file-alt"></i><span>Feedback</span></a>
+					<a class="nav-link" href="{{ route('feedback.index') }}"><i class="fas fa-smile"></i><span>Feedback</span></a>
 				</li>
 			@endif
 		</ul>
