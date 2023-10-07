@@ -47,6 +47,9 @@
 </head>
 
 <body class="antialiased">
+    @if (session('notifications'))
+        <x-notif />
+    @endif
     <div id="app">
         <div class="main-wrapper">
             @include('components.navbar')

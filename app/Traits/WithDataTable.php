@@ -1,10 +1,12 @@
 <?php
 
 namespace App\Traits;
+
 use App\Models\AttrCriteria;
 use Carbon\Carbon;
 
-trait WithDataTable {
+trait WithDataTable
+{
 
     public function get_atribut_kriteria($kode, $kriteria)
     {
@@ -35,12 +37,12 @@ trait WithDataTable {
         ]);
         $matriks = collect([]);
         $today = Carbon::now();
-        for ($i=0; $i < $reports->count(); $i++) {
+        for ($i = 0; $i < $reports->count(); $i++) {
             $deadline = Carbon::parse($reports[$i]->tanggal);
-            $matriks['A'.$i+1] = [
+            $matriks['A' . $i + 1] = [
                 'ID' => $reports[$i]->id,
                 'C1' => $this->get_atribut_kriteria('C1', $reports[$i]->user->level),
-                'C2' => $this->get_atribut_kriteria('C2', $deadline->diff($today)->days+1)
+                'C2' => $this->get_atribut_kriteria('C2', $deadline->diff($today)->days + 1)
             ];
         }
 
@@ -85,14 +87,14 @@ trait WithDataTable {
 
         $reports->getCollection()->transform(function ($item, $key) use ($prefensi) {
             $item->urutan = $key + 1;
-            $item->prioritas = $prefensi['A'.($key+1)]['kategori'];
-            $item->prefensi = $prefensi['A'.($key+1)]['nilai'];
+            $item->prioritas = $prefensi['A' . ($key + 1)]['kategori'];
+            $item->prefensi = $prefensi['A' . ($key + 1)]['nilai'];
 
             return $item;
         });
 
         $reports->setCollection($reports->getCollection()->sortByDesc(function ($item) use ($prefensi) {
-            return $prefensi['A'.$item->urutan]['nilai'];
+            return $prefensi['A' . $item->urutan]['nilai'];
         }));
 
         $reports->setCollection($reports->getCollection());
@@ -134,13 +136,13 @@ trait WithDataTable {
             case 'pengaduan':
                 $reports = $this->get_prioritas_dengan_spk(
                     $this->model::search($this->search)
-                    ->where('jenis', 'Pengaduan')
-                    ->when($this->selectedCategory, function ($query) {
-                        return $query->where('kategori', $this->selectedCategory);
+                        ->where('jenis', 'Pengaduan')
+                        ->when($this->selectedCategory, function ($query) {
+                            return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->with('user', 'history', 'chat')
-                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                    ->paginate($this->perPage)
+                        ->with('user', 'history', 'chat')
+                        ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                        ->paginate($this->perPage)
                 );
 
                 return [
@@ -154,13 +156,13 @@ trait WithDataTable {
             case 'permintaan':
                 $reports = $this->get_prioritas_dengan_spk(
                     $this->model::search($this->search)
-                    ->where('jenis', 'Permintaan')
-                    ->when($this->selectedCategory, function ($query) {
-                        return $query->where('kategori', $this->selectedCategory);
+                        ->where('jenis', 'Permintaan')
+                        ->when($this->selectedCategory, function ($query) {
+                            return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->with('user', 'history', 'chat')
-                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                    ->paginate($this->perPage)
+                        ->with('user', 'history', 'chat')
+                        ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                        ->paginate($this->perPage)
                 );
 
                 return [
@@ -176,7 +178,7 @@ trait WithDataTable {
                     ->where('jenis', 'Saran')
                     ->when($this->selectedCategory, function ($query) {
                         return $query->where('kategori', $this->selectedCategory);
-                        })
+                    })
                     ->with('user', 'history', 'chat')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage);
@@ -214,11 +216,11 @@ trait WithDataTable {
             case 'dashboard':
                 $reports = $this->get_prioritas_dengan_spk(
                     $this->model::search($this->search)
-                    ->when($this->selectedCategory, function ($query) {
-                        return $query->where('kategori', $this->selectedCategory);
+                        ->when($this->selectedCategory, function ($query) {
+                            return $query->where('kategori', $this->selectedCategory);
                         })
-                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
-                    ->paginate($this->perPage)
+                        ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                        ->paginate($this->perPage)
                 );
 
                 return [
@@ -229,6 +231,28 @@ trait WithDataTable {
                     ])
                 ];
                 break;
+
+            case 'feedback':
+                $feedbacks = $this->model::search($this->search)
+                    ->with('user')
+                    ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
+                    ->paginate($this->perPage);
+
+                return [
+                    "view" => 'livewire.table.feedback',
+                    "feedbacks" => $feedbacks,
+                    "data" => array_to_object([
+                        'actions' => [
+                            // [
+                            //     'route' => route('export.feedback'),
+                            //     'text' => 'Export',
+                            //     'btn_color' => 'success',
+                            //     'icon' => 'fas fa-file-export',
+                            //     'is_used' => true
+                            // ]
+                        ]
+                    ])
+                ];
 
             default:
                 # code...

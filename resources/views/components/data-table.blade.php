@@ -1,6 +1,6 @@
 <div class="bg-gray-100 text-gray-900 tracking-wider leading-normal">
     <div class="p-8 pt-4 mt-2 bg-white" x-data="window.__controller.dataTableMainController()" x-init="setCallback();">
-        @if (request()->segment(1) != 'laporan' && auth()->user())
+        @if (request()->segment(1) != 'laporan' && request()->segment(1) != 'feedback' && auth()->user())
             @if ($categories && auth()->user()->role == 'ADMIN')
                 <div class="flex-column md:flex-row space-y-2 md:space-x-3 mb-4">
                     @foreach ($categories as $category)

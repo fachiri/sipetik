@@ -8,6 +8,7 @@ use App\Models\History;
 use App\Models\Teknisi;
 use App\Models\Assignment;
 use App\Models\Chat;
+use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
@@ -384,7 +385,10 @@ class ReportController extends Controller
                 'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!',
             ]);
 
+            $feedback = Feedback::where('user_id', auth()->user()->id)->first();
+
             return redirect(route('report'))
+                ->with('showFeedback', $feedback ? false : true)
                 ->with('success', 'Laporan berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()
@@ -395,46 +399,21 @@ class ReportController extends Controller
         }
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
     public function show(Report $report)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
     public function edit(Report $report)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Report $report)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Report  $report
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Report $report)
     {
         //

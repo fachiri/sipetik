@@ -38,6 +38,10 @@
 </head>
 
 <body class="antialiased">
+  @if (session('showFeedback'))
+    <x-rate />
+  @endif
+
   <header class="bg-[#173D7A] text-white py-5 pb-14 relative">
     <nav class="container mx-auto px-5 md:px-20 flex justify-between items-center">
       <div class="flex space-x-8">

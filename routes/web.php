@@ -5,18 +5,8 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\LaporanController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FeedbackController;
 use Illuminate\Support\Facades\Route;
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
 
 Route::get('/', [ReportController::class, 'landing'])->name('home');
 Route::get('/public_dashboard', [DashboardController::class, 'public_dashboard'])->name('dashboard.public_dashboard');
@@ -25,13 +15,14 @@ Route::post('/chat', [ChatController::class, 'store'])->name('chat.store');
 Route::get('/chat/read/{reportId}', [ChatController::class, 'read_chats'])->name('chat.read');
 Route::get('/get-chats/{reportId}', [ChatController::class, 'get_chats']);
 Route::get('/get-total-chat/{userId}', [ChatController::class, 'get_total_chat'])->name('chat.total');
+Route::resource('/feedback', FeedbackController::class)->names('feedback');
 
 Route::group(["middleware" => ['role:PENGGUNA']], function() {
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });
 
-Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'redirect.if.user']], function() {
+Route::group(["middleware" => ['auth:sanctum', config('jetstream.auth_session'), 'verified', 'redirect.if.user', 'get.notif']], function() {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/report/verified/{reportId}', [ReportController::class, 'report_verified'])->name('report.verified');
