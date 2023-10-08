@@ -3,7 +3,7 @@
 		<h1 class="mx-5 mb-5 text-center text-2xl font-bold leading-normal md:text-3xl">Layanan Pengaduan <br> UPT TIK Universitas Negeri Gorontalo</h1>
 		<p class="font-base mx-5 text-center text-sm md:text-lg">Sampaikan keluhan anda terkait masalah layanan UPT TIK Universitas Negeri Gorontalo</p>
 	</div>
-	<section class="flex py-10 items-start justify-center bg-[url('/assets/bg1.png')] bg-100-auto bg-top bg-no-repeat">
+	<section class="flex py-10 lg:min-h-[32rem] items-start justify-center bg-[url('/assets/bg1.png')] bg-100-auto bg-top bg-no-repeat">
 		<div class="w-11/12 rounded border bg-white p-7 shadow-xl md:w-2/5 2xl:mt-20">
 			<div class="mb-3 bg-[#002979]">
 				<h3 class="rounded-sm py-3 text-center text-lg font-semibold text-white">Sampaikan Keluhan Anda</h3>
@@ -118,7 +118,7 @@
 			@endguest
 		</div>
 	</section>
-	<section class="my-20 md:my-36">
+	<section class="my-20 md:my-36 lg:mt-0">
 		<div class="container mx-auto hidden justify-between px-20 text-[#092E63] md:flex">
 			<div class="flex basis-1/6 flex-col items-center">
 				<img src="{{ asset('assets/img1.png') }}" alt="Tulis Laporan" width="50" class="mb-3">
