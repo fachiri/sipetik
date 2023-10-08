@@ -1,12 +1,12 @@
 <div id="modal-rating" class="fixed inset-0 z-50 flex h-screen w-screen flex-col items-center justify-center bg-black bg-opacity-50 pt-4">
 	<div class="max-w-sm overflow-x-auto rounded-lg bg-white p-4 shadow-lg" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-		<div id="complete" class="hidden mt-2 text-center">
+		<div id="complete" class="mt-2 hidden text-center">
 			<h3 class="text-xl font-semibold leading-6 text-[#173D7A]" id="modal-headline">Terima kasih</h3>
 			<div class="mt-2">
-				<p class="px-3 text-sm leading-5 text-gray-600 mb-3">
+				<p class="mb-3 px-3 text-sm leading-5 text-gray-600">
 					Semoga layanan kami dapat selalu membantu anda
 				</p>
-        <div class="btn-tutup flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
+				<div class="btn-tutup flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">
 					<button type="button" class="focus:shadow-outline-blue inline-flex w-full justify-center rounded-md border border-gray-500 bg-white px-4 py-2 text-base font-medium leading-6 text-gray-600 shadow-sm transition duration-150 ease-in-out hover:text-gray-500 focus:outline-none sm:text-sm sm:leading-5">
 						Tutup
 					</button>
@@ -18,7 +18,7 @@
 				<h3 class="text-xl font-semibold leading-6 text-[#173D7A]" id="modal-headline">Beri nilai pengalaman Anda</h3>
 				<div class="mt-2">
 					<p class="px-3 text-sm leading-5 text-gray-600">
-						Mohon beri pendapat Anda tentang layanan kami dengan mengisi survei singkat kami. Terima kasih!
+						Laporan anda yang berjudul "<span class="font-medium">{{ session('showFeedback')->judul }}</span>" telah selesai. Mohon beri pendapat Anda tentang layanan kami dengan mengisi survei singkat kami. Terima kasih!
 					</p>
 				</div>
 				<div class="mt-2 flex flex-wrap items-center justify-center">
@@ -126,12 +126,13 @@
 	})
 
 	$("#form-rating").on("submit", (event) => {
-		event.preventDefault()
-		isLoading(true)
+		event.preventDefault();
+		isLoading(true);
 
 		const rate = $("input[name='rate']:checked").val();
 		const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-		const url = @json(route('feedback.store'))
+		const url = @json(route('feedback.store'));
+		const report_id = @json(session('showFeedback')->id);
 
 		$.ajax({
 			url,
@@ -141,12 +142,13 @@
 				'X-CSRF-TOKEN': csrfToken
 			},
 			data: JSON.stringify({
-				rate
+				rate,
+				report_id
 			}),
 			dataType: 'json',
 			success: (response) => {
 				$("#complete").removeClass("hidden")
-        $("#form-rating").remove()
+				$("#form-rating").remove()
 			},
 			error: (error) => {
 				console.error(error)

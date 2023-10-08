@@ -17,7 +17,7 @@ Route::get('/get-chats/{reportId}', [ChatController::class, 'get_chats']);
 Route::get('/get-total-chat/{userId}', [ChatController::class, 'get_total_chat'])->name('chat.total');
 Route::resource('/feedback', FeedbackController::class)->names('feedback');
 
-Route::group(["middleware" => ['role:PENGGUNA']], function() {
+Route::group(["middleware" => ['role:PENGGUNA', 'get.feedback']], function() {
     Route::get('/report', [ReportController::class, 'index'])->name('report');
     Route::post('/report', [ReportController::class, 'store'])->name('report.store');
 });

@@ -11,6 +11,7 @@ return new class extends Migration
         Schema::create('feedback', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('report_id');
             $table->string('rate');
             $table->timestamps();
         });

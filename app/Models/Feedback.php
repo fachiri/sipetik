@@ -15,10 +15,15 @@ class Feedback extends Model
             : static::where('rate', 'like', '%'.$query.'%');
     }
 
-    protected $fillable = ['user_id', 'rate'];
+    protected $fillable = ['user_id', 'rate', 'report_id'];
 
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function report()
+    {
+        return $this->belongsTo(Report::class);
     }
 }

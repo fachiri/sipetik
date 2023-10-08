@@ -385,10 +385,7 @@ class ReportController extends Controller
                 'isi' => 'Laporan anda akan ditinjau, mohon tunggu informasi berikutnya perihal laporan anda!',
             ]);
 
-            $feedback = Feedback::where('user_id', auth()->user()->id)->first();
-
             return redirect(route('report'))
-                ->with('showFeedback', $feedback ? false : true)
                 ->with('success', 'Laporan berhasil ditambahkan');
         } catch (\Throwable $th) {
             return redirect()

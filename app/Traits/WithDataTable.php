@@ -234,7 +234,7 @@ trait WithDataTable
 
             case 'feedback':
                 $feedbacks = $this->model::search($this->search)
-                    ->with('user')
+                    ->with('user', 'report')
                     ->orderBy($this->sortField, $this->sortAsc ? 'asc' : 'desc')
                     ->paginate($this->perPage);
 

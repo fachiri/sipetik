@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('reports', function (Blueprint $table) {
@@ -24,17 +19,13 @@ return new class extends Migration
             $table->date('tanggal');
             $table->string('lampiran')->nullable();
             $table->string('bukti')->nullable();
+            $table->string('feedback_status')->default('PENDING');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('reports');

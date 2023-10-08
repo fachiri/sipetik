@@ -20,6 +20,18 @@
 						@include('components.sort-icon', ['field' => 'rate'])
 					</a>
 				</th>
+				<th>
+					<a wire:click.prevent="sortBy('rate')" role="button" href="#">
+						Judul Laporan
+						@include('components.sort-icon', ['field' => 'rate'])
+					</a>
+				</th>
+				<th>
+					<a wire:click.prevent="sortBy('rate')" role="button" href="#">
+						Nama Teknisi
+						@include('components.sort-icon', ['field' => 'rate'])
+					</a>
+				</th>
 			</tr>
 		</x-slot>
 		<x-slot name="body">
@@ -30,27 +42,33 @@
 					<td>
 						@switch($feedback->rate)
 							@case(1)
-                            Sangat Tidak Memuaskan
+								Sangat Tidak Memuaskan
 							@break
 
 							@case(2)
-                            Tidak Memuaskan
+								Tidak Memuaskan
 							@break
 
 							@case(3)
-                            Netral
+								Netral
 							@break
 
 							@case(4)
-                            Memuaskan
+								Memuaskan
 							@break
 
 							@case(5)
-                            Sangat Memuaskan
+								Sangat Memuaskan
 							@break
 
 							@default
 						@endswitch
+					</td>
+					<td>{{ $feedback->report->judul }}</td>
+					<td>
+						@foreach ($feedback->report->teknisi as $teknisi)
+							<p>{{ $teknisi->user->name }}</p>
+						@endforeach
 					</td>
 				</tr>
 			@endforeach

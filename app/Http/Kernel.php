@@ -66,5 +66,6 @@ class Kernel extends HttpKernel
         'role' => \App\Http\Middleware\CheckRole::class,
         'redirect.if.user' => \App\Http\Middleware\RedirectIfUser::class,
         'get.notif' => \App\Http\Middleware\GetNotif::class,
+        'get.feedback' => \App\Http\Middleware\GetFeedback::class,
     ];
 }

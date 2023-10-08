@@ -25,6 +25,7 @@ class StoreFeedbackRequest extends FormRequest
     {
         return [
             'rate' => 'required',
+            'report_id' => 'required'
         ];
     }
 }

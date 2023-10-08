@@ -6,6 +6,7 @@ use App\Http\Requests\StoreFeedbackRequest;
 use App\Http\Requests\UpdateFeedbackRequest;
 use App\Models\Category;
 use App\Models\Feedback;
+use App\Models\Report;
 
 class FeedbackController extends Controller
 {
@@ -26,7 +27,12 @@ class FeedbackController extends Controller
         try {
             Feedback::create([
                 'user_id' => auth()->user()->id,
-                'rate' => $request->rate
+                'rate' => $request->rate,
+                'report_id' => $request->report_id
+            ]);
+
+            Report::where('id', $request->report_id)->update([
+                'feedback_status' => 'SUBMITTED'
             ]);
 
             return response()->json('Feedback berhasil dikirim!', 201);
