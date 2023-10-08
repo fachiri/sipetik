@@ -1,9 +1,9 @@
 <x-guest-layout>
-<div class="bg-gradient-to-b from-[#173D7A] to-[#30207C] pb-10 text-white">
+	<div class="bg-gradient-to-b from-[#173D7A] to-[#30207C] pb-10 text-white">
 		<h1 class="mx-5 mb-5 text-center text-2xl font-bold leading-normal md:text-3xl">Layanan Pengaduan <br> UPT TIK Universitas Negeri Gorontalo</h1>
 		<p class="font-base mx-5 text-center text-sm md:text-lg">Sampaikan keluhan anda terkait masalah layanan UPT TIK Universitas Negeri Gorontalo</p>
 	</div>
-	<section class="flex min-h-screen items-start justify-center bg-[url('/assets/bg1.png')] bg-100-auto bg-top bg-no-repeat">
+	<section class="flex py-10 items-start justify-center bg-[url('/assets/bg1.png')] bg-100-auto bg-top bg-no-repeat">
 		<div class="w-11/12 rounded border bg-white p-7 shadow-xl md:w-2/5 2xl:mt-20">
 			<div class="mb-3 bg-[#002979]">
 				<h3 class="rounded-sm py-3 text-center text-lg font-semibold text-white">Sampaikan Keluhan Anda</h3>
@@ -110,8 +110,8 @@
 				</div>
 			@endauth
 			@guest
-				<div class="flex mt-5">
-					<a href="{{ route('login') }}" class="w-full rounded-lg bg-[#FC2947] px-8 py-2 font-semibold text-white text-center">
+				<div class="mt-5 flex">
+					<a href="{{ route('login') }}" class="w-full rounded-lg bg-[#FC2947] px-8 py-2 text-center font-semibold text-white">
 						LOGIN
 					</a>
 				</div>
