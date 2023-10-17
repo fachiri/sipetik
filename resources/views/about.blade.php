@@ -1,5 +1,5 @@
 <x-guest-layout> 
-    <div class="bg-gradient-to-b from-[#173D7A] to-[#30207C] py-5">
+    <div class="bg-gradient-to-b from-[#CB004A] to-[#30207C] py-5">
         <h3 class="text-white text-2xl text-center font-bold">Tentang PETIK</h3>
     </div>
     <img src="{{ asset('assets/bg2.png') }}" alt="Ilustrasi" class="mb-5 w-screen h-40 md:h-auto object-cover">

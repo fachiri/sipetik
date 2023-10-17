@@ -1,6 +1,7 @@
 import './bootstrap';
 import '../css/app.css';
 import '../css/tailwind.css';
+import 'flowbite';
 function dataTableController (id) {
     return {
         id,

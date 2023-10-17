@@ -1,5 +1,5 @@
 <x-guest-layout>
-    <div class="w-screen min-h-screen bg-[url('/assets/bg3.png')] bg-top mb-20 bg-no-repeat bg-100-auto">
+    <div class="w-screen min-h-screen bg-[url('/assets/bg5.png')] bg-top mb-20 bg-no-repeat bg-100-auto">
         <div class="container mx-auto flex flex-col md:flex-row space-y-10 md:space-y-0 md:space-x-10 md:items-start px-5 md:px-0">
             <div class="basis-full md:basis-9/12 bg-white p-5 shadow-xl rounded">
                 <div class="flex flex-col md:flex-row justify-between items-start text-[#173D7A] mb-8 md:mb-10 pb-5 md:pb-0 space-y-5 md:space-y-0 border-b-2 md:border-0">
@@ -26,10 +26,15 @@
                     </div>
                     <img src="{{ asset('assets/img7.png') }}" alt="Image" class="hidden md:block">
                 </div>
-                <div class="mb-1 flex space-x-1">
-                    <button id="tab1" class="tab-btn tab-btn-report active bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Laporan Saya</button>
-                    <button id="tab2" class="tab-btn tab-btn-report bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Riwayat Laporan</button>
-                    <button id="tab3" class="tab-btn tab-btn-report bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Semua</button>
+                <div class="mb-1 flex justify-between">
+                    <div class="flex space-x-1">
+                        <button id="tab1" class="tab-btn tab-btn-report active bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Laporan Saya</button>
+                        <button id="tab2" class="tab-btn tab-btn-report bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Riwayat Laporan</button>
+                        <button id="tab3" class="tab-btn tab-btn-report bg-[#173D7A] border-2 border-[#173D7A] text-white font-semibold px-5 py-2 rounded text-sm">Semua</button>
+                    </div>
+                    <div>
+                        <x-buat-laporan class="border-2 border-[#CB004A] bg-[#CB004A] text-white font-semibold px-5 py-2 rounded text-sm" />
+                    </div>
                 </div>
                 <div id="content1" class="tab-content border-2 border-[#173D7A] p-5 rounded">
                     @if ($myreports->isEmpty())
