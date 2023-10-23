@@ -1,12 +1,14 @@
 <x-guest-layout>
-	<div class="flex flex-col bg-gradient-to-b from-[#CB004A] to-[#32187D] px-4 pb-10 pt-14 text-white md:h-screen md:flex-row md:space-x-10 md:px-20">
-		<div class="container mx-auto basis-3/5">
-			<h1 class="mb-4 text-2xl font-bold leading-10 leading-normal md:text-5xl">Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo</h1>
-			<p class="font-base mb-4 text-sm md:text-lg">Sistem Informasi Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo adalah sebuah platform yang dirancang untuk memfasilitasi pengaduan terkait layanan teknologi informasi dan komunikasi (TIK) di lingkungan Universitas Negeri Gorontalo.</p>
-			<x-buat-laporan class="mb-4 rounded-lg border-2 bg-[#FC2947] px-4 py-1 text-center font-semibold md:mb-0" />
-		</div>
-		<div class="basis-2/5">
-			<img src="{{ asset('assets/img10.png') }}" alt="Ilustrasi" class="hidden h-auto w-full md:block">
+	<div class="bg-gradient-to-b from-[#CB004A] to-[#32187D] pb-10 pt-14">
+		<div class="flex flex-col text-white md:h-screen md:flex-row md:space-x-10 w-5/6 mx-auto">
+			<div class="mx-auto basis-3/5">
+				<h1 class="mb-4 text-2xl font-bold leading-10 leading-normal md:text-5xl">Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo</h1>
+				<p class="font-base mb-4 text-sm md:text-lg">Sistem Informasi Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo adalah sebuah platform yang dirancang untuk memfasilitasi pengaduan terkait layanan teknologi informasi dan komunikasi (TIK) di lingkungan Universitas Negeri Gorontalo.</p>
+				<x-buat-laporan class="mb-4 rounded-lg border-2 bg-[#FC2947] px-4 py-1 text-center font-semibold md:mb-0" />
+			</div>
+			<div class="basis-2/5">
+				<img src="{{ asset('assets/img10.png') }}" alt="Ilustrasi" class="hidden h-auto w-full md:block">
+			</div>
 		</div>
 	</div>
 	<img src="{{ asset('assets/bg4.svg') }}" alt="">
