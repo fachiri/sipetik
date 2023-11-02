@@ -35,7 +35,7 @@
 	$navigation_links = array_to_object($links);
 @endphp
 
-<div class="main-sidebar z-40">
+<div class="main-sidebar">
 	<aside id="sidebar-wrapper">
 		<div class="sidebar-brand">
 			<a href="{{ route('dashboard') }}">SIPETIK</a>

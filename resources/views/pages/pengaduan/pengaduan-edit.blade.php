@@ -9,7 +9,7 @@
     </x-slot>
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
-        <div class="flex justify-between items-start">
+        <div class="flex flex-col sm:flex-row justify-between items-start">
             <div class="flex items-start space-x-3 mb-3">
                 <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="48" height="48"
                     class="border-2 border-blue-100 rounded-md">
@@ -69,7 +69,7 @@
                 <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}"
                     class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                     <i class="fas fa-file-image"></i>
-                    {{ $report->lampiran }}
+                    Lampiran
                 </a>
             </div>
             @endif

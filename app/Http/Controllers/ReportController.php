@@ -7,15 +7,109 @@ use App\Models\Category;
 use App\Models\History;
 use App\Models\Teknisi;
 use App\Models\Assignment;
+use App\Models\AttrCriteria;
 use App\Models\Chat;
 use App\Models\Feedback;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\ValidationException;
 use Exception;
+use Carbon\Carbon;
 
 class ReportController extends Controller
 {
+    public function get_atribut_kriteria($kode, $kriteria)
+    {
+        if ($kode == 'C2') {
+            $kriteria = min($kriteria, 8);
+            $kriteria = $kriteria . ' HARI';
+        }
+        $atribut_kriteria = AttrCriteria::where(['kode' => $kode, 'kriteria' => $kriteria])->value('bobot');
+        return $atribut_kriteria;
+    }
+
+    public function get_prioritas_dengan_spk($reports)
+    {
+        $kriteria = collect([
+            'C1' => [
+                'nama' => 'Asal Aduan',
+                'bobot' => 4,
+            ],
+            'C2' => [
+                'nama' => 'Deadline',
+                'bobot' => 5,
+            ],
+        ]);
+        $jumlah_bobot = $kriteria['C1']['bobot'] + $kriteria['C2']['bobot'];
+        $bobot_kepentingan = collect([
+            'C1' => $kriteria['C1']['bobot'] / $jumlah_bobot,
+            'C2' => $kriteria['C2']['bobot'] / $jumlah_bobot,
+        ]);
+        $matriks = collect([]);
+        $today = Carbon::now();
+        for ($i = 0; $i < $reports->count(); $i++) {
+            $deadline = Carbon::parse($reports[$i]->tanggal);
+            $matriks['A' . $i + 1] = [
+                'ID' => $reports[$i]->id,
+                'C1' => $this->get_atribut_kriteria('C1', $reports[$i]->user->level),
+                'C2' => $this->get_atribut_kriteria('C2', $deadline->diff($today)->days + 1)
+            ];
+        }
+
+        $c1Max = $matriks->pluck('C1')->max();
+        $c1Min = $matriks->pluck('C1')->min();
+        if ($c1Max - $c1Min == 0) {
+            $c1Min = 0;
+        }
+        $c2Max = $matriks->pluck('C2')->max();
+        $c2Min = $matriks->pluck('C2')->min();
+        if ($c2Max - $c2Min == 0) {
+            $c2Min = 0;
+        }
+
+        $normalisasi = collect([]);
+        foreach ($matriks as $key => $value) {
+            $normalisasi[$key] = [
+                'C1' => ($matriks[$key]['C1'] - $c1Min) / ($c1Max - $c1Min),
+                'C2' => ($matriks[$key]['C2'] - $c2Min) / ($c2Max - $c2Min)
+            ];
+        }
+
+        $prefensi = collect([]);
+        foreach ($normalisasi as $key => $value) {
+            $nilai = ($bobot_kepentingan['C1'] * $normalisasi[$key]['C1']) + ($bobot_kepentingan['C2'] * $normalisasi[$key]['C2']);
+            if ($nilai >= 0.8) {
+                $kategori = 'Sangat Urgen';
+            } elseif ($nilai >= 0.6) {
+                $kategori = 'Urgen';
+            } elseif ($nilai >= 0.4) {
+                $kategori = 'Cukup Urgen';
+            } elseif ($nilai >= 0.2) {
+                $kategori = 'Kurang Urgen';
+            } else {
+                $kategori = 'Tidak Urgen';
+            }
+            $prefensi[$key] = [
+                'nilai' => $nilai,
+                'kategori' => $kategori
+            ];
+        }
+
+        $reports->transform(function ($item, $key) use ($prefensi) {
+            $item->urutan = $key + 1;
+            $item->prioritas = $prefensi['A' . ($key + 1)]['kategori'];
+            $item->prefensi = $prefensi['A' . ($key + 1)]['nilai'];
+
+            return $item;
+        });
+
+        $reports->sortByDesc(function ($item) use ($prefensi) {
+            return $prefensi['A' . $item->urutan]['nilai'];
+        });
+
+        return $reports;
+    }
+
     public function landing()
     {
         $categories = Category::all();
@@ -25,8 +119,7 @@ class ReportController extends Controller
 
     public function index()
     {
-        $myreports = Report::
-            where('user_id', auth()->user()->id)
+        $myreports = Report::where('user_id', auth()->user()->id)
             ->with('chat', 'history')
             ->get();
         $allreports = Report::orderBy('created_at', 'desc')->get();
@@ -47,31 +140,61 @@ class ReportController extends Controller
             ->with('total', $total);
     }
 
-    public function pengaduan()
+    public function pengaduan(Request $request)
     {
         $categories = Category::all();
-        return view('pages.pengaduan.pengaduan-data')->with([
-            'categories' => $categories,
-            'reports' => Report::class
-        ]);
+        $query = Report::query();
+
+        if ($request->has('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $reports = $query->where('jenis', 'Pengaduan')
+            ->with('user', 'history', 'chat')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $reports = $this->get_prioritas_dengan_spk($reports);
+
+        return view('pages.pengaduan.pengaduan-data', compact('categories', 'reports'));
     }
 
-    public function permintaan()
+    public function permintaan(Request $request)
     {
         $categories = Category::all();
-        return view('pages.permintaan.permintaan-data')->with([
-            'categories' => $categories,
-            'reports' => Report::class
-        ]);
+        $query = Report::query();
+
+        if ($request->has('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $reports = $query->where('jenis', 'Permintaan')
+            ->with('user', 'history', 'chat')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $reports = $this->get_prioritas_dengan_spk($reports);
+
+        return view('pages.permintaan.permintaan-data', compact('categories', 'reports'));
     }
 
-    public function saran()
+    public function saran(Request $request)
     {
         $categories = Category::all();
-        return view('pages.saran.saran-data')->with([
-            'categories' => $categories,
-            'reports' => Report::class
-        ]);
+        $query = Report::query();
+
+        if ($request->has('kategori')) {
+            $query->where('kategori', $request->kategori);
+        }
+
+        $reports = $query->where('jenis', 'Saran')
+            ->with('user', 'history', 'chat')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $reports = $this->get_prioritas_dengan_spk($reports);
+
+        return view('pages.saran.saran-data', compact('categories', 'reports'));
     }
 
     public function pengaduan_detail($reportId)
@@ -102,7 +225,7 @@ class ReportController extends Controller
     public function report_verified(Request $request, $id)
     {
         try {
-            if($request->status != 'Verifikasi Gagal') {
+            if ($request->status != 'Verifikasi Gagal') {
                 $validator = Validator::make($request->all(), [
                     'category' => auth()->user()->role == 'ADMIN' ? 'required' : '',
                     'tanggapan' => 'required|string',
@@ -146,7 +269,7 @@ class ReportController extends Controller
             }
             if ($request->status == 'Tulis Laporan') {
                 $message = 'Laporan ini telah didisposisi!';
-                Report::where('id', $id)->update([ 'kategori' => $request->category ]);
+                Report::where('id', $id)->update(['kategori' => $request->category]);
             }
             History::create([
                 'user_id' => auth()->user()->id,
@@ -347,11 +470,11 @@ class ReportController extends Controller
             }
 
             if ($request->jenis == 'Pengaduan') {
-                $report_id = 'PD'.now()->timestamp;
+                $report_id = 'PD' . now()->timestamp;
             } elseif ($request->jenis == 'Permintaan') {
-                $report_id = 'PM'.now()->timestamp;
+                $report_id = 'PM' . now()->timestamp;
             } elseif ($request->jenis == 'Saran') {
-                $report_id = 'SR'.now()->timestamp;
+                $report_id = 'SR' . now()->timestamp;
             } else {
                 throw new Exception('Terjadi kesalahan, Report ID tidak bisa dibuat!');
             }

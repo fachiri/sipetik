@@ -1,4 +1,4 @@
-<button class="{{ $class }}" data-modal-target="defaultModal" data-modal-toggle="defaultModal">Lapor</button>
+<button class="{{ $class }}" data-modal-target="defaultModal" data-modal-toggle="defaultModal">Buat Laporan</button>
 <!-- Modal -->
 <div id="defaultModal" tabindex="-1" aria-hidden="true" class="fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full overflow-y-auto overflow-x-hidden p-4 md:inset-0 text-gray-700">
   <div class="relative max-h-full w-full max-w-2xl">

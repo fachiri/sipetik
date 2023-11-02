@@ -10,7 +10,7 @@
 
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg py-4 px-5 mb-4">
         <h4 class="text-lg font-bold pb-3">Kategori - {{ $report->kategori }}</h4>
-        <div class="flex justify-between items-start">
+        <div class="flex flex-col sm:flex-row justify-between items-start">
             <div class="flex items-start space-x-2 mb-3">
                 <img src="{{ $report->user->profile_photo_url }}" alt="Profile" width="48" height="48"
                     class="border-2 border-blue-100 rounded-md">
@@ -64,7 +64,7 @@
                     break;
                 }
             @endphp
-            <span class="{{$bgColor}} rounded-xl {{$textColor}} font-bold px-3 py-1">
+            <span class="{{$bgColor}} rounded-xl {{$textColor}} font-bold px-3 py-1 mb-3">
                 {!! $status !!}
             </span>
         </div>
@@ -76,8 +76,7 @@
                     <a href="{{ asset('storage/lampiran/'.$report->lampiran) }}"
                         class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                         <i class="fas fa-file-image"></i>
-                        Lampiran -
-                        {{ $report->lampiran }}
+                        Lampiran
                     </a>
                 </div>
                 @endif
@@ -86,8 +85,7 @@
                     <a href="{{ asset('storage/bukti/'.$report->bukti) }}"
                         class="border-2 border-slate-300 px-2 py-1 rounded-xl text-xs">
                         <i class="fas fa-file-image"></i>
-                        Bukti -
-                        {{ $report->bukti }}
+                        Bukti
                     </a>
                 </div>
                 @endif
@@ -104,7 +102,7 @@
         <h4 class="text-lg font-bold pb-3">Daftar Teknisi</h4>
         <div class="row">
             @foreach ($report->teknisi as $teknisi)
-            <div class="col-4">
+            <div class="col-sm-4 col-12">
                 <div class="border-2 border-b-4 border-r-4 rounded-md p-3 flex space-x-3">
                     <img src="{{ $teknisi->user->profile_photo_url }}" alt="Profile" width="48" height="48"
                         class="border-2 border-blue-100 rounded-md">
