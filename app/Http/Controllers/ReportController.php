@@ -103,8 +103,8 @@ class ReportController extends Controller
             return $item;
         });
 
-        $reports->sortByDesc(function ($item) use ($prefensi) {
-            return $prefensi['A' . $item->urutan]['nilai'];
+        $reports = $reports->sortByDesc(function ($report) {
+            return $report->prefensi;
         });
 
         return $reports;
@@ -145,8 +145,19 @@ class ReportController extends Controller
         $categories = Category::all();
         $query = Report::query();
 
-        if ($request->has('kategori')) {
-            $query->where('kategori', $request->kategori);
+        if (auth()->user()->role == 'ADMIN') {
+            if ($request->has('kategori')) {
+                $query->where('kategori', $request->kategori);
+            }
+        };
+
+        if (auth()->user()) {
+            if (auth()->user()->role == 'KABID') {
+                $query->where('kategori', auth()->user()->kabid->category->name);
+            }
+            if (auth()->user()->role == 'TEKNISI') {
+                $query->where('kategori', auth()->user()->teknisi->category->name);
+            }
         }
 
         $reports = $query->where('jenis', 'Pengaduan')
@@ -164,8 +175,19 @@ class ReportController extends Controller
         $categories = Category::all();
         $query = Report::query();
 
-        if ($request->has('kategori')) {
-            $query->where('kategori', $request->kategori);
+        if (auth()->user()->role == 'ADMIN') {
+            if ($request->has('kategori')) {
+                $query->where('kategori', $request->kategori);
+            }
+        };
+
+        if (auth()->user()) {
+            if (auth()->user()->role == 'KABID') {
+                $query->where('kategori', auth()->user()->kabid->category->name);
+            }
+            if (auth()->user()->role == 'TEKNISI') {
+                $query->where('kategori', auth()->user()->teknisi->category->name);
+            }
         }
 
         $reports = $query->where('jenis', 'Permintaan')
@@ -183,8 +205,19 @@ class ReportController extends Controller
         $categories = Category::all();
         $query = Report::query();
 
-        if ($request->has('kategori')) {
-            $query->where('kategori', $request->kategori);
+        if (auth()->user()->role == 'ADMIN') {
+            if ($request->has('kategori')) {
+                $query->where('kategori', $request->kategori);
+            }
+        };
+
+        if (auth()->user()) {
+            if (auth()->user()->role == 'KABID') {
+                $query->where('kategori', auth()->user()->kabid->category->name);
+            }
+            if (auth()->user()->role == 'TEKNISI') {
+                $query->where('kategori', auth()->user()->teknisi->category->name);
+            }
         }
 
         $reports = $query->where('jenis', 'Saran')

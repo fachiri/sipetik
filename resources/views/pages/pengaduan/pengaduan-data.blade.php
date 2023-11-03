@@ -50,7 +50,7 @@
 
 									    case 'Cukup Urgen':
 									        $bgColor = 'bg-yellow-500';
-									        $textColor = 'text-gray-500';
+									        $textColor = 'text-slate-100';
 									        break;
 
 									    case 'Kurang Urgen':
@@ -144,42 +144,45 @@
 						<div class="w-full">
 							<h5 class="line-clamp-1 text-lg font-bold">{{ $report->judul }}</h5>
 						</div>
-						@php
-							switch ($report->prioritas) {
-							    case 'Sangat Urgen':
-							        $bgColor = 'bg-red-500';
-							        $textColor = 'text-slate-100';
-							        break;
-
-							    case 'Urgen':
-							        $bgColor = 'bg-orange-500';
-							        $textColor = 'text-slate-100';
-							        break;
-
-							    case 'Cukup Urgen':
-							        $bgColor = 'bg-yellow-500';
-							        $textColor = 'text-gray-500';
-							        break;
-
-							    case 'Kurang Urgen':
-							        $bgColor = 'bg-blue-500';
-							        $textColor = 'text-slate-100';
-							        break;
-
-							    case 'Tidak Urgen':
-							        $bgColor = 'bg-green-500';
-							        $textColor = 'text-slate-50';
-							        break;
-
-							    default:
-							        $bgColor = 'bg-green-500';
-							        $textColor = 'text-slate-50';
-							        break;
-							}
-						@endphp
-						<small class="{{ $bgColor }} {{ $textColor }} whitespace-nowrap rounded px-2 py-1 font-semibold">
-							{{ $report->prioritas }}
-						</small>
+						<div class="flex space-x-1">
+							<small class="border rounded px-2 py-1 font-semibold">{{ $loop->iteration }}</small>
+							@php
+								switch ($report->prioritas) {
+										case 'Sangat Urgen':
+												$bgColor = 'bg-red-500';
+												$textColor = 'text-slate-100';
+												break;
+	
+										case 'Urgen':
+												$bgColor = 'bg-orange-500';
+												$textColor = 'text-slate-100';
+												break;
+	
+										case 'Cukup Urgen':
+												$bgColor = 'bg-yellow-500';
+												$textColor = 'text-slate-100';
+												break;
+	
+										case 'Kurang Urgen':
+												$bgColor = 'bg-blue-500';
+												$textColor = 'text-slate-100';
+												break;
+	
+										case 'Tidak Urgen':
+												$bgColor = 'bg-green-500';
+												$textColor = 'text-slate-50';
+												break;
+	
+										default:
+												$bgColor = 'bg-green-500';
+												$textColor = 'text-slate-50';
+												break;
+								}
+							@endphp
+							<small class="{{ $bgColor }} {{ $textColor }} whitespace-nowrap rounded px-2 py-1 font-semibold">
+								{{ $report->prioritas }}
+							</small>
+						</div>
 					</div>
 					<small>{{ $report->user->name }}</small>
 					<p class="line-clamp-3 my-2 mb-3">{{ $report->isi }}</p>
