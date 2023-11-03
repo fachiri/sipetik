@@ -27,8 +27,9 @@
 					<img src="{{ asset('assets/img7.png') }}" alt="Image" class="hidden md:block">
 				</div>
         <div class="w-full mb-3 sm:hidden">
-          <x-buat-laporan class="w-full rounded border-2 border-[#CB004A] bg-[#CB004A] px-5 py-2 text-sm font-semibold text-white" />
-        </div>
+					<button class="w-full rounded border-2 border-[#CB004A] bg-[#CB004A] px-5 py-2 text-sm font-semibold text-white" data-modal-target="defaultModal" data-modal-toggle="defaultModal">Buat Laporan</button>
+				</div>
+				<x-buat-laporan/>
 				<div class="mb-1 flex justify-between">
 					<div class="flex space-x-1 w-full sm:w-auto">
 						<button id="tab1" class="basis-1/3 sm:basis-auto tab-btn tab-btn-report active rounded border-2 border-[#173D7A] bg-[#173D7A] px-5 py-2 text-sm font-semibold text-white">Laporan Saya</button>
@@ -36,7 +37,7 @@
 						<button id="tab3" class="basis-1/3 sm:basis-auto tab-btn tab-btn-report rounded border-2 border-[#173D7A] bg-[#173D7A] px-5 py-2 text-sm font-semibold text-white">Semua</button>
 					</div>
           <div class="hidden sm:inline">
-            <x-buat-laporan class="rounded border-2 border-[#CB004A] bg-[#CB004A] px-5 py-2 text-sm font-semibold text-white" />
+            <button class="w-full rounded border-2 border-[#CB004A] bg-[#CB004A] px-5 py-2 text-sm font-semibold text-white" data-modal-target="defaultModal" data-modal-toggle="defaultModal">Buat Laporan</button>
           </div>
 				</div>
 				<div id="content1" class="tab-content rounded border-2 border-[#173D7A] p-5">
