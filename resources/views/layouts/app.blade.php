@@ -61,6 +61,7 @@
 </head>
 
 <body class="antialiased">
+    {{-- @if (session('notifications') && !str_contains(request()->url(), 'pengaduan/edit')) --}}
     @if (session('notifications'))
         <x-notif />
     @endif

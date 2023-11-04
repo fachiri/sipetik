@@ -54,6 +54,7 @@ class GetNotif
             if (auth()->user()->role == 'TEKNISI') {
                 $assignments = Assignment::where('teknisi_id', auth()->user()->teknisi->id)
                     ->where('status', 'NOT_WORKING')
+                    ->orWhere('status', 'WORKING')
                     ->get();
 
                 foreach ($assignments as $assignment) {
