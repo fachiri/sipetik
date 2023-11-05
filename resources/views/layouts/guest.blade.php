@@ -42,7 +42,7 @@
 			<x-rate />
 		@endif
 
-		<header class="relative bg-[#CB004A] py-3 text-white">
+		<header class="relative {{ request()->routeIs('home') ? 'bg-[#CB004A]' : 'bg-[#163d7a]' }} py-3 text-white">
 			<nav class="container mx-auto flex items-center justify-between px-5 md:px-20">
 				<div class="flex space-x-8">
 					<a href="{{ route('home') }}" class="font-medium"><img src="{{ asset('assets/logo-putih.png') }}" alt="SIPETIK" class="h-10"></a>
