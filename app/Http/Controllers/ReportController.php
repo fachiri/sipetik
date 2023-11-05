@@ -162,7 +162,7 @@ class ReportController extends Controller
 
         $reports = $query->where('jenis', 'Pengaduan')
             ->with('user', 'history', 'chat')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         $reports = $this->get_prioritas_dengan_spk($reports);
@@ -192,7 +192,7 @@ class ReportController extends Controller
 
         $reports = $query->where('jenis', 'Permintaan')
             ->with('user', 'history', 'chat')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         $reports = $this->get_prioritas_dengan_spk($reports);
@@ -222,7 +222,7 @@ class ReportController extends Controller
 
         $reports = $query->where('jenis', 'Saran')
             ->with('user', 'history', 'chat')
-            ->orderBy('created_at', 'desc')
+            ->orderBy('created_at', 'asc')
             ->get();
 
         $reports = $this->get_prioritas_dengan_spk($reports);
