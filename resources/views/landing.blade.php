@@ -4,7 +4,7 @@
 			<div class="mx-auto basis-3/5">
 				<h1 class="mb-4 text-2xl font-bold leading-10 leading-normal md:text-5xl">Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo</h1>
 				<p class="font-base mb-4 text-sm md:text-lg">Sistem Informasi Layanan Pengaduan UPT TIK Universitas Negeri Gorontalo adalah sebuah platform yang dirancang untuk memfasilitasi pengaduan terkait layanan teknologi informasi dan komunikasi (TIK) di lingkungan Universitas Negeri Gorontalo.</p>
-				<a class="rounded-lg border-2 bg-[#FC2947] px-4 py-1 text-center font-semibold md:mb-0">
+				<a href="{{ route('report') }}" class="rounded-lg border-2 bg-[#FC2947] px-4 py-1 text-center font-semibold md:mb-0">
 					Lapor
 				</a>
 			</div>
