@@ -128,5 +128,17 @@
         @isset($script)
             {{ $script }}
         @endisset
+
+        <script>
+            // Fungsi untuk melakukan auto refresh
+            function autoRefresh() {
+                // Menggunakan fungsi location.reload() untuk merefresh halaman
+                location.reload();
+            }
+
+            // Set interval untuk melakukan auto refresh setiap 2 menit (120000 milidetik)
+            setInterval(autoRefresh, 120000);
+        </script>
+
     </body>
 </html>
