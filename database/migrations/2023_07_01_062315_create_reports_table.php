@@ -13,6 +13,7 @@ return new class extends Migration
             $table->string('report_id');
             $table->unsignedBigInteger('user_id');
             $table->string('judul');
+            $table->string('tipe')->nullable();
             $table->string('jenis');
             $table->string('kategori')->nullable();
             $table->text('isi');

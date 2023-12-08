@@ -60,6 +60,24 @@
             <form method="POST" action="{{ route('report.store') }}" enctype="multipart/form-data">
               @csrf
               <input type="hidden" name="jenis" value="Pengaduan">
+              <div>
+                @error('tipe')
+                  <small class="float-right text-[#FC2947]">{{ $message }}</small>
+                @enderror
+                <small class="float-left text-xs text-[#FC2947]">(Wajib diisi)</small>
+                <select name="tipe" id="tipe" class="mb-2 w-full rounded border-2 border-[#D9D9D9] px-6 py-3 text-xs font-medium placeholder:font-semibold placeholder:text-[#B1A6A6]">
+                  <option value="" hidden>--Pilih Jenis Pengaduan--</option>
+                  <option value="Keluhan Layanan">Keluhan Layanan</option>
+                  <option value="Gangguan Aplikasi">Gangguan Aplikasi</option>
+                  <option value="Masalah Jaringan">Masalah Jaringan</option>
+                  <option value="Keamanan Akun">Keamanan Akun</option>
+                  <option value="Permasalahan Perangkat Keras">Permasalahan Perangkat Keras</option>
+                  <option value="Permintaan Bantuan Teknis">Permintaan Bantuan Teknis</option>
+                  <option value="Kesalahan Sistem">Kesalahan Sistem</option>
+                  <option value="Permintaan Peningkatan Layanan">Permintaan Peningkatan Layanan</option>
+                  <option value="Kejadian Keamanan">Kejadian Keamanan</option>
+                </select>
+              </div>
               @error('judul')
                 <small class="float-right text-[#FC2947]">{{ $message }}</small>
               @enderror

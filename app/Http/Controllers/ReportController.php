@@ -482,7 +482,7 @@ class ReportController extends Controller
     public function store(Request $request)
     {
         try {
-            $validator = Validator::make($request->all(), [
+            $rules = [
                 'judul' => 'required|string',
                 'jenis' => 'required|string',
                 'isi' => 'required|string',
@@ -495,7 +495,16 @@ class ReportController extends Controller
                         }
                     },
                 ],
-                'lampiran' => $request->jenis == 'Permintaan' ? 'required' : '',
+            ];
+            
+            if ($request->jenis == 'Pengaduan') {
+                $rules['tipe'] = 'required';
+            } else {
+                $rules['tipe'] = 'nullable';
+            }
+
+            $validator = Validator::make($request->all(), $rules, [
+                'tipe.required' => 'Jenis Pengaduan harus diisi.',
             ]);
 
             if ($validator->fails()) {
@@ -523,6 +532,7 @@ class ReportController extends Controller
                 'report_id' => $report_id,
                 'user_id' => auth()->user()->id,
                 'judul' => $request->judul,
+                'tipe' => $request->tipe,
                 'jenis' => $request->jenis,
                 'kategori' => $request->kategori,
                 'isi' => $request->isi,

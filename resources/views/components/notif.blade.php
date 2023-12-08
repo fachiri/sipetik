@@ -2,7 +2,7 @@
 	<div class="modal-dialog modal-dialog-centered show">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h1 class="modal-title text-lg font-bold" id="notifLabel">Pekerjaan yang belum selesai</h1>
+				<h1 class="modal-title text-lg font-bold" id="notifLabel">Perkembangan Terbaru</h1>
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 					<span aria-hidden="true">&times;</span>
 				</button>
